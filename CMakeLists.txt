@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.10)
 # Remove when sharing with others.
 list(APPEND CMAKE_PREFIX_PATH "/Users/erdincyilmaz/Projects/qt-creator-4.14/qtcreator_build")
 
+include("cmake/HunterGate.cmake")
+huntergate(URL "https://github.com/cpp-pm/hunter/archive/v0.23.279.tar.gz" SHA1 "0a8ede485c3e9c1ceed8ccb989ab6c0aba1f4db7")
+
 project(MarkdownEditView)
 
 set(CMAKE_AUTOMOC ON)
@@ -14,26 +17,10 @@ find_package(QtCreator COMPONENTS Core REQUIRED)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 set(QtX Qt${QT_VERSION_MAJOR})
 
+add_subdirectory(external/adif)
+add_subdirectory(external/aeb)
 
-# "another di framework" checks dependencies are wired.
-add_definitions(-DDEPENDECY_CHECK)
-
-add_library(di
-    STATIC
-    di/idiclient.h
-    di/idiclient.cpp
-    di/dependencyprovider_impl.cpp
-    di/dependencyprovider_impl.h
-    di/dependencyprovider.h
-    )
-
-add_library(eb
-    STATIC
-    eb/eventbus_impl.h
-    eb/eventbus_impl.cpp
-    eb/eventlistener.h
-    eb/eventbus.h
-    )
+include_directories("./external/aeb""./external/adif")
 
 add_qtc_plugin(MarkdownEditView
 
@@ -41,8 +28,8 @@ add_qtc_plugin(MarkdownEditView
     QtCreator::Core
 
     DEPENDS
-    di
-    eb
+    adif
+    aeb
     ${QtX}::Widgets
     ${QtX}::WebEngineWidgets
     ${QtX}::WebChannel
@@ -73,7 +60,5 @@ add_qtc_plugin(MarkdownEditView
     htmlviewwidgetfactory.h
     ihtmlview.h
     imarkdowneditview.h
-
-
     textchangedevent.h
     )

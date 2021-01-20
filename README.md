@@ -33,3 +33,5 @@ on Windows and Linux, or
     -pluginpath "%{buildDir}/Qt Creator.app/Contents/PlugIns" -tcs
 
 for the `Command line arguments` field in the run settings
+
+https://foonathan.net/2016/07/cmake-dependency-handling/

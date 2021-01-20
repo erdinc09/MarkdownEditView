@@ -1,0 +1,6 @@
+[submodule "external/adif"]
+	path = external/adif
+	url = https://github.com/erdinc09/adif.git
+[submodule "external/aeb"]
+	path = external/aeb
+	url = https://github.com/erdinc09/aeb.git
