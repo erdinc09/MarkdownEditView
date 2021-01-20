@@ -17,10 +17,27 @@ find_package(QtCreator COMPONENTS Core REQUIRED)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 set(QtX Qt${QT_VERSION_MAJOR})
 
+#find submodules and initiate them
+unset(ADIF_INCLUDE CACHE)
+find_path(ADIF_INCLUDE NAMES "CMakeLists.txt" PATHS ./external/adif)
+if((NOT ADIF_INCLUDE) OR (NOT EXISTS ${ADIF_INCLUDE}))
+    message("Unable to find adif")
+    execute_process(COMMAND git submodule update --init -- external/adif
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
+unset(AEB_INCLUDE CACHE)
+find_path(AEB_INCLUDE NAMES "CMakeLists.txt" PATHS ./external/aeb)
+if((NOT AEB_INCLUDE) OR (NOT EXISTS ${AEB_INCLUDE}))
+    message("Unable to find aeb")
+    execute_process(COMMAND git submodule update --init -- external/aeb
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
 add_subdirectory(external/adif)
 add_subdirectory(external/aeb)
 
-include_directories("./external/aeb""./external/adif")
+include_directories("./external/aeb" "./external/adif")
 
 add_qtc_plugin(MarkdownEditView
 
