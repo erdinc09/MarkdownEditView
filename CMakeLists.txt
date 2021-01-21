@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Remove when sharing with others.
-list(APPEND CMAKE_PREFIX_PATH "/Users/erdincyilmaz/Projects/qt-creator-4.14/qtcreator_build")
-
 include("cmake/HunterGate.cmake")
 huntergate(URL "https://github.com/cpp-pm/hunter/archive/v0.23.279.tar.gz" SHA1 "0a8ede485c3e9c1ceed8ccb989ab6c0aba1f4db7")
 

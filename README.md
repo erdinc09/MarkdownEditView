@@ -35,5 +35,8 @@ on Windows and Linux, or
 for the `Command line arguments` field in the run settings
 
 
-cmake .. -DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Qt/5.15.2/clang_64
+cmake -DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Qt/5.15.2/clang_64 -GNinja cmake -DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Qt/5.15.2/clang_64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+
+cmake -DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Qt/5.15.2/clang_64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja -DCMAKE_CXX_COMPILER=/usr/bin/clang ..
+
 https://foonathan.net/2016/07/cmake-dependency-handling/
