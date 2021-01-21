@@ -36,6 +36,8 @@ add_subdirectory(external/aeb)
 
 include_directories("./external/aeb" "./external/adif")
 
+file(GLOB SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
+
 add_qtc_plugin(MarkdownEditView
 
     PLUGIN_DEPENDS
@@ -56,23 +58,5 @@ add_qtc_plugin(MarkdownEditView
     .github/workflows/README.md
     README.md
     resources/resource.qrc
-    src/markdowneditview.cpp
-    src/markdowneditview.h
-    src/markdowneditview_global.h
-    src/markdowneditviewconstants.h
-    src/markdowneditviewplugininternal.cpp
-    src/markdowneditviewplugininternal.h
-    src/markdowntexteditorwidget.cpp
-    src/markdowntexteditorwidget.h
-    src/markdowntexteditorfactory.cpp
-    src/markdowntexteditorfactory.h
-    src/previewpage.cpp
-    src/previewpage.h
-    src/htmlview.cpp
-    src/htmlview.h
-    src/htmlviewwidgetfactory.cpp
-    src/htmlviewwidgetfactory.h
-    src/ihtmlview.h
-    src/imarkdowneditview.h
-    src/textchangedevent.h
+    ${SRC_FILES}
     )

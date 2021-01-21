@@ -2,11 +2,7 @@
 
 #include <texteditor/textdocument.h>
 
-#include <QDebug>
-
-//@Beta
 #include "eb/eventbus.h"
-#include "ihtmlview.h"
 #include "textchangedevent.h"
 
 namespace MarkdownEditView {

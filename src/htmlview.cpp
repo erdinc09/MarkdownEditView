@@ -1,13 +1,7 @@
 #include "htmlview.h"
 
-#include <QDebug>
-#include <QFile>
-#include <QTimer>
 #include <QWebChannel>
-#include <QtDebug>
-#include <utility>
 
-#include "imarkdowneditview.h"
 #include "previewpage.h"
 namespace MarkdownEditView {
 namespace Internal {

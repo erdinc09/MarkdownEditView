@@ -3,11 +3,6 @@
 
 #include <texteditor/texteditor.h>
 
-#include <QFocusEvent>
-
-#include "di/idiclient.h"
-#include "ihtmlview.h"
-
 namespace MarkdownEditView {
 namespace Internal {
 

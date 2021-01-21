@@ -1,8 +1,6 @@
 #ifndef TEXTCHANGEDEVENT_H
 #define TEXTCHANGEDEVENT_H
-#include <QDebug>
 #include <QString>
-//@Beta
 namespace MarkdownEditView {
 namespace Internal {
 class TextChangedEvent {

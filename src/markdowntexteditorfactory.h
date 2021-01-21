@@ -5,9 +5,7 @@
 #include <QList>
 
 #include "di/dependencyprovider.h"
-#include "ihtmlview.h"
 #include "imarkdowneditview.h"
-#include "markdowntexteditorwidget.h"
 
 namespace MarkdownEditView {
 namespace Internal {

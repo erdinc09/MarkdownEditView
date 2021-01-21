@@ -3,7 +3,6 @@
 #include <texteditor/textdocument.h>
 #include <texteditor/texteditor.h>
 
-#include <algorithm>
 #include <typeinfo>
 
 #include "markdowneditviewconstants.h"
