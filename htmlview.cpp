@@ -12,10 +12,8 @@
 namespace MarkdownEditView {
 namespace Internal {
 
-QList<HtmlView *> HtmlView::openedViews;
-
 HtmlView::HtmlView(IMarkdownEditView *markdownEditView_)
-    : markdownEditView{markdownEditView_} {
+    : mediator{markdownEditView_}, markdownEditView{markdownEditView_} {
   auto *page = new PreviewPage(this);
   setPage(page);
 
@@ -23,33 +21,13 @@ HtmlView::HtmlView(IMarkdownEditView *markdownEditView_)
   channel->registerObject(QStringLiteral("mediator"), &mediator);
   page->setWebChannel(channel);
   setUrl(QUrl("qrc:/index.html"));
-  openedViews.append(this);
-
-  connect(&mediator, &Mediator::loadMarkDown, this, &HtmlView::loadMarkdown);
 }
 
 void HtmlView::handleEvent(const TextChangedEvent &event) {
-  qDebug() << "handleEvent(const TextChangedEvent &event)";
+  emit mediator.textChanged(event.getText());
 }
 
-void HtmlView::loadMarkdown() {
-  setMarkDownTextToRender(markdownEditView->getText());
-}
-
-HtmlView::~HtmlView() {
-  qDebug() << "View Removed = " << openedViews.removeOne(this);
-}
-
-void HtmlView::setMarkDownTextToRender(const QString &text) {
-  emit mediator.textChanged(text);
-}
-
-void HtmlView::setAllViews(const QString &text) {
-  std::for_each(openedViews.begin(), openedViews.end(),
-                [&text](auto t) { t->setMarkDownTextToRender(text); });
-}
-
-void Mediator::loadFinished() { emit loadMarkDown(); }
+void Mediator::pageLoaded() { emit textChanged(markdownEditView->getText()); }
 
 }  // namespace Internal
 }  // namespace MarkdownEditView

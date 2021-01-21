@@ -14,16 +14,11 @@ namespace Internal {
 class MarkdownTextEditorWidget : public TextEditor::TextEditorWidget {
   Q_OBJECT
  public:
-  MarkdownTextEditorWidget(IHtmlView *htmlView_) : htmlView{htmlView_} {};
-
   void openFinishedSuccessfully() override;
 
  private slots:
   void contentsChangedWithPosition(int position, int charsRemoved,
                                    int charsAdded);
-
- private:
-  IHtmlView *htmlView;
 };
 
 }  // namespace Internal

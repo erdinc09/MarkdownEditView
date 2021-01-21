@@ -23,11 +23,10 @@ MarkdownTextEditorFactory::MarkdownTextEditorFactory() {
   });
   setEditorCreator([]() { return new TextEditor::BaseTextEditor; });
 
-  setEditorWidgetCreator(
-      [=]() { return new MarkdownTextEditorWidget(htmlView); });
+  setEditorWidgetCreator([=]() { return new MarkdownTextEditorWidget{}; });
 }
 
-const QString MarkdownTextEditorFactory::getText() {
+const QString MarkdownTextEditorFactory::getText() const {
   TextEditor::TextEditorWidget* currentTexteditor =
       MarkdownTextEditorWidget::currentTextEditorWidget();
   if (currentTexteditor != nullptr &&

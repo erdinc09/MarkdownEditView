@@ -10,15 +10,12 @@
 namespace MarkdownEditView {
 namespace Internal {
 
-class HtmlViewWidgetFactory : public Core::INavigationWidgetFactory,
-                              Provides(IHtmlView)
+class HtmlViewWidgetFactory : public Core::INavigationWidgetFactory
 
 {
   Q_OBJECT
  public:
   HtmlViewWidgetFactory();
-
-  void setMarkDownTextToRender(const QString &text) override;
 
   Core::NavigationView createWidget() override;
 

@@ -34,10 +34,10 @@
        window.mediator = channel.objects.mediator;
        var mediator = channel.objects.mediator;
        mediator.textChanged.connect(updateText);
-       mediator.loadFinished();
-       window.onload = function() {
-       mediator.loadFinished();
-      }
+       mediator.pageLoaded();
+       //window.onload = function() {
+       //  mediator.pageLoaded();
+       //}
     }
   );
   </script>

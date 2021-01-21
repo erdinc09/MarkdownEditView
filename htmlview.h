@@ -4,10 +4,8 @@
 #include <QList>
 #include <QWebEngineView>
 
-#include "imarkdowneditview.h"
-
-//@Beta
 #include "eb/eventlistener.h"
+#include "imarkdowneditview.h"
 #include "textchangedevent.h"
 
 namespace MarkdownEditView {
@@ -18,11 +16,17 @@ namespace Internal {
  */
 class Mediator : public QObject {
   Q_OBJECT
+ public:
+  Mediator(const IMarkdownEditView *markdownEditView_)
+      : markdownEditView{markdownEditView_} {}
+
+  Q_INVOKABLE void pageLoaded();  // is called from JS
+
  signals:
   void textChanged(const QString &text);
-  void loadMarkDown();
- public slots:
-  void loadFinished();  // is called from JS
+
+ private:
+  const IMarkdownEditView *markdownEditView;
 };
 
 class HtmlView : public QWebEngineView,
@@ -30,19 +34,12 @@ class HtmlView : public QWebEngineView,
   Q_OBJECT
  public:
   HtmlView(IMarkdownEditView *markdownEditView_);
-  ~HtmlView();
-  static void setAllViews(const QString &text);
- public slots:
-  void loadMarkdown();
 
  private:
   Mediator mediator;
   IMarkdownEditView *markdownEditView;
 
   void handleEvent(const TextChangedEvent &event) override;
-
-  void setMarkDownTextToRender(const QString &text);
-  static QList<HtmlView *> openedViews;
 };
 
 }  // namespace Internal

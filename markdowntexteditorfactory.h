@@ -17,10 +17,7 @@ class MarkdownTextEditorFactory : public TextEditor::TextEditorFactory,
   Q_OBJECT
  public:
   MarkdownTextEditorFactory();
-  virtual const QString getText() override;
-
- private:
-  Injects(IHtmlView, htmlView);
+  virtual const QString getText() const override;
 };
 }  // namespace Internal
 }  // namespace MarkdownEditView

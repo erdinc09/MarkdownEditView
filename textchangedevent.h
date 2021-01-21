@@ -9,6 +9,7 @@ class TextChangedEvent {
  public:
   TextChangedEvent(const QString& text_) : text{text_} {};
   TextChangedEvent(QString&& text_) : text{std::move(text_)} {};
+  const QString& getText() const { return text; };
 
  private:
   QString text;

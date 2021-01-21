@@ -19,13 +19,10 @@ void MarkdownTextEditorWidget::openFinishedSuccessfully() {
           &TextEditor::TextDocument::contentsChangedWithPosition, this,
           &MarkdownTextEditorWidget::contentsChangedWithPosition);
 
-  htmlView->setMarkDownTextToRender(document()->toPlainText());
+  aeb::postEvent<>(TextChangedEvent{document()->toPlainText()});
 }
 
 void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
-  htmlView->setMarkDownTextToRender(document()->toPlainText());
-
-  //@Beta
   aeb::postEvent<>(TextChangedEvent{document()->toPlainText()});
 }
 

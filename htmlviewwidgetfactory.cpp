@@ -19,9 +19,5 @@ Core::NavigationView HtmlViewWidgetFactory::createWidget() {
   return navigationView;
 }
 
-void HtmlViewWidgetFactory::setMarkDownTextToRender(const QString &text) {
-  HtmlView::setAllViews(text);
-}
-
 }  // namespace Internal
 }  // namespace MarkdownEditView
