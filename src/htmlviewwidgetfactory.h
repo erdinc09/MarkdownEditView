@@ -2,9 +2,9 @@
 #define HTMLVIEWWIDGETFACTORY_H
 
 #include <coreplugin/inavigationwidgetfactory.h>
-#include <ihtmlview.h>
 
 #include "di/dependencyprovider.h"
+#include "ihtmlview.h"
 #include "imarkdowneditview.h"
 
 namespace MarkdownEditView {

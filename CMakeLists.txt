@@ -56,23 +56,23 @@ add_qtc_plugin(MarkdownEditView
     .github/workflows/README.md
     README.md
     resources/resource.qrc
-    markdowneditview.cpp
-    markdowneditview.h
-    markdowneditview_global.h
-    markdowneditviewconstants.h
-    markdowneditviewplugininternal.cpp
-    markdowneditviewplugininternal.h
-    markdowntexteditorwidget.cpp
-    markdowntexteditorwidget.h
-    markdowntexteditorfactory.cpp
-    markdowntexteditorfactory.h
-    previewpage.cpp
-    previewpage.h
-    htmlview.cpp
-    htmlview.h
-    htmlviewwidgetfactory.cpp
-    htmlviewwidgetfactory.h
-    ihtmlview.h
-    imarkdowneditview.h
-    textchangedevent.h
+    src/markdowneditview.cpp
+    src/markdowneditview.h
+    src/markdowneditview_global.h
+    src/markdowneditviewconstants.h
+    src/markdowneditviewplugininternal.cpp
+    src/markdowneditviewplugininternal.h
+    src/markdowntexteditorwidget.cpp
+    src/markdowntexteditorwidget.h
+    src/markdowntexteditorfactory.cpp
+    src/markdowntexteditorfactory.h
+    src/previewpage.cpp
+    src/previewpage.h
+    src/htmlview.cpp
+    src/htmlview.h
+    src/htmlviewwidgetfactory.cpp
+    src/htmlviewwidgetfactory.h
+    src/ihtmlview.h
+    src/imarkdowneditview.h
+    src/textchangedevent.h
     )
