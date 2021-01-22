@@ -12,6 +12,8 @@ env:
   QT_CREATOR_SNAPSHOT: NO
   CMAKE_VERSION: 3.18.3
   NINJA_VERSION: 1.10.1
+  VS160COMNTOOLS: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/Tools/"
+  VS150COMNTOOLS: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/Tools/"
 
 jobs:
   build:
