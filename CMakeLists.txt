@@ -10,6 +10,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(Qt5 COMPONENTS WebEngineWidgets WebChannel REQUIRED)
 find_package(QtCreator COMPONENTS Core REQUIRED)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 set(QtX Qt${QT_VERSION_MAJOR})
