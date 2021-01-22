@@ -15,7 +15,11 @@ class MarkdownTextEditorFactory : public TextEditor::TextEditorFactory,
   Q_OBJECT
  public:
   MarkdownTextEditorFactory();
+  ~MarkdownTextEditorFactory();
   virtual const QString getText() const override;
+
+ public slots:
+  void currentEditorChanged(Core::IEditor *editor);
 };
 }  // namespace Internal
 }  // namespace MarkdownEditView

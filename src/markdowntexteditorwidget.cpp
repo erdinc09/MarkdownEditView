@@ -2,9 +2,10 @@
 
 #include <texteditor/textdocument.h>
 
+#include <QDebug>
+
 #include "eb/eventbus.h"
 #include "textchangedevent.h"
-
 namespace MarkdownEditView {
 namespace Internal {
 
@@ -21,6 +22,8 @@ void MarkdownTextEditorWidget::openFinishedSuccessfully() {
 void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
   aeb::postEvent<>(TextChangedEvent{document()->toPlainText()});
 }
+
+MarkdownTextEditorWidget::~MarkdownTextEditorWidget() {}
 
 }  // namespace Internal
 }  // namespace MarkdownEditView
