@@ -42,3 +42,27 @@ cmake -DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Qt/5.15.2/clang_64:/Users/erdincyi
 https://foonathan.net/2016/07/cmake-dependency-handling/
 
 cmake "-DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Projects/qt-creator-4.14/qtcreator_build:/Users/erdincyilmaz/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_C_COMPILER=/usr/bin/clang  ..
+
+
+
+BUILD:
+git clone --recursive -j8 https://github.com/erdinc09/MarkdownEditView.git
+
+cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator-4.14.0;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+
+cmake --build .
+
+https://doc.qt.io/qt-5/qtwebengine-deploying.html
+
+
+on linux:
+under lib\qt:
+ - libexec
+ - resources
+ - translations 
+
+ under lib\qt\lib:
+  -libQt5WebChannel.so*
+  -libQt5WebEngine.so*
+  -libQt5WebEngineCore.so*
+  -libQt5WebEngineWidgets.so*
