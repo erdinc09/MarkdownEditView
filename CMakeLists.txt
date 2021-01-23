@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.10)
 # Remove when sharing with others.
 #list(APPEND CMAKE_PREFIX_PATH "/home/erdinc09/Projects/qt-creator-4.14.0")
 #list(APPEND CMAKE_PREFIX_PATH "/home/erdinc09/Qt/5.15.2/gcc_64")
-#list(APPEND CMAKE_PREFIX_PATH "/Users/erdincyilmaz/Projects/qt-creator-4.14/qtcreator_build")
-#list(APPEND CMAKE_PREFIX_PATH "/Users/erdincyilmaz/Qt/5.15.2/clang_64")
+list(APPEND CMAKE_PREFIX_PATH "/Users/erdincyilmaz/Projects/qt-creator-4.14/qtcreator_build")
+list(APPEND CMAKE_PREFIX_PATH "/Users/erdincyilmaz/Qt/5.15.2/clang_64")
 
 
 include("cmake/HunterGate.cmake")
@@ -18,7 +18,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     list(APPEND CMAKE_PREFIX_PATH "/home/runner/work/MarkdownEditView/MarkdownEditView/qtcreator")
     list(APPEND CMAKE_PREFIX_PATH "/home/runner/work/MarkdownEditView/MarkdownEditView/qt5/5.15.2/gcc_64")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    message("asdasda")
     list(APPEND CMAKE_PREFIX_PATH "/Users/runner/work/MarkdownEditView/MarkdownEditView/qtcreator")
     list(APPEND CMAKE_PREFIX_PATH "/Users/runner/work/MarkdownEditView/MarkdownEditView/qt5/5.15.2/clang_64")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
