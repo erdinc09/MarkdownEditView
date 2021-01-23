@@ -23,7 +23,8 @@ find_package(QtCreator COMPONENTS Core REQUIRED)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 set(QtX Qt${QT_VERSION_MAJOR})
 
-#find submodules and initiate them
+#find submodules and initiate them, does not work in command line.
+# instead chekout with submodules
 unset(ADIF_INCLUDE CACHE)
 find_path(ADIF_INCLUDE NAMES "CMakeLists.txt" PATHS ./external/adif)
 if((NOT ADIF_INCLUDE) OR (NOT EXISTS ${ADIF_INCLUDE}))
