@@ -1,10 +1,10 @@
 name: Build plugin
 
-#on: [push]
-on:
-  push:
-    branches-ignore:
-      - '**'
+on: [push]
+#on:
+#  push:
+#    branches-ignore:
+#      - '**'
 env:
   PLUGIN_NAME: MarkdownEditView
   QT_VERSION: 5.15.2
@@ -22,16 +22,16 @@ jobs:
     strategy:
       matrix:
         config:
-        #- {
-        #    name: "Ubuntu Latest GCC", artifact: "Linux-x64",
-        #    os: ubuntu-latest,
-        #    cc: "gcc", cxx: "g++"
-        #  }
-        #- {
-        #    name: "macOS Latest Clang", artifact: "macOS-x64",
-        #    os: macos-latest,
-        #    cc: "clang", cxx: "clang++"
-        #  }
+        - {
+            name: "Ubuntu Latest GCC", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "macOS Latest Clang", artifact: "macOS-x64",
+            os: macos-latest,
+            cc: "clang", cxx: "clang++"
+          }
         - {
             name: "Windows Latest MSVC", artifact: "Windows-x64",
             os: windows-latest,
