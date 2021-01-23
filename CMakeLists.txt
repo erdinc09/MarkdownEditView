@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 
 # Remove when sharing with others.
+#list(APPEND CMAKE_PREFIX_PATH "/home/erdinc09/Projects/qt-creator-4.14.0")
+#list(APPEND CMAKE_PREFIX_PATH "/home/erdinc09/Qt/5.15.2/gcc_64")
 #list(APPEND CMAKE_PREFIX_PATH "/Users/erdincyilmaz/Projects/qt-creator-4.14/qtcreator_build")
 #list(APPEND CMAKE_PREFIX_PATH "/Users/erdincyilmaz/Qt/5.15.2/clang_64")
 
@@ -65,14 +67,14 @@ add_qtc_plugin(MarkdownEditView
     QtCreator::Core
 
     DEPENDS
-    adif
-    aeb
     ${QtX}::Widgets
     ${QtX}::WebEngineWidgets
     ${QtX}::WebChannel
     QtCreator::ExtensionSystem
     QtCreator::Utils
     QtCreator::TextEditor
+    adif
+    aeb
 
     SOURCES
     .github/workflows/build_cmake.yml
