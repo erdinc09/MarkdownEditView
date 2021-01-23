@@ -1,0 +1,11 @@
+{
+    \"Name\" : \"MarkdownEditView\",
+    \"Version\" : \"0.0.1\",
+    \"CompatVersion\" : \"0.0.1\",
+    \"Vendor\" : \"erdinc09\",
+    \"Copyright\" : \"(C) erdinc09\",
+    \"License\" : \"GPL(V3)\",
+    \"Description\" : \"Qt Creator Markdown Edit and View Plugin\",
+    \"Url\" : \"https://github.com/erdinc09/MarkdownEditView\",
+    $$dependencyList
+}
