@@ -1,15 +1,76 @@
 # MarkdownEditView
 
+Qt Creator IDE plugin, for both editing and previewing the file in html.
+
+__Features:__
+
+* Syntax highlighting
+* Html preview
+* Code highlighting
+* Theme aware preview and editor (will come soon)
+
+
+## How To Install
+
+* For Linux, MacOs and Windows you can download the plugin from [releases](https://github.com/erdinc09/MarkdownEditView/releases). 
+* Since QtCreator is not packaged with qtwebengine, you need to install following dependencies from qt installation to qtcreator directory. This process will be automatized later by the plugin.
+  * Qt5.15.2 must be installed with QtWebEngine dependency.
+  * For __linux:__  
+    * copy  <Qt Installation Path>/5.15.2/gcc_64/lib/libQt5WebChannel.so*       to <Ct Creator Ins Path>/lib/Qt/lib  
+    * copy  <Qt Installation Path>/5.15.2/gcc_64/lib/libQt5WebEngine.so*        to <Ct Creator Ins Path>/lib/Qt/lib
+    * copy  <Qt Installation Path>/5.15.2/gcc_64/lib/libQt5WebEngineCore.so*    to <Ct Creator Ins Path>/lib/Qt/lib
+    * copy  <Qt Installation Path>/5.15.2/gcc_64/lib/libQt5WebEngineWidgets.so* to <Ct Creator Ins Path>/lib/Qt/lib
+    * check the symbolink links, when I checked they were all relative
+    * copy  <Qt Installation Path>/5.15.2/gcc_64/libexec        to <Ct Creator Ins Path>/lib/Qt/
+    * copy  <Qt Installation Path>/5.15.2/gcc_64/resources      to <Ct Creator Ins Path>/lib/Qt/
+    * copy  <Qt Installation Path>/5.15.2/gcc_64/translations   to <Ct Creator Ins Path>/lib/Qt/
+  
+Not: Actually for resource, libexec and translations folders only the related files should be copied. But just now, copy all files. I will update later.
+
+  * For __macos:__
+    * This is easier than linux. All resource and configuratin files are kept together.
+    * copy  <Qt Installation Path>/5.15.2/clang_64/lib/QtWebChannel.framework           to  <Qt Creator.app>/Contents/Frameworks/
+    * copy  <Qt Installation Path>/5.15.2/clang_64/lib/QtWebEngine.framework            to  <Qt Creator.app>/Contents/Frameworks/
+    * copy  <Qt Installation Path>/5.15.2/clang_64/lib/QtWebEngineCore.framework        to  <Qt Creator.app>/Contents/Frameworks/
+    * copy  <Qt Installation Path>/5.15.2/clang_64/lib/QtWebEngineWidgets.framework     to  <Qt Creator.app>/Contents/Frameworks/
+  * For __windows:__
+    * Since I do not have Windows machine I cannot write the exact steps but the logic same.
+    * By the help of [official qtwebengine5 deployment notes](https://doc.qt.io/qt-5/qtwebengine-deploying.html) you can copy the related files.
+    * As soon as I have a windows machine I will write down exact steps.
+
+
 ## How to Build
 
 Create a build directory and run
 
-    cmake -DCMAKE_PREFIX_PATH=<path_to_qtcreator> -DCMAKE_BUILD_TYPE=RelWithDebInfo <path_to_plugin_source>
+    cmake -DCMAKE_PREFIX_PATH="<path_to_qtcreator>;<path to Qt5.15.2<arrch>>" -DCMAKE_BUILD_TYPE=RelWithDebInfo <path_to_plugin_source>
     cmake --build .
 
 where `<path_to_qtcreator>` is the relative or absolute path to a Qt Creator build directory, or to
 a combined binary and development package, and `<path_to_plugin_source>` is the relative or absolute
-path to this plugin directory.
+path to this plugin directory and <path to Qt5.15.2<arrch>> is the is the relative or absolute
+path to Qt build including Qt5WebEngine.
+
+__Example for Linux:__
+* git clone --recursive -j8 https://github.com/erdinc09/MarkdownEditView.git
+* cd MarkdownEditView
+* mkdir build
+* cd build
+* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator-4.14.0;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cd ..
+* cmake --build .
+
+__Example for Mac:__
+* git clone --recursive -j8 https://github.com/erdinc09/MarkdownEditView.git
+* cd MarkdownEditView
+* mkdir build
+* cd build
+* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator-4.14;Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cd ..
+* cmake --build .
+
+__Note that for directory delimeter is same! ";"__
+
 
 ## How to Run
 
@@ -35,34 +96,9 @@ on Windows and Linux, or
 for the `Command line arguments` field in the run settings
 
 
-cmake -DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Qt/5.15.2/clang_64 -GNinja cmake -DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Qt/5.15.2/clang_64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+## Credits
 
-cmake -DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Qt/5.15.2/clang_64:/Users/erdincyilmaz/Projects/qt-creator-4.14/qtcreator_build -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja -DCMAKE_CXX_COMPILER=/usr/bin/clang ..
-
-https://foonathan.net/2016/07/cmake-dependency-handling/
-
-cmake "-DCMAKE_PREFIX_PATH=/Users/erdincyilmaz/Projects/qt-creator-4.14/qtcreator_build:/Users/erdincyilmaz/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_C_COMPILER=/usr/bin/clang  ..
-
-
-
-BUILD:
-git clone --recursive -j8 https://github.com/erdinc09/MarkdownEditView.git
-
-cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator-4.14.0;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
-
-cmake --build .
-
-https://doc.qt.io/qt-5/qtwebengine-deploying.html
-
-
-on linux:
-under lib\qt:
- - libexec
- - resources
- - translations 
-
- under lib\qt\lib:
-  -libQt5WebChannel.so*
-  -libQt5WebEngine.so*
-  -libQt5WebEngineCore.so*
-  -libQt5WebEngineWidgets.so*
+* For markdown to html conversion, [marked js library](https://github.com/markedjs/marked) is used (1.2.7).
+* For CSS, [markdown-css](https://github.com/rhiokim/markdown-css) is used.
+* For CSS, [github-markdown-css](https://github.com/sindresorhus/github-markdown-css) is used.
+* For code highlighting [highlightjs](https://highlightjs.org/) is used (10.5).
