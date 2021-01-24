@@ -16,23 +16,23 @@ __Features:__
 * Since QtCreator is not packaged with qtwebengine, you need to install following dependencies from qt installation to qtcreator directory. This process will be automatized later by the plugin.
   * Qt5.15.2 must be installed with QtWebEngine dependency.
   * For __linux:__  
-    * copy  <Qt Installation Path>/5.15.2/gcc_64/lib/libQt5WebChannel.so*       to <Ct Creator Ins Path>/lib/Qt/lib  
-    * copy  <Qt Installation Path>/5.15.2/gcc_64/lib/libQt5WebEngine.so*        to <Ct Creator Ins Path>/lib/Qt/lib
-    * copy  <Qt Installation Path>/5.15.2/gcc_64/lib/libQt5WebEngineCore.so*    to <Ct Creator Ins Path>/lib/Qt/lib
-    * copy  <Qt Installation Path>/5.15.2/gcc_64/lib/libQt5WebEngineWidgets.so* to <Ct Creator Ins Path>/lib/Qt/lib
+    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebChannel.so*       to `<Ct Creator Ins Path>`/lib/Qt/lib  
+    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebEngine.so*        to `<Ct Creator Ins Path>`/lib/Qt/lib
+    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebEngineCore.so*    to `<Ct Creator Ins Path>`/lib/Qt/lib
+    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebEngineWidgets.so* to `<Ct Creator Ins Path>`/lib/Qt/lib
     * check the symbolink links, when I checked they were all relative
-    * copy  <Qt Installation Path>/5.15.2/gcc_64/libexec        to <Ct Creator Ins Path>/lib/Qt/
-    * copy  <Qt Installation Path>/5.15.2/gcc_64/resources      to <Ct Creator Ins Path>/lib/Qt/
-    * copy  <Qt Installation Path>/5.15.2/gcc_64/translations   to <Ct Creator Ins Path>/lib/Qt/
+    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/libexec        to `<Ct Creator Ins Path>`/lib/Qt/
+    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/resources      to `<Ct Creator Ins Path>`/lib/Qt/
+    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/translations   to `<Ct Creator Ins Path>`/lib/Qt/
   
 Not: Actually for resource, libexec and translations folders only the related files should be copied. But just now, copy all files. I will update later.
 
   * For __macos:__
     * This is easier than linux. All resource and configuratin files are kept together.
-    * copy  <Qt Installation Path>/5.15.2/clang_64/lib/QtWebChannel.framework           to  <Qt Creator.app>/Contents/Frameworks/
-    * copy  <Qt Installation Path>/5.15.2/clang_64/lib/QtWebEngine.framework            to  <Qt Creator.app>/Contents/Frameworks/
-    * copy  <Qt Installation Path>/5.15.2/clang_64/lib/QtWebEngineCore.framework        to  <Qt Creator.app>/Contents/Frameworks/
-    * copy  <Qt Installation Path>/5.15.2/clang_64/lib/QtWebEngineWidgets.framework     to  <Qt Creator.app>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/5.15.2/clang_64/lib/QtWebChannel.framework           to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/5.15.2/clang_64/lib/QtWebEngine.framework            to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/5.15.2/clang_64/lib/QtWebEngineCore.framework        to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/5.15.2/clang_64/lib/QtWebEngineWidgets.framework     to  `<Qt Creator.app`>/Contents/Frameworks/
   * For __windows:__
     * Since I do not have Windows machine I cannot write the exact steps but the logic same.
     * By the help of [official qtwebengine5 deployment notes](https://doc.qt.io/qt-5/qtwebengine-deploying.html) you can copy the related files.
