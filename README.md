@@ -4,9 +4,9 @@ Qt Creator IDE plugin, for both editing and previewing the file in html.
 
 __Features:__
 
-* Syntax highlighting
+* Syntax highlighting in editor
 * Html preview
-* Code highlighting
+* Code highlighting in preview
 * Theme aware preview and editor
 
 
@@ -65,7 +65,7 @@ __Example for Mac:__
 * cd MarkdownEditView
 * mkdir build
 * cd build
-* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator-4.14;Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator-4.14;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cd ..
 * cmake --build .
 
