@@ -4,3 +4,6 @@
 [submodule "external/aeb"]
 	path = external/aeb
 	url = https://github.com/erdinc09/aeb.git
+[submodule "external/cmake"]
+	path = external/cmake
+	url = https://github.com/erdinc09/cmake.git
