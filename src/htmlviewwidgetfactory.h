@@ -2,7 +2,7 @@
 #define HTMLVIEWWIDGETFACTORY_H
 
 #include <coreplugin/inavigationwidgetfactory.h>
-
+#include <QUrl>
 #include "di/dependencyprovider.h"
 #include "imarkdowneditview.h"
 
@@ -12,17 +12,18 @@ namespace Internal {
 class HtmlViewWidgetFactory : public Core::INavigationWidgetFactory
 
 {
-  Q_OBJECT
- public:
-  HtmlViewWidgetFactory();
+    Q_OBJECT
+public:
+    HtmlViewWidgetFactory();
 
-  Core::NavigationView createWidget() override;
+    Core::NavigationView createWidget() override;
 
- signals:
-  void textChanged(const QString &text);
+signals:
+    void textChanged(const QString &text);
 
- private:
-  Injects(IMarkdownEditView, markdownEditView);
+private:
+    Injects(IMarkdownEditView, markdownEditView);
+    const bool darkTheme;
 };
 }  // namespace Internal
 }  // namespace MarkdownEditView

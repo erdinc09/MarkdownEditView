@@ -10,17 +10,17 @@ namespace MarkdownEditView {
 namespace Internal {
 
 void MarkdownTextEditorWidget::openFinishedSuccessfully() {
-  TextEditorWidget::openFinishedSuccessfully();
+    TextEditorWidget::openFinishedSuccessfully();
 
-  connect(textDocument(),
-          &TextEditor::TextDocument::contentsChangedWithPosition, this,
-          &MarkdownTextEditorWidget::contentsChangedWithPosition);
+    connect(textDocument(),
+            &TextEditor::TextDocument::contentsChangedWithPosition, this,
+            &MarkdownTextEditorWidget::contentsChangedWithPosition);
 
-  aeb::postEvent<>(TextChangedEvent{document()->toPlainText()});
+    aeb::postEvent<>(TextChangedEvent{document()->toPlainText(),QString{textDocument()->filePath().absolutePath().toString()}});
 }
 
 void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
-  aeb::postEvent<>(TextChangedEvent{document()->toPlainText()});
+    aeb::postEvent<>(TextChangedEvent{document()->toPlainText(),QString{textDocument()->filePath().absolutePath().toString()}});
 }
 
 MarkdownTextEditorWidget::~MarkdownTextEditorWidget() {}

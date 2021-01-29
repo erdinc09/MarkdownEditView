@@ -7,7 +7,7 @@ __Features:__
 * Syntax highlighting
 * Html preview
 * Code highlighting
-* Theme aware preview and editor (will come soon)
+* Theme aware preview and editor
 
 
 ## How To Install
@@ -100,5 +100,4 @@ for the `Command line arguments` field in the run settings
 
 * For markdown to html conversion, [marked js library](https://github.com/markedjs/marked) is used (1.2.7).
 * For CSS, [markdown-css](https://github.com/rhiokim/markdown-css) is used.
-* For CSS, [github-markdown-css](https://github.com/sindresorhus/github-markdown-css) is used.
 * For code highlighting [highlightjs](https://highlightjs.org/) is used (10.5).

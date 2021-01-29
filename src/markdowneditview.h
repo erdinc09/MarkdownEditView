@@ -10,20 +10,20 @@ namespace MarkdownEditView {
 namespace Internal {
 
 class MarkdownEditViewPlugin : public ExtensionSystem::IPlugin {
-  Q_OBJECT
-  Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtCreatorPlugin" FILE
-                        "MarkdownEditView.json")
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtCreatorPlugin" FILE
+                      "MarkdownEditView.json")
 
- public:
-  MarkdownEditViewPlugin();
-  ~MarkdownEditViewPlugin() override;
+public:
+    MarkdownEditViewPlugin();
+    ~MarkdownEditViewPlugin() override;
 
-  bool initialize(const QStringList &arguments, QString *errorString) override;
-  void extensionsInitialized() override;
-  ShutdownFlag aboutToShutdown() override;
+    bool initialize(const QStringList &arguments, QString *errorString) override;
+    void extensionsInitialized() override;
+    ShutdownFlag aboutToShutdown() override;
 
- private:
-  MarkdownEditViewPluginInternal *dd;
+private:
+    MarkdownEditViewPluginInternal *dd;
 };
 
 }  // namespace Internal

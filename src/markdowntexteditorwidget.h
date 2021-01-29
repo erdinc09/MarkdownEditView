@@ -7,13 +7,13 @@ namespace MarkdownEditView {
 namespace Internal {
 
 class MarkdownTextEditorWidget : public TextEditor::TextEditorWidget {
-  Q_OBJECT
- public:
-  void openFinishedSuccessfully() override;
-  ~MarkdownTextEditorWidget();
- private slots:
-  void contentsChangedWithPosition(int position, int charsRemoved,
-                                   int charsAdded);
+    Q_OBJECT
+public:
+    void openFinishedSuccessfully() override;
+    ~MarkdownTextEditorWidget();
+private slots:
+    void contentsChangedWithPosition(int position, int charsRemoved,
+                                     int charsAdded);
 };
 
 }  // namespace Internal

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
+ <meta charset="utf-8">
+ <head>
+ <link rel="stylesheet" href="3rdparty/markdown_themes/markdown.css">
+ <link rel="stylesheet" href="3rdparty/markdown_themes/_theme_/_theme_.css">
+ <!--  <link rel="stylesheet" type="text/css" href="3rdparty/header_number.css">-->
+ <script src="3rdparty/marked.js"></script>
+ <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
+
+ <script src="3rdparty/highlight/highlight.pack.js"></script>
+ <link rel="stylesheet" href="3rdparty/highlight/styles/dark.css">
+ <style type="text/css">
+
+  body {
+      overflow-x:hidden;
+  }
+  </style>
+
+ </head>
+ <body>
+  <div id="placeholder" class="markdown _theme_"></div>
+  <script>
+    'use strict';
+    var placeholder = document.getElementById('placeholder');
+    var updateText = function(text,path) {
+        placeholder.innerHTML = marked(text,{baseUrl : 'file:////' + (!path.endsWith('/')? path + '/' : path)});
+        document.querySelectorAll('pre code').forEach(block => {hljs.highlightBlock(block);});
+    }
+
+    new QWebChannel(qt.webChannelTransport,
+      function(channel) {
+         window.mediator = channel.objects.mediator;
+         var mediator = channel.objects.mediator;
+         mediator.textChanged.connect(updateText);
+         mediator.pageLoaded();
+      }
+    );
+  </script>
+ </body>
+</html>
+
+
+

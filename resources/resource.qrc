@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>default.md</file>
-        <file>index.html</file>
+        <file>index_light.html</file>
         <file>3rdparty/highlight/styles/a11y-dark.css</file>
         <file>3rdparty/highlight/styles/a11y-light.css</file>
         <file>3rdparty/highlight/styles/agate.css</file>
@@ -110,8 +110,24 @@
         <file>3rdparty/github_markdown.css</file>
         <file>3rdparty/header_number.css</file>
         <file>3rdparty/MARKDOWN-LICENSE.txt</file>
-        <file>3rdparty/markdown.css</file>
         <file>3rdparty/MARKED-LICENSE.txt</file>
         <file>3rdparty/marked.js</file>
+        <file>3rdparty/github_markdown_dark.css</file>
+        <file>3rdparty/markdown_themes/clearness/clearness.css</file>
+        <file>3rdparty/markdown_themes/clearness-dark/clearness-dark.css</file>
+        <file>3rdparty/markdown_themes/github/github.css</file>
+        <file>3rdparty/markdown_themes/haroopad/haroopad.css</file>
+        <file>3rdparty/markdown_themes/metro-vibes/metro-vibes.css</file>
+        <file>3rdparty/markdown_themes/metro-vibes-dark/metro-vibes-dark.css</file>
+        <file>3rdparty/markdown_themes/node-dark/node-dark.css</file>
+        <file>3rdparty/markdown_themes/solarized-dark/solarized-dark.css</file>
+        <file>3rdparty/markdown_themes/solarized-light/solarized-light.css</file>
+        <file>3rdparty/markdown_themes/wood/wood.css</file>
+        <file>3rdparty/markdown_themes/wood/wood.jpg</file>
+        <file>3rdparty/markdown_themes/wood-ri/wood-ri.css</file>
+        <file>3rdparty/markdown_themes/wood-ri/wood.jpg</file>
+        <file>3rdparty/markdown_themes/markdown.css</file>
+        <file>index_dark.html</file>
+        <file>index_template.html</file>
     </qresource>
 </RCC>
