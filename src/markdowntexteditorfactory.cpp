@@ -27,14 +27,14 @@ MarkdownTextEditorFactory::MarkdownTextEditorFactory() {
 
     setEditorWidgetCreator([=]() { return new MarkdownTextEditorWidget{}; });
 
-    EditorManager* editorManager = EditorManager::instance();
+    auto editorManager = EditorManager::instance();
     connect(editorManager, &EditorManager::currentEditorChanged,
             this, &::MarkdownEditView::Internal::MarkdownTextEditorFactory::currentEditorChanged);
 }
 
 void MarkdownTextEditorFactory::currentEditorChanged(Core::IEditor* editor) const{
     MarkdownTextEditorWidget* currentWidget;
-    if (editor != nullptr && (currentWidget = dynamic_cast<MarkdownTextEditorWidget*>(editor->widget()))) {
+    if (editor != nullptr &&  (currentWidget = dynamic_cast<MarkdownTextEditorWidget*>(editor->widget()))) {
         aeb::postEvent(TextChangedEvent{currentWidget->document()->toPlainText(),
                                         QString{currentWidget->textDocument()->filePath().absolutePath().toString()}});
     } else {
@@ -43,18 +43,18 @@ void MarkdownTextEditorFactory::currentEditorChanged(Core::IEditor* editor) cons
 }
 
 const QString MarkdownTextEditorFactory::getText() const {
-    MarkdownTextEditorWidget* currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(MarkdownTextEditorWidget::currentTextEditorWidget());
+    auto currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(MarkdownTextEditorWidget::currentTextEditorWidget());
     return  currentTexteditor!=nullptr ? currentTexteditor->document()->toPlainText() : QString{};
 }
 
 const QString MarkdownTextEditorFactory::getPath() const {
-    MarkdownTextEditorWidget* currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(MarkdownTextEditorWidget::currentTextEditorWidget());
-    return currentTexteditor!=nullptr ? QString{currentTexteditor->textDocument()->filePath().absolutePath().toString()} : QString{};
+    auto currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(MarkdownTextEditorWidget::currentTextEditorWidget());
+    return currentTexteditor!= nullptr ? QString{currentTexteditor->textDocument()->filePath().absolutePath().toString()} : QString{};
 }
 
 
 MarkdownTextEditorFactory::~MarkdownTextEditorFactory() {
-    EditorManager* editorManager = EditorManager::instance();
+    auto editorManager = EditorManager::instance();
     disconnect(editorManager, &::Core::EditorManager::currentEditorChanged, this,
                &::MarkdownEditView::Internal::MarkdownTextEditorFactory::
                currentEditorChanged);
