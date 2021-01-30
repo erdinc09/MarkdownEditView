@@ -4,7 +4,6 @@
 #include <texteditor/textdocument.h>
 #include <texteditor/texteditor.h>
 
-#include <typeinfo>
 #include "eb/eventbus.h"
 #include "markdowneditviewconstants.h"
 #include "markdowntexteditorwidget.h"
@@ -29,33 +28,27 @@ MarkdownTextEditorFactory::MarkdownTextEditorFactory() {
     setEditorWidgetCreator([=]() { return new MarkdownTextEditorWidget{}; });
 
     EditorManager* editorManager = EditorManager::instance();
-    connect(editorManager, &EditorManager::currentEditorChanged, this,&::MarkdownEditView::Internal::MarkdownTextEditorFactory::currentEditorChanged);
+    connect(editorManager, &EditorManager::currentEditorChanged,
+            this, &::MarkdownEditView::Internal::MarkdownTextEditorFactory::currentEditorChanged);
 }
 
 void MarkdownTextEditorFactory::currentEditorChanged(Core::IEditor* editor) const{
-    QWidget* currentWidget;
-    if (editor != nullptr && typeid(currentWidget = editor->widget(), *currentWidget) == typeid(MarkdownTextEditorWidget)) {
-        auto textEditorWidget = static_cast<MarkdownTextEditorWidget*>(currentWidget);
-        aeb::postEvent(TextChangedEvent{textEditorWidget->document()->toPlainText(),
-                                        QString{textEditorWidget->textDocument()->filePath().absolutePath().toString()}});
+    MarkdownTextEditorWidget* currentWidget;
+    if (editor != nullptr && (currentWidget = dynamic_cast<MarkdownTextEditorWidget*>(editor->widget()))) {
+        aeb::postEvent(TextChangedEvent{currentWidget->document()->toPlainText(),
+                                        QString{currentWidget->textDocument()->filePath().absolutePath().toString()}});
     } else {
         aeb::postEvent(TextChangedEvent{});
     }
 }
 
-inline static MarkdownTextEditorWidget* getCurrentEditorIfItIsMarkdownTextEditorWidget(){
-    TextEditor::TextEditorWidget* currentTexteditor = MarkdownTextEditorWidget::currentTextEditorWidget();
-    return (currentTexteditor != nullptr && typeid(*currentTexteditor) == typeid(MarkdownTextEditorWidget))
-            ? static_cast<MarkdownTextEditorWidget*>(currentTexteditor):nullptr;
-}
-
 const QString MarkdownTextEditorFactory::getText() const {
-    MarkdownTextEditorWidget* currentTexteditor = getCurrentEditorIfItIsMarkdownTextEditorWidget();
+    MarkdownTextEditorWidget* currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(MarkdownTextEditorWidget::currentTextEditorWidget());
     return  currentTexteditor!=nullptr ? currentTexteditor->document()->toPlainText() : QString{};
 }
 
 const QString MarkdownTextEditorFactory::getPath() const {
-    MarkdownTextEditorWidget* currentTexteditor = getCurrentEditorIfItIsMarkdownTextEditorWidget();
+    MarkdownTextEditorWidget* currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(MarkdownTextEditorWidget::currentTextEditorWidget());
     return currentTexteditor!=nullptr ? QString{currentTexteditor->textDocument()->filePath().absolutePath().toString()} : QString{};
 }
 

@@ -23,7 +23,5 @@ void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
     aeb::postEvent<>(TextChangedEvent{document()->toPlainText(),QString{textDocument()->filePath().absolutePath().toString()}});
 }
 
-MarkdownTextEditorWidget::~MarkdownTextEditorWidget() {}
-
 }  // namespace Internal
 }  // namespace MarkdownEditView
