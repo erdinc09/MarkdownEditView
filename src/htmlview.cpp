@@ -14,7 +14,7 @@ HtmlView::HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_)
     setPage(page);
 
     auto channel = new QWebChannel(this);
-    channel->registerObject(QStringLiteral("mediator"), const_cast<Mediator*>(&mediator));
+    channel->registerObject(QStringLiteral("mediator"), &mediator);
     page->setWebChannel(channel);
 
     if(darkTheme){
@@ -29,7 +29,9 @@ void HtmlView::handleEvent(const TextChangedEvent &event) {
     emit mediator.textChanged(event.getText(),event.getPath());
 }
 
-void Mediator::pageLoaded() const { emit textChanged(markdownEditView->getText(),markdownEditView->getPath()); }
+void Mediator::pageLoaded() const {
+    emit textChanged(markdownEditView->getText(),markdownEditView->getPath());
+}
 
 }  // namespace Internal
 }  // namespace MarkdownEditView

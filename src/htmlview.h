@@ -36,7 +36,7 @@ public:
     HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_);
 
 private:
-    const Mediator mediator;
+    Mediator mediator;
     const IMarkdownEditView *markdownEditView;
     const bool darkTheme;
     void handleEvent(const TextChangedEvent &event) override;
