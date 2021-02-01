@@ -16,36 +16,36 @@
 #define MARKDOWNTEXTEDITORWIDGET_H
 
 #include <texteditor/texteditor.h>
+
+#include <QMap>
 #include <QPointer>
 #include <QString>
-#include <QMap>
+
 #include "markdownhighlighter.h"
 
 namespace MarkdownEditView {
 namespace Internal {
 
 class MarkdownTextEditorWidget : public TextEditor::TextEditorWidget {
-    Q_OBJECT
-public:
-    void openFinishedSuccessfully() override;
-    MarkdownTextEditorWidget();
-    void finalizeInitialization () override;
-    bool eventFilter (QObject *obj, QEvent *event) override;
-private slots:
-    void contentsChangedWithPosition(int position, int charsRemoved,
-                                     int charsAdded);
+  Q_OBJECT
+ public:
+  void openFinishedSuccessfully() override;
+  MarkdownTextEditorWidget();
+  void finalizeInitialization() override;
+  bool eventFilter(QObject *obj, QEvent *event) override;
+ private slots:
+  void contentsChangedWithPosition(int position, int charsRemoved,
+                                   int charsAdded);
 
-private:
-    bool handleReturnEntered ();
-    bool openLinkAtCursorPosition();
-    QString getMarkdownUrlAtPosition(const QString &text, int position);
-    QMap<QString, QString> parseMarkdownUrlsFromText(const QString &text);
-    bool isValidUrl(const QString &urlString);
-    void openUrl(const QString &urlString);
+ private:
+  bool handleReturnEntered();
+  bool openLinkAtCursorPosition();
+  QString getMarkdownUrlAtPosition(const QString &text, int position);
+  QMap<QString, QString> parseMarkdownUrlsFromText(const QString &text);
+  bool isValidUrl(const QString &urlString);
+  void openUrl(const QString &urlString);
 
-
-
-    QPointer<MarkdownHighlighter> highlighter;
+  QPointer<MarkdownHighlighter> highlighter;
 };
 
 }  // namespace Internal

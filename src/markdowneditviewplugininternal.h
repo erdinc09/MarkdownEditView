@@ -21,12 +21,12 @@ namespace MarkdownEditView {
 namespace Internal {
 
 class MarkdownEditViewPluginInternal {
-public:
-    MarkdownEditViewPluginInternal();
+ public:
+  MarkdownEditViewPluginInternal();
 
-private:
-    const MarkdownTextEditorFactory editorFactory;
-    const HtmlViewWidgetFactory viewWidgetFactory;
+ private:
+  const MarkdownTextEditorFactory editorFactory;
+  const HtmlViewWidgetFactory viewWidgetFactory;
 };
 }  // namespace Internal
 }  // namespace MarkdownEditView

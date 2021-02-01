@@ -28,31 +28,31 @@ namespace Internal {
  *between C++ and js side ...
  */
 class Mediator : public QObject {
-    Q_OBJECT
-public:
-    Mediator(const IMarkdownEditView *markdownEditView_)
-        : markdownEditView{markdownEditView_} {}
+  Q_OBJECT
+ public:
+  Mediator(const IMarkdownEditView *markdownEditView_)
+      : markdownEditView{markdownEditView_} {}
 
-    Q_INVOKABLE void pageLoaded() const;  // is called from JS
+  Q_INVOKABLE void pageLoaded() const;  // is called from JS
 
-signals:
-    void textChanged(const QString &text,const QString &path) const;
+ signals:
+  void textChanged(const QString &text, const QString &path) const;
 
-private:
-    const IMarkdownEditView *markdownEditView;
+ private:
+  const IMarkdownEditView *markdownEditView;
 };
 
 class HtmlView : public QWebEngineView,
-        public aeb::EventListener<TextChangedEvent> {
-    Q_OBJECT
-public:
-    HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_);
+                 public aeb::EventListener<TextChangedEvent> {
+  Q_OBJECT
+ public:
+  HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_);
 
-private:
-    Mediator mediator;
-    const IMarkdownEditView *markdownEditView;
-    const bool darkTheme;
-    void handleEvent(const TextChangedEvent &event) override;
+ private:
+  Mediator mediator;
+  const IMarkdownEditView *markdownEditView;
+  const bool darkTheme;
+  void handleEvent(const TextChangedEvent &event) override;
 };
 
 }  // namespace Internal

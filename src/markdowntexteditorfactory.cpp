@@ -13,9 +13,11 @@
  */
 
 #include "markdowntexteditorfactory.h"
+
 #include <coreplugin/editormanager/editormanager.h>
 #include <texteditor/textdocument.h>
 #include <texteditor/texteditor.h>
+
 #include "eb/eventbus.h"
 #include "markdowneditviewconstants.h"
 #include "markdowntexteditorwidget.h"
@@ -27,49 +29,64 @@ namespace MarkdownEditView {
 namespace Internal {
 
 MarkdownTextEditorFactory::MarkdownTextEditorFactory() {
-    setId(Constants::MARKDOWN_EDITOR_ID);
-    setDisplayName("Markdown Edit & View");
-    addMimeType("text/plain");
-    addMimeType("text/markdown");
+  setId(Constants::MARKDOWN_EDITOR_ID);
+  setDisplayName("Markdown Edit & View");
+  addMimeType("text/plain");
+  addMimeType("text/markdown");
 
-    setDocumentCreator([]() {
-        return new TextEditor::TextDocument(Constants::MARKDOWN_EDITOR_ID);
-    });
-    setEditorCreator([]() { return new TextEditor::BaseTextEditor; });
+  setDocumentCreator([]() {
+    return new TextEditor::TextDocument(Constants::MARKDOWN_EDITOR_ID);
+  });
+  setEditorCreator([]() { return new TextEditor::BaseTextEditor; });
 
-    setEditorWidgetCreator([=]() { return new MarkdownTextEditorWidget{}; });
+  setEditorWidgetCreator([=]() { return new MarkdownTextEditorWidget{}; });
 
-    auto editorManager = EditorManager::instance();
-    connect(editorManager, &EditorManager::currentEditorChanged,
-            this, &::MarkdownEditView::Internal::MarkdownTextEditorFactory::currentEditorChanged);
+  auto editorManager = EditorManager::instance();
+  connect(editorManager, &EditorManager::currentEditorChanged, this,
+          &::MarkdownEditView::Internal::MarkdownTextEditorFactory::
+              currentEditorChanged);
 }
 
-void MarkdownTextEditorFactory::currentEditorChanged(Core::IEditor* editor) const{
-    MarkdownTextEditorWidget* currentWidget;
-    if (editor != nullptr &&  (currentWidget = dynamic_cast<MarkdownTextEditorWidget*>(editor->widget()))) {
-        aeb::postEvent(TextChangedEvent{currentWidget->document()->toPlainText(),
-                                        QString{currentWidget->textDocument()->filePath().absolutePath().toString()}});
-    } else {
-        aeb::postEvent(TextChangedEvent{});
-    }
+void MarkdownTextEditorFactory::currentEditorChanged(
+    Core::IEditor* editor) const {
+  MarkdownTextEditorWidget* currentWidget;
+  if (editor != nullptr &&
+      (currentWidget =
+           dynamic_cast<MarkdownTextEditorWidget*>(editor->widget()))) {
+    aeb::postEvent(TextChangedEvent{currentWidget->document()->toPlainText(),
+                                    QString{currentWidget->textDocument()
+                                                ->filePath()
+                                                .absolutePath()
+                                                .toString()}});
+  } else {
+    aeb::postEvent(TextChangedEvent{});
+  }
 }
 
 const QString MarkdownTextEditorFactory::getText() const {
-    auto currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(MarkdownTextEditorWidget::currentTextEditorWidget());
-    return  currentTexteditor!=nullptr ? currentTexteditor->document()->toPlainText() : QString{};
+  auto currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(
+      MarkdownTextEditorWidget::currentTextEditorWidget());
+  return currentTexteditor != nullptr
+             ? currentTexteditor->document()->toPlainText()
+             : QString{};
 }
 
 const QString MarkdownTextEditorFactory::getPath() const {
-    auto currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(MarkdownTextEditorWidget::currentTextEditorWidget());
-    return currentTexteditor!= nullptr ? QString{currentTexteditor->textDocument()->filePath().absolutePath().toString()} : QString{};
+  auto currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(
+      MarkdownTextEditorWidget::currentTextEditorWidget());
+  return currentTexteditor != nullptr
+             ? QString{currentTexteditor->textDocument()
+                           ->filePath()
+                           .absolutePath()
+                           .toString()}
+             : QString{};
 }
 
-
 MarkdownTextEditorFactory::~MarkdownTextEditorFactory() {
-    auto editorManager = EditorManager::instance();
-    disconnect(editorManager, &::Core::EditorManager::currentEditorChanged, this,
-               &::MarkdownEditView::Internal::MarkdownTextEditorFactory::
-               currentEditorChanged);
+  auto editorManager = EditorManager::instance();
+  disconnect(editorManager, &::Core::EditorManager::currentEditorChanged, this,
+             &::MarkdownEditView::Internal::MarkdownTextEditorFactory::
+                 currentEditorChanged);
 }
 
 }  // namespace Internal

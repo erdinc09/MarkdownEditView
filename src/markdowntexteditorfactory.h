@@ -25,16 +25,16 @@ namespace MarkdownEditView {
 namespace Internal {
 
 class MarkdownTextEditorFactory : public TextEditor::TextEditorFactory,
-        Provides(IMarkdownEditView) {
-    Q_OBJECT
-    public:
-    MarkdownTextEditorFactory();
-    ~MarkdownTextEditorFactory();
-    virtual const QString getText() const override;
-    virtual const QString getPath() const override;
+                                  Provides(IMarkdownEditView) {
+  Q_OBJECT
+ public:
+  MarkdownTextEditorFactory();
+  ~MarkdownTextEditorFactory();
+  virtual const QString getText() const override;
+  virtual const QString getPath() const override;
 
-    public slots:
-    void currentEditorChanged(Core::IEditor *editor) const;
+ public slots:
+  void currentEditorChanged(Core::IEditor *editor) const;
 };
 }  // namespace Internal
 }  // namespace MarkdownEditView

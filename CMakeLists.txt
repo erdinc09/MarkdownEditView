@@ -26,9 +26,11 @@ set(QtX Qt${QT_VERSION_MAJOR})
 add_subdirectory(external/adif)
 add_subdirectory(external/aeb)
 
-include_directories("./external/aeb" "./external/adif")
 
 file(GLOB SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
+file(GLOB SYNTAX_HIGHLIGHTER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/syntaxhighlighter/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/syntaxhighlighter/*.h")
+
+include_directories("./external/aeb" "./external/adif" "./src/syntaxhighlighter")
 
 add_qtc_plugin(MarkdownEditView
 
@@ -51,6 +53,7 @@ add_qtc_plugin(MarkdownEditView
     README.md
     resources/resource.qrc
     ${SRC_FILES}
+    ${SYNTAX_HIGHLIGHTER_FILES}
     )
 
 #CMake Warning:
