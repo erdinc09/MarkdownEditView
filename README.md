@@ -99,5 +99,6 @@ for the `Command line arguments` field in the run settings
 ## Credits
 
 * For markdown to html conversion, [marked js library](https://github.com/markedjs/marked) is used (1.2.7).
-* For CSS, [markdown-css](https://github.com/rhiokim/markdown-css) is used.
-* For code highlighting [highlightjs](https://highlightjs.org/) is used (10.5).
+* For CSS in preview, [markdown-css](https://github.com/rhiokim/markdown-css) is used.
+* For code highlighting in preview [highlightjs](https://highlightjs.org/) is used (10.5).
+* For SyntaxHighligter in editor, [qmarkdowntextedit](https://github.com/pbek/qmarkdowntextedit) syntaxhighlighter is used (adapted).

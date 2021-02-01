@@ -129,5 +129,6 @@
         <file>3rdparty/markdown_themes/markdown.css</file>
         <file>index_dark.html</file>
         <file>index_template.html</file>
+        <file>dark_scroll_bar.css</file>
     </qresource>
 </RCC>
