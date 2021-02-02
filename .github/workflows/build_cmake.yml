@@ -1,10 +1,10 @@
 name: Build plugin
 
-#on: [push]
-on:
-  push:
-    branches-ignore:
-      - '**'
+on: [push]
+#on:
+#  push:
+#    branches-ignore:
+#      - '**'
 env:
   PLUGIN_NAME: MarkdownEditView
   QT_VERSION: 5.15.2
