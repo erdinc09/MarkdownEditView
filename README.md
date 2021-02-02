@@ -9,6 +9,13 @@ __Features:__
 * Code highlighting in preview
 * Theme aware preview and editor
 
+__Dark Theme Screen Shot:__
+![](./doc/dark.png)
+
+__Classic Theme Screen Shot:__
+![](./doc/light.png)
+
+
 
 ## How To Install
 
