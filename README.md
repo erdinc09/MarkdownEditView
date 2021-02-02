@@ -1,6 +1,6 @@
 # MarkdownEditView
 
-Qt Creator IDE plugin, for both editing and previewing the file in html.
+Qt Creator IDE markdown plugin, for both editing and previewing the file in html.
 
 __Features:__
 
