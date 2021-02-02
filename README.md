@@ -19,8 +19,7 @@ __Classic Theme Screen Shot:__
 
 ## How To Install
 
-* For Linux, MacOs and Windows you can download the plugin from [releases](https://github.com/erdinc09/MarkdownEditView/releases). oo
-  * However now there is no release, will come soon!  
+* For Linux, MacOs and Windows you can download the plugin from [releases](https://github.com/erdinc09/MarkdownEditView/releases).
 * Since QtCreator is not packaged with qtwebengine, you need to install following dependencies from qt installation to qtcreator directory. This process will be automatized later by the plugin.
   * Qt5.15.2 must be installed with QtWebEngine dependency.
   * For __linux:__  
