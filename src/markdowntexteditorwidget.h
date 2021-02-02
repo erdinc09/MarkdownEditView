@@ -19,6 +19,7 @@
 
 #include <QMap>
 #include <QPointer>
+#include <QSharedPointer>
 #include <QString>
 
 #include "markdownhighlighter.h"
@@ -45,7 +46,7 @@ class MarkdownTextEditorWidget : public TextEditor::TextEditorWidget {
   bool isValidUrl(const QString &urlString);
   void openUrl(const QString &urlString);
 
-  QPointer<MarkdownHighlighter> highlighter;
+  QSharedPointer<MarkdownHighlighter> highlighter;
 };
 
 }  // namespace Internal

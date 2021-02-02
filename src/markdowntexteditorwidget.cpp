@@ -39,9 +39,7 @@ MarkdownTextEditorWidget::MarkdownTextEditorWidget()
 void MarkdownTextEditorWidget::finalizeInitialization() {
   setMarksVisible(true);
   setLineSeparatorsAllowed(true);
-
-  textDocument()->setSyntaxHighlighter(highlighter);
-
+  textDocument()->setSyntaxHighlighter(highlighter.data());
   setCodeFoldingSupported(false);
 }
 
