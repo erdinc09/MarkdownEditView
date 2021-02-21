@@ -18,6 +18,7 @@ set(QtX Qt${QT_VERSION_MAJOR})
 
 add_subdirectory(external/adif)
 add_subdirectory(external/aeb)
+add_subdirectory(external/maddy)
 
 
 file(GLOB SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")

@@ -7,3 +7,6 @@
 [submodule "external/cmake"]
 	path = external/cmake
 	url = https://github.com/erdinc09/cmake.git
+[submodule "external/maddy"]
+	path = external/maddy
+	url = https://github.com/erdinc09/maddy.git
