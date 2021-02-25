@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>default.md</file>
         <file>index_light.html</file>
         <file>3rdparty/highlight/styles/a11y-dark.css</file>
         <file>3rdparty/highlight/styles/a11y-light.css</file>
