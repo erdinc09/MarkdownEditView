@@ -43,6 +43,10 @@ void HtmlView::handleEvent(const TextChangedEvent &event) {
   emit mediator.textChanged(event.getText(), event.getPath());
 }
 
+void HtmlView::handleEvent(const FirstLineNumberInEditorChangedEvent &event) {
+  emit mediator.firstLineNumberInEditorChanged(event.lineNumber());
+}
+
 void Mediator::pageLoaded() const {
   emit textChanged(markdownEditView->getText(), markdownEditView->getPath());
 }

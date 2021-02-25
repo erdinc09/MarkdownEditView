@@ -37,6 +37,7 @@ class MarkdownTextEditorWidget : public TextEditor::TextEditorWidget {
  private slots:
   void contentsChangedWithPosition(int position, int charsRemoved,
                                    int charsAdded);
+  void verticalScrollbarValueChanged(int value);
 
  private:
   bool handleReturnEntered();

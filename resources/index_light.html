@@ -22,10 +22,38 @@
   <div id="placeholder" class="markdown github"></div>
   <script>
     'use strict';
+    var lineNumbers = [];
     var placeholder = document.getElementById('placeholder');
+
+    var searchEqualOrLessMaximum = function (array, item) {
+        let lo = -1, hi = array.length;
+        while (1 + lo < hi) {
+            const mi = lo + ((hi - lo) >> 1);
+            if (array[mi] > item) {
+                hi = mi;
+            } else {
+                lo = mi;
+            }
+        }
+        if(array[hi]==item){
+            return array[hi];
+        }else{
+            return array[hi-1];
+        }
+    }
     var updateText = function(text,path) {
-        placeholder.innerHTML = marked(text,{baseUrl : 'file:////' + (!path.endsWith('/')? path + '/' : path)});
+        lineNumbers = [];
+        placeholder.innerHTML = marked(text, {baseUrl : 'file:////' + (!path.endsWith('/')? path + '/' : path)}, null, lineNumbers);
         document.querySelectorAll('pre code').forEach(block => {hljs.highlightBlock(block);});
+    }
+
+    var scrollToLine = function(lineNumber) {
+        if(lineNumbers.length > 0){
+            const matches = document.querySelectorAll("*[dl='" + searchEqualOrLessMaximum(lineNumbers, lineNumber) + "']");
+            if(matches.length > 0){
+                matches[0].scrollIntoView(true);
+            }
+        }
     }
 
     new QWebChannel(qt.webChannelTransport,
@@ -33,9 +61,11 @@
          window.mediator = channel.objects.mediator;
          var mediator = channel.objects.mediator;
          mediator.textChanged.connect(updateText);
+         mediator.firstLineNumberInEditorChanged.connect(scrollToLine);
          mediator.pageLoaded();
       }
     );
+
   </script>
  </body>
 </html>

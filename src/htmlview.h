@@ -18,6 +18,7 @@
 #include <QWebEngineView>
 
 #include "eb/eventlistener.h"
+#include "firstlinenumberineditorchangedevent.h"
 #include "imarkdowneditview.h"
 #include "textchangedevent.h"
 
@@ -37,13 +38,16 @@ class Mediator : public QObject {
 
  signals:
   void textChanged(const QString &text, const QString &path) const;
+  void firstLineNumberInEditorChanged(const int lineNumber) const;
 
  private:
   const IMarkdownEditView *markdownEditView;
 };
 
-class HtmlView : public QWebEngineView,
-                 public aeb::EventListener<TextChangedEvent> {
+class HtmlView
+    : public QWebEngineView,
+      public aeb::EventListener<TextChangedEvent>,
+      public aeb::EventListener<FirstLineNumberInEditorChangedEvent> {
   Q_OBJECT
  public:
   HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_);
@@ -53,6 +57,7 @@ class HtmlView : public QWebEngineView,
   const IMarkdownEditView *markdownEditView;
   const bool darkTheme;
   void handleEvent(const TextChangedEvent &event) override;
+  void handleEvent(const FirstLineNumberInEditorChangedEvent &event) override;
 };
 
 }  // namespace Internal

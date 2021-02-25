@@ -24,9 +24,12 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QGuiApplication>
+#include <QScrollBar>
 
 #include "eb/eventbus.h"
+#include "firstlinenumberineditorchangedevent.h"
 #include "textchangedevent.h"
+
 namespace MarkdownEditView {
 namespace Internal {
 
@@ -50,6 +53,9 @@ void MarkdownTextEditorWidget::openFinishedSuccessfully() {
           &TextEditor::TextDocument::contentsChangedWithPosition, this,
           &MarkdownTextEditorWidget::contentsChangedWithPosition);
 
+  connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this,
+          SLOT(verticalScrollbarValueChanged(int)));
+
   aeb::postEvent<>(TextChangedEvent{
       document()->toPlainText(),
       QString{textDocument()->filePath().absolutePath().toString()}});
@@ -59,6 +65,11 @@ void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
   aeb::postEvent<>(TextChangedEvent{
       document()->toPlainText(),
       QString{textDocument()->filePath().absolutePath().toString()}});
+}
+
+void MarkdownTextEditorWidget::verticalScrollbarValueChanged(int) {
+  aeb::postEvent<>(
+      FirstLineNumberInEditorChangedEvent{firstVisibleBlockNumber() + 1});
 }
 
 bool MarkdownTextEditorWidget::eventFilter(QObject *obj, QEvent *event) {
