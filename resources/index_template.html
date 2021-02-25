@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
+<html lang="en" data-color-mode="auto">
  <meta charset="utf-8">
  <head>
  <link rel="stylesheet" href="3rdparty/markdown_themes/markdown.css">
- <link rel="stylesheet" href="3rdparty/markdown_themes/_theme_/_theme_.css">
- <!--  <link rel="stylesheet" type="text/css" href="3rdparty/header_number.css">-->
+ <link rel="stylesheet" href="3rdparty/markdown_themes/{markdown_theme}/{markdown_theme}.css">
+ <link rel="stylesheet" href="{scroll_bar_theme}.css">
  <script src="3rdparty/marked.js"></script>
  <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
 
  <script src="3rdparty/highlight/highlight.pack.js"></script>
- <link rel="stylesheet" href="3rdparty/highlight/styles/dark.css">
+ <link rel="stylesheet" href="3rdparty/highlight/styles/{highlight_theme}.css">
  <style type="text/css">
 
   body {
@@ -19,13 +19,41 @@
 
  </head>
  <body>
-  <div id="placeholder" class="markdown _theme_"></div>
+  <div id="placeholder" class="markdown {markdown_theme}"></div>
   <script>
     'use strict';
+    var lineNumbers = [];
     var placeholder = document.getElementById('placeholder');
+
+    var searchEqualOrLessMaximum = function (array, item) {
+        let lo = -1, hi = array.length;
+        while (1 + lo < hi) {
+            const mi = lo + ((hi - lo) >> 1);
+            if (array[mi] > item) {
+                hi = mi;
+            } else {
+                lo = mi;
+            }
+        }
+        if(array[hi]==item){
+            return array[hi];
+        }else{
+            return array[hi-1];
+        }
+    }
     var updateText = function(text,path) {
-        placeholder.innerHTML = marked(text,{baseUrl : 'file:////' + (!path.endsWith('/')? path + '/' : path)});
+        lineNumbers = [];
+        placeholder.innerHTML = marked(text, {baseUrl : 'file:////' + (!path.endsWith('/')? path + '/' : path)}, null, lineNumbers);
         document.querySelectorAll('pre code').forEach(block => {hljs.highlightBlock(block);});
+    }
+
+    var scrollToLine = function(lineNumber) {
+        if(lineNumbers.length > 0){
+            const matches = document.querySelectorAll("*[dl='" + searchEqualOrLessMaximum(lineNumbers, lineNumber) + "']");
+            if(matches.length > 0){
+                matches[0].scrollIntoView(true);
+            }
+        }
     }
 
     new QWebChannel(qt.webChannelTransport,
@@ -33,12 +61,11 @@
          window.mediator = channel.objects.mediator;
          var mediator = channel.objects.mediator;
          mediator.textChanged.connect(updateText);
+         mediator.firstLineNumberInEditorChanged.connect(scrollToLine);
          mediator.pageLoaded();
       }
     );
+
   </script>
  </body>
 </html>
-
-
-

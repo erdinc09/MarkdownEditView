@@ -20,9 +20,13 @@ add_subdirectory(external/adif)
 add_subdirectory(external/aeb)
 
 
-file(GLOB SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
+file(GLOB SRC_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
 
-include_directories("./external/aeb" "./external/adif")
+include_directories(
+    "${CMAKE_CURRENT_SOURCE_DIR}/external/aeb"
+    "${CMAKE_CURRENT_SOURCE_DIR}/external/adif")
 
 add_qtc_plugin(MarkdownEditView
 
@@ -48,3 +52,19 @@ add_qtc_plugin(MarkdownEditView
     ${SYNTAX_HIGHLIGHTER_FILES}
     )
 
+set(INDEX_TEMPLATE_HTML "${CMAKE_CURRENT_SOURCE_DIR}/resources/index_template.html")
+set(INDEX_DARK_HTML "${CMAKE_CURRENT_SOURCE_DIR}/resources/index_dark.html")
+set(INDEX_LIGHT_HTML "${CMAKE_CURRENT_SOURCE_DIR}/resources/index_light.html")
+
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/htmlgenerator.h.in
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/htmlgenerator.h
+  @ONLY
+  )
+
+add_executable(htmlgenerator
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/htmlgenerator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/htmlgenerator.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/htmlgenerator.h.in)
+
+target_link_libraries(htmlgenerator Qt${QT_VERSION_MAJOR}::Core)
