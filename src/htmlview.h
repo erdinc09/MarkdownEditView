@@ -19,8 +19,8 @@
 
 #include "eb/eventlistener.h"
 #include "imarkdowneditview.h"
+#include "maddy/parser.h"
 #include "textchangedevent.h"
-
 namespace MarkdownEditView {
 namespace Internal {
 
@@ -53,6 +53,7 @@ class HtmlView : public QWebEngineView,
   const IMarkdownEditView *markdownEditView;
   const bool darkTheme;
   void handleEvent(const TextChangedEvent &event) override;
+  const maddy::Parser parser;
 };
 
 }  // namespace Internal

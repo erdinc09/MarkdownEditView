@@ -23,7 +23,8 @@ namespace Internal {
 HtmlView::HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_)
     : mediator{markdownEditView_},
       markdownEditView{markdownEditView_},
-      darkTheme{darkTheme_} {
+      darkTheme{darkTheme_},
+      parser{maddy::Parser{maddy::ParserConfig{false, false}}} {
   auto page = new PreviewPage(this);
   setPage(page);
 
@@ -40,6 +41,8 @@ HtmlView::HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_)
 }
 
 void HtmlView::handleEvent(const TextChangedEvent &event) {
+  std::stringstream markdown(event.getText().toStdString());
+  const std::string output = parser.Parse(markdown);
   emit mediator.textChanged(event.getText(), event.getPath());
 }
 

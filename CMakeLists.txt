@@ -23,7 +23,7 @@ add_subdirectory(external/maddy)
 
 file(GLOB SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
 
-include_directories("./external/aeb" "./external/adif")
+include_directories("./external/aeb" "./external/adif" "./external/maddy/include")
 
 add_qtc_plugin(MarkdownEditView
 
