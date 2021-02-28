@@ -41,6 +41,8 @@ HtmlView::HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_)
 
 void HtmlView::handleEvent(const TextChangedEvent &event) {
   emit mediator.textChanged(event.getText(), event.getPath());
+  emit mediator.firstLineNumberInEditorChanged(
+      markdownEditView->getFirstLineNumberInEditor());
 }
 
 void HtmlView::handleEvent(const FirstLineNumberInEditorChangedEvent &event) {
@@ -49,6 +51,8 @@ void HtmlView::handleEvent(const FirstLineNumberInEditorChangedEvent &event) {
 
 void Mediator::pageLoaded() const {
   emit textChanged(markdownEditView->getText(), markdownEditView->getPath());
+  emit firstLineNumberInEditorChanged(
+      markdownEditView->getFirstLineNumberInEditor());
 }
 
 }  // namespace Internal

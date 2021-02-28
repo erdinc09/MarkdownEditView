@@ -82,6 +82,14 @@ const QString MarkdownTextEditorFactory::getPath() const {
              : QString{};
 }
 
+int MarkdownTextEditorFactory::getFirstLineNumberInEditor() const {
+  auto currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(
+      MarkdownTextEditorWidget::currentTextEditorWidget());
+  return currentTexteditor != nullptr
+             ? currentTexteditor->firstVisibleBlockNumber() + 1
+             : -1;
+}
+
 MarkdownTextEditorFactory::~MarkdownTextEditorFactory() {
   auto editorManager = EditorManager::instance();
   disconnect(editorManager, &::Core::EditorManager::currentEditorChanged, this,
