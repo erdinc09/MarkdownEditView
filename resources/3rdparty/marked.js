@@ -75,7 +75,7 @@
 
   function createCommonjsModule(fn) {
     var module = { exports: {} };
-    return fn(module, module.exports), module.exports;
+  	return fn(module, module.exports), module.exports;
   }
 
   var defaults = createCommonjsModule(function (module) {
@@ -1380,14 +1380,14 @@
 
 
   var Lexer_1 = /*#__PURE__*/function () {
-    function Lexer(options, lineNumbers) {
+    function Lexer(options, codeBlockStartLineNumbers) {
       this.tokens = [];
       this.tokens.links = Object.create(null);
       this.options = options || defaults$2;
       this.options.tokenizer = this.options.tokenizer || new Tokenizer_1();
       this.tokenizer = this.options.tokenizer;
       this.tokenizer.options = this.options;
-      this.lineNumbers = lineNumbers;
+      this.codeBlockStartLineNumbers = codeBlockStartLineNumbers;
       var rules = {
         block: block$1.normal,
         inline: inline$1.normal
@@ -1416,8 +1416,8 @@
     /**
      * Static Lex Method
      */
-    Lexer.lex = function lex(src, options, lineNumbers) {
-      var lexer = new Lexer(options, lineNumbers);
+    Lexer.lex = function lex(src, options, codeBlockStartLineNumbers) {
+      var lexer = new Lexer(options, codeBlockStartLineNumbers);
       return lexer.lex(src);
     }
     /**
@@ -1452,10 +1452,10 @@
         if (!("dataLine" in lastToken)) {
           lastToken.dataLine = lineNumber;
 
-          if (this.lineNumbers) {
+          if (this.codeBlockStartLineNumbers) {
             switch (lastToken.type) {
-              case 'heading':
-                this.lineNumbers.push(lineNumber);
+              case 'code':
+                this.codeBlockStartLineNumbers.push(lineNumber);
             }
           }
 
@@ -1476,7 +1476,7 @@
      */
     ;
 
-    _proto.blockTokens = function blockTokens(src, tokens, top) {
+    _proto.blockTokens = function blockTokens(src, tokens, top, lineNumber) {
       if (tokens === void 0) {
         tokens = [];
       }
@@ -1485,15 +1485,15 @@
         top = true;
       }
 
+      if (lineNumber === void 0) {
+        lineNumber = 1;
+      }
+
       if (this.options.pedantic) {
         src = src.replace(/^ +$/gm, '');
       }
 
-      var token,
-          i,
-          l,
-          lastToken,
-          lineNumber = 1;
+      var token, i, l, lastToken;
 
       while (src) {
         lineNumber = this.updateLineNumberForPreviousToken(tokens, lineNumber); // newline
@@ -1555,7 +1555,7 @@
 
         if (token = this.tokenizer.blockquote(src)) {
           src = src.substring(token.raw.length);
-          token.tokens = this.blockTokens(token.text, [], top);
+          token.tokens = this.blockTokens(token.text, [], top, lineNumber);
           tokens.push(token);
           continue;
         } // list
@@ -1564,9 +1564,12 @@
         if (token = this.tokenizer.list(src)) {
           src = src.substring(token.raw.length);
           l = token.items.length;
+          var listLineNumber = lineNumber;
 
           for (i = 0; i < l; i++) {
-            token.items[i].tokens = this.blockTokens(token.items[i].text, [], false);
+            token.items[i].tokens = this.blockTokens(token.items[i].text, [], false, listLineNumber); //TODO:
+
+            listLineNumber += token.items[i].raw.split(/\n/).length;
           }
 
           tokens.push(token);
@@ -1642,11 +1645,15 @@
         }
       }
 
-      lineNumber = this.updateLineNumberForPreviousToken(tokens, lineNumber) + 1;
+      this.updateLineNumberForPreviousToken(tokens, lineNumber) + 1;
       return tokens;
     };
 
-    _proto.inline = function inline(tokens) {
+    _proto.inline = function inline(tokens, lineNumber) {
+      if (lineNumber === void 0) {
+        lineNumber = 1;
+      }
+
       var i, j, k, l2, row, token;
       var l = tokens.length;
 
@@ -1659,7 +1666,7 @@
           case 'heading':
             {
               token.tokens = [];
-              this.inlineTokens(token.text, token.tokens);
+              this.inlineTokens(token.text, token.tokens, false, false, token.dataLine);
               break;
             }
 
@@ -1671,12 +1678,14 @@
               }; // header
 
               l2 = token.header.length;
+              var tableLineNumber = token.dataLine;
 
               for (j = 0; j < l2; j++) {
                 token.tokens.header[j] = [];
-                this.inlineTokens(token.header[j], token.tokens.header[j]);
-              } // cells
+                this.inlineTokens(token.header[j], token.tokens.header[j], false, false, tableLineNumber);
+              }
 
+              tableLineNumber += 2; // cells
 
               l2 = token.cells.length;
 
@@ -1686,8 +1695,10 @@
 
                 for (k = 0; k < row.length; k++) {
                   token.tokens.cells[j][k] = [];
-                  this.inlineTokens(row[k], token.tokens.cells[j][k]);
+                  this.inlineTokens(row[k], token.tokens.cells[j][k], false, false, tableLineNumber);
                 }
+
+                tableLineNumber++;
               }
 
               break;
@@ -1695,16 +1706,18 @@
 
           case 'blockquote':
             {
-              this.inline(token.tokens);
+              this.inline(token.tokens, token.dataLine);
               break;
             }
 
           case 'list':
             {
               l2 = token.items.length;
+              var listLineNumber = lineNumber;
 
               for (j = 0; j < l2; j++) {
-                this.inline(token.items[j].tokens);
+                this.inline(token.items[j].tokens, listLineNumber);
+                listLineNumber += token.items[j].raw.split(/\n/).length;
               }
 
               break;
@@ -1719,7 +1732,7 @@
      */
     ;
 
-    _proto.inlineTokens = function inlineTokens(src, tokens, inLink, inRawBlock) {
+    _proto.inlineTokens = function inlineTokens(src, tokens, inLink, inRawBlock, lineNumber) {
       if (tokens === void 0) {
         tokens = [];
       }
@@ -1730,6 +1743,10 @@
 
       if (inRawBlock === void 0) {
         inRawBlock = false;
+      }
+
+      if (lineNumber === void 0) {
+        lineNumber = 1;
       }
 
       var token, lastToken; // String with links masked to avoid interference with em and strong
@@ -1765,7 +1782,17 @@
           prevChar = '';
         }
 
-        keepPrevChar = false; // escape
+        keepPrevChar = false;
+
+        if (tokens.length > 0) {
+          lastToken = tokens[tokens.length - 1];
+
+          if (!("dataLine" in lastToken)) {
+            lastToken.dataLine = lineNumber;
+            lineNumber += lastToken.raw.split(/\n/).length - 1;
+          }
+        } // escape
+
 
         if (token = this.tokenizer.escape(src)) {
           src = src.substring(token.raw.length);
@@ -1795,7 +1822,7 @@
           src = src.substring(token.raw.length);
 
           if (token.type === 'link') {
-            token.tokens = this.inlineTokens(token.text, [], true, inRawBlock);
+            token.tokens = this.inlineTokens(token.text, [], true, inRawBlock, lineNumber);
           }
 
           tokens.push(token);
@@ -1808,7 +1835,7 @@
           var _lastToken2 = tokens[tokens.length - 1];
 
           if (token.type === 'link') {
-            token.tokens = this.inlineTokens(token.text, [], true, inRawBlock);
+            token.tokens = this.inlineTokens(token.text, [], true, inRawBlock, lineNumber);
             tokens.push(token);
           } else if (_lastToken2 && token.type === 'text' && _lastToken2.type === 'text') {
             _lastToken2.raw += token.raw;
@@ -1823,7 +1850,7 @@
 
         if (token = this.tokenizer.emStrong(src, maskedSrc, prevChar)) {
           src = src.substring(token.raw.length);
-          token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock);
+          token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock, lineNumber);
           tokens.push(token);
           continue;
         } // code
@@ -1845,7 +1872,7 @@
 
         if (token = this.tokenizer.del(src)) {
           src = src.substring(token.raw.length);
-          token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock);
+          token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock, lineNumber);
           tokens.push(token);
           continue;
         } // autolink
@@ -1854,6 +1881,7 @@
         if (token = this.tokenizer.autolink(src, mangle)) {
           src = src.substring(token.raw.length);
           tokens.push(token);
+          token.tokens[0].dataLine = lineNumber;
           continue;
         } // url (gfm)
 
@@ -1861,6 +1889,7 @@
         if (!inLink && (token = this.tokenizer.url(src, mangle))) {
           src = src.substring(token.raw.length);
           tokens.push(token);
+          token.tokens[0].dataLine = lineNumber;
           continue;
         } // text
 
@@ -1898,6 +1927,14 @@
         }
       }
 
+      if (tokens.length > 0) {
+        lastToken = tokens[tokens.length - 1];
+
+        if (!("dataLine" in lastToken)) {
+          lastToken.dataLine = lineNumber;
+        }
+      }
+
       return tokens;
     };
 
@@ -1928,7 +1965,7 @@
 
     var _proto = Renderer.prototype;
 
-    _proto.code = function code(_code, infostring, escaped) {
+    _proto.code = function code(_code, infostring, escaped, dataLine) {
       var lang = (infostring || '').match(/\S*/)[0];
 
       if (this.options.highlight) {
@@ -1943,10 +1980,10 @@
       _code = _code.replace(/\n$/, '') + '\n';
 
       if (!lang) {
-        return '<pre><code>' + (escaped ? _code : escape$1(_code, true)) + '</code></pre>\n';
+        return '<pre><code' + ' dl="' + dataLine + '"' + '>' + +(escaped ? _code : escape$1(_code, true)) + '</code></pre>\n';
       }
 
-      return '<pre><code class="' + this.options.langPrefix + escape$1(lang, true) + '">' + (escaped ? _code : escape$1(_code, true)) + '</code></pre>\n';
+      return '<pre><code class="' + this.options.langPrefix + escape$1(lang, true) + '"' + ' dl="' + dataLine + '"' + '>' + (escaped ? _code : escape$1(_code, true)) + '</code></pre>\n';
     };
 
     _proto.blockquote = function blockquote(quote) {
@@ -1959,7 +1996,7 @@
 
     _proto.heading = function heading(text, level, raw, slugger, dataLine) {
       if (this.options.headerIds) {
-        return '<h' + level + ' dl="' + dataLine + '"' + ' id="' + this.options.headerPrefix + slugger.slug(raw) + '">' + text + '</h' + level + '>\n';
+        return '<h' + level + ' id="' + this.options.headerPrefix + slugger.slug(raw) + '">' + text + '</h' + level + '>\n';
       } // ignore IDs
 
 
@@ -1988,9 +2025,9 @@
       return '<p>' + text + '</p>\n';
     };
 
-    _proto.table = function table(header, body) {
+    _proto.table = function table(header, body, dataLine) {
       if (body) body = '<tbody>' + body + '</tbody>';
-      return '<table>\n' + '<thead>\n' + header + '</thead>\n' + body + '</table>\n';
+      return '<table' + ' dl="' + dataLine + '">\n' + '<thead' + ' dl="' + (dataLine + 1) + '">\n' + header + '</thead>\n' + body + '</table>\n';
     };
 
     _proto.tablerow = function tablerow(content) {
@@ -2012,8 +2049,8 @@
       return '<em>' + text + '</em>';
     };
 
-    _proto.codespan = function codespan(text) {
-      return '<code>' + text + '</code>';
+    _proto.codespan = function codespan(text, dataLine) {
+      return '<code' + ' dl=' + '"' + dataLine + '">' + text + '</code>';
     };
 
     _proto.br = function br() {
@@ -2041,7 +2078,7 @@
       return out;
     };
 
-    _proto.image = function image(href, title, text) {
+    _proto.image = function image(href, title, text, dataLine) {
       href = cleanUrl$1(this.options.sanitize, this.options.baseUrl, href);
 
       if (href === null) {
@@ -2054,12 +2091,31 @@
         out += ' title="' + title + '"';
       }
 
+      out += ' dl=' + '"' + dataLine + '"';
       out += this.options.xhtml ? '/>' : '>';
       return out;
     };
 
-    _proto.text = function text(_text) {
-      return _text;
+    _proto.text = function text(_text, dataLine) {
+      if (dataLine !== 'undefined') {
+        var currentLineNumber = dataLine;
+
+        var lines = _text.split(/\n/);
+
+        var body = '';
+
+        for (var line in lines) {
+          if (lines[line].length !== 0) {
+            body += '<span' + ' dl=' + '"' + currentLineNumber + '"' + '>' + lines[line] + '</span>\n';
+          }
+
+          currentLineNumber++;
+        }
+
+        return body;
+      } else {
+        return _text;
+      }
     };
 
     return Renderer;
@@ -2262,7 +2318,7 @@
 
           case 'code':
             {
-              out += this.renderer.code(token.text, token.lang, token.escaped);
+              out += this.renderer.code(token.text, token.lang, token.escaped, token.dataLine);
               continue;
             }
 
@@ -2299,7 +2355,7 @@
                 body += this.renderer.tablerow(cell);
               }
 
-              out += this.renderer.table(header, body);
+              out += this.renderer.table(header, body, token.dataLine);
               continue;
             }
 
@@ -2362,7 +2418,7 @@
 
           case 'paragraph':
             {
-              out += this.renderer.paragraph(this.parseInline(token.tokens));
+              out += this.renderer.paragraph(this.parseInline(token.tokens), token.dataLine);
               continue;
             }
 
@@ -2431,7 +2487,7 @@
 
           case 'image':
             {
-              out += renderer.image(token.href, token.title, token.text);
+              out += renderer.image(token.href, token.title, token.text, token.dataLine);
               break;
             }
 
@@ -2449,7 +2505,7 @@
 
           case 'codespan':
             {
-              out += renderer.codespan(token.text);
+              out += renderer.codespan(token.text, token.dataLine);
               break;
             }
 
@@ -2467,7 +2523,7 @@
 
           case 'text':
             {
-              out += renderer.text(token.text);
+              out += renderer.text(token.text, token.dataLine);
               break;
             }
 

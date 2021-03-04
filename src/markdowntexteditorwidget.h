@@ -34,6 +34,7 @@ class MarkdownTextEditorWidget : public TextEditor::TextEditorWidget {
   MarkdownTextEditorWidget();
   void finalizeInitialization() override;
   bool eventFilter(QObject *obj, QEvent *event) override;
+  int getFirstNonEmptyLineNumer() const;
  private slots:
   void contentsChangedWithPosition(int position, int charsRemoved,
                                    int charsAdded);

@@ -86,7 +86,7 @@ int MarkdownTextEditorFactory::getFirstLineNumberInEditor() const {
   auto currentTexteditor = dynamic_cast<MarkdownTextEditorWidget*>(
       MarkdownTextEditorWidget::currentTextEditorWidget());
   return currentTexteditor != nullptr
-             ? currentTexteditor->firstVisibleBlockNumber() + 1
+             ? currentTexteditor->getFirstNonEmptyLineNumer()
              : -1;
 }
 

@@ -1,72 +1,89 @@
 <!-- THIS FILE IS GENERATED, DO NOT EDIT! -->
 <!doctype html>
 <html lang="en" data-color-mode="auto">
- <meta charset="utf-8">
- <head>
- <link rel="stylesheet" href="3rdparty/markdown_themes/markdown.css">
- <link rel="stylesheet" href="3rdparty/markdown_themes/github/github.css">
- <link rel="stylesheet" href="light_scroll_bar.css">
- <script src="3rdparty/marked.js"></script>
- <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
+<meta charset="utf-8">
 
- <script src="3rdparty/highlight/highlight.pack.js"></script>
- <link rel="stylesheet" href="3rdparty/highlight/styles/github.css">
- <style type="text/css">
+<head>
+    <link rel="stylesheet" href="3rdparty/markdown_themes/markdown.css">
+    <link rel="stylesheet" href="3rdparty/markdown_themes/github/github.css">
+    <link rel="stylesheet" href="light_scroll_bar.css">
+    <script src="3rdparty/marked.js"></script>
+    <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
 
-  body {
-      overflow-x:hidden;
-  }
-  </style>
+    <script src="3rdparty/highlight/highlight.pack.js"></script>
+    <link rel="stylesheet" href="3rdparty/highlight/styles/github.css">
+    <style type="text/css">
+        body {
+            overflow-x: hidden;
+        }
+    </style>
 
- </head>
- <body>
-  <div id="placeholder" class="markdown github"></div>
-  <script>
-    'use strict';
-    var lineNumbers = [];
-    var placeholder = document.getElementById('placeholder');
+</head>
 
-    var searchEqualOrLessMaximum = function (array, item) {
-        let lo = -1, hi = array.length;
-        while (1 + lo < hi) {
-            const mi = lo + ((hi - lo) >> 1);
-            if (array[mi] > item) {
-                hi = mi;
+<body>
+    <div id="placeholder" class="markdown github"></div>
+    <script>
+        'use strict';
+        var codeBlockStartLineNumbers = [];
+        var placeholder = document.getElementById('placeholder');
+
+        var searchEqualOrLessMaximum = function (array, item) {
+            let lo = -1, hi = array.length;
+            while (1 + lo < hi) {
+                const mi = lo + ((hi - lo) >> 1);
+                if (array[mi] > item) {
+                    hi = mi;
+                } else {
+                    lo = mi;
+                }
+            }
+            if (array[hi] == item) {
+                return array[hi];
             } else {
-                lo = mi;
+                return array[hi - 1];
             }
         }
-        if(array[hi]==item){
-            return array[hi];
-        }else{
-            return array[hi-1];
+        var updateText = function (text, path) {
+            codeBlockStartLineNumbers = [];
+            placeholder.innerHTML = marked(
+                text,
+                {
+                    baseUrl: 'file:////' + (!path.endsWith('/') ? path + '/' : path),
+                    highlight: function (code, language) {
+                        const validLanguage = hljs.getLanguage(language) ? language : 'plaintext';
+                        return hljs.highlight(validLanguage, code).value;
+                    }
+                },
+                null,
+                codeBlockStartLineNumbers);
         }
-    }
-    var updateText = function(text,path) {
-        lineNumbers = [];
-        placeholder.innerHTML = marked(text, {baseUrl : 'file:////' + (!path.endsWith('/')? path + '/' : path)}, null, lineNumbers);
-        document.querySelectorAll('pre code').forEach(block => {hljs.highlightBlock(block);});
-    }
 
-    var scrollToLine = function(lineNumber) {
-        if(lineNumbers.length > 0){
-            const matches = document.querySelectorAll("*[dl='" + searchEqualOrLessMaximum(lineNumbers, lineNumber) + "']");
-            if(matches.length > 0){
-                matches[0].scrollIntoView(true);
+        var scrollToLine = function (lineNumber) {
+            if (codeBlockStartLineNumbers.length > 0) {
+                const matchesExact = document.querySelectorAll("*[dl='" + lineNumber + "']");
+                if (matchesExact.length > 0 && matchesExact[0].tagName.toLowerCase() !== 'code') {
+                    matchesExact[0].scrollIntoView(true);
+                } else {
+                    const matches = document.querySelectorAll("*[dl='" + searchEqualOrLessMaximum(codeBlockStartLineNumbers, lineNumber) + "']");
+                    if (matches.length > 0) {
+                        //we are in code!, just go to start of it
+                        matches[0].scrollIntoView(true);
+                    }
+                }
             }
         }
-    }
 
-    new QWebChannel(qt.webChannelTransport,
-      function(channel) {
-         window.mediator = channel.objects.mediator;
-         var mediator = channel.objects.mediator;
-         mediator.textChanged.connect(updateText);
-         mediator.firstLineNumberInEditorChanged.connect(scrollToLine);
-         mediator.pageLoaded();
-      }
-    );
+        new QWebChannel(qt.webChannelTransport,
+            function (channel) {
+                window.mediator = channel.objects.mediator;
+                var mediator = channel.objects.mediator;
+                mediator.textChanged.connect(updateText);
+                mediator.firstLineNumberInEditorChanged.connect(scrollToLine);
+                mediator.pageLoaded();
+            }
+        );
 
-  </script>
- </body>
+    </script>
+</body>
+
 </html>
