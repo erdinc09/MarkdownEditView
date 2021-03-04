@@ -497,7 +497,8 @@
           type: 'code',
           raw: cap[0],
           codeBlockStyle: 'indented',
-          text: !this.options.pedantic ? rtrim$1(text, '\n') : text
+          text: !this.options.pedantic ? rtrim$1(text, '\n') : text,
+          isFence: false
         };
       }
     };
@@ -512,7 +513,8 @@
           type: 'code',
           raw: raw,
           lang: cap[2] ? cap[2].trim() : cap[2],
-          text: text
+          text: text,
+          isFence: true
         };
       }
     };
@@ -1380,14 +1382,13 @@
 
 
   var Lexer_1 = /*#__PURE__*/function () {
-    function Lexer(options, codeBlockStartLineNumbers) {
+    function Lexer(options) {
       this.tokens = [];
       this.tokens.links = Object.create(null);
       this.options = options || defaults$2;
       this.options.tokenizer = this.options.tokenizer || new Tokenizer_1();
       this.tokenizer = this.options.tokenizer;
       this.tokenizer.options = this.options;
-      this.codeBlockStartLineNumbers = codeBlockStartLineNumbers;
       var rules = {
         block: block$1.normal,
         inline: inline$1.normal
@@ -1416,8 +1417,8 @@
     /**
      * Static Lex Method
      */
-    Lexer.lex = function lex(src, options, codeBlockStartLineNumbers) {
-      var lexer = new Lexer(options, codeBlockStartLineNumbers);
+    Lexer.lex = function lex(src, options) {
+      var lexer = new Lexer(options);
       return lexer.lex(src);
     }
     /**
@@ -1451,14 +1452,6 @@
 
         if (!("dataLine" in lastToken)) {
           lastToken.dataLine = lineNumber;
-
-          if (this.codeBlockStartLineNumbers) {
-            switch (lastToken.type) {
-              case 'code':
-                this.codeBlockStartLineNumbers.push(lineNumber);
-            }
-          }
-
           lineNumber += lastToken.raw.split(/\n/).length - 1;
         }
       }
@@ -1519,6 +1512,7 @@
             lastToken.text += '\n' + token.text;
           } else {
             tokens.push(token);
+            token.lastLineNumber = lineNumber + token.raw.trim().split(/\n/).length - 1;
           }
 
           continue;
@@ -1528,6 +1522,7 @@
         if (token = this.tokenizer.fences(src)) {
           src = src.substring(token.raw.length);
           tokens.push(token);
+          token.lastLineNumber = lineNumber + token.raw.trim().split(/\n/).length - 1;
           continue;
         } // heading
 
@@ -1965,8 +1960,8 @@
 
     var _proto = Renderer.prototype;
 
-    _proto.code = function code(_code, infostring, escaped, dataLine) {
-      var lang = (infostring || '').match(/\S*/)[0];
+    _proto.code = function code(_code, infostring, escaped, dataLine, lastLineNumber, isFence) {
+      var lang = (infostring || 'plaintext').match(/\S*/)[0];
 
       if (this.options.highlight) {
         var out = this.options.highlight(_code, lang);
@@ -1978,12 +1973,24 @@
       }
 
       _code = _code.replace(/\n$/, '') + '\n';
+      var dataLineStr = '';
 
-      if (!lang) {
-        return '<pre><code' + ' dl="' + dataLine + '"' + '>' + +(escaped ? _code : escape$1(_code, true)) + '</code></pre>\n';
+      for (var i = dataLine; i <= lastLineNumber; i++) {
+        dataLineStr += ' ' + i;
       }
 
-      return '<pre><code class="' + this.options.langPrefix + escape$1(lang, true) + '"' + ' dl="' + dataLine + '"' + '>' + (escaped ? _code : escape$1(_code, true)) + '</code></pre>\n';
+      dataLineStr = dataLineStr.trim();
+      var isFenceStr = '';
+
+      if (isFence) {
+        isFenceStr = 'fence="true"';
+      }
+
+      if (!lang) {
+        return '<pre><code' + ' dl="' + dataLineStr + '" ' + isFenceStr + ' >' + +(escaped ? _code : escape$1(_code, true)) + '</code></pre>\n';
+      }
+
+      return '<pre><code class="' + this.options.langPrefix + escape$1(lang, true) + '"' + ' dl="' + dataLineStr + '" ' + isFenceStr + ' >' + (escaped ? _code : escape$1(_code, true)) + '</code></pre>\n';
     };
 
     _proto.blockquote = function blockquote(quote) {
@@ -2318,7 +2325,7 @@
 
           case 'code':
             {
-              out += this.renderer.code(token.text, token.lang, token.escaped, token.dataLine);
+              out += this.renderer.code(token.text, token.lang, token.escaped, token.dataLine, token.lastLineNumber, token.isFence);
               continue;
             }
 
@@ -2557,7 +2564,7 @@
    * Marked
    */
 
-  function marked(src, opt, callback, lineNumbers) {
+  function marked(src, opt, callback) {
     // throw error in case of non string input
     if (typeof src === 'undefined' || src === null) {
       throw new Error('marked(): input parameter is undefined or null');
@@ -2580,7 +2587,7 @@
       var tokens;
 
       try {
-        tokens = Lexer_1.lex(src, opt, lineNumbers);
+        tokens = Lexer_1.lex(src, opt);
       } catch (e) {
         return callback(e);
       }
@@ -2639,7 +2646,7 @@
     }
 
     try {
-      var _tokens = Lexer_1.lex(src, opt, lineNumbers);
+      var _tokens = Lexer_1.lex(src, opt);
 
       if (opt.walkTokens) {
         marked.walkTokens(_tokens, opt.walkTokens);

@@ -23,27 +23,8 @@
     <div id="placeholder" class="markdown {markdown_theme}"></div>
     <script>
         'use strict';
-        var codeBlockStartLineNumbers = [];
         var placeholder = document.getElementById('placeholder');
-
-        var searchEqualOrLessMaximum = function (array, item) {
-            let lo = -1, hi = array.length;
-            while (1 + lo < hi) {
-                const mi = lo + ((hi - lo) >> 1);
-                if (array[mi] > item) {
-                    hi = mi;
-                } else {
-                    lo = mi;
-                }
-            }
-            if (array[hi] == item) {
-                return array[hi];
-            } else {
-                return array[hi - 1];
-            }
-        }
         var updateText = function (text, path) {
-            codeBlockStartLineNumbers = [];
             placeholder.innerHTML = marked(
                 text,
                 {
@@ -53,21 +34,23 @@
                         return hljs.highlight(validLanguage, code).value;
                     }
                 },
-                null,
-                codeBlockStartLineNumbers);
+                null);
         }
 
         var scrollToLine = function (lineNumber) {
-            if (codeBlockStartLineNumbers.length > 0) {
-                const matchesExact = document.querySelectorAll("*[dl='" + lineNumber + "']");
-                if (matchesExact.length > 0 && matchesExact[0].tagName.toLowerCase() !== 'code') {
-                    matchesExact[0].scrollIntoView(true);
-                } else {
-                    const matches = document.querySelectorAll("*[dl='" + searchEqualOrLessMaximum(codeBlockStartLineNumbers, lineNumber) + "']");
-                    if (matches.length > 0) {
-                        //we are in code!, just go to start of it
-                        matches[0].scrollIntoView(true);
+            const matches = document.querySelectorAll("*[dl~='" + lineNumber + "']");
+            if (matches.length > 0) {
+                let elem = matches[0];
+                elem.scrollIntoView(true);
+                if (elem.tagName.toLowerCase() === 'code') {
+                    let lineNumbers = elem.getAttribute('dl');
+                    let lines = lineNumbers.split(' ');
+                    if (elem.getAttribute('fence') === 'true') {
+                        lines = lines.slice(1, lines.length - 1);
                     }
+
+                    let yScroll = elem.scrollHeight * ((lineNumber - parseFloat(lines[0])) / parseFloat(lines.length));
+                    window.scrollBy(0, yScroll);
                 }
             }
         }
