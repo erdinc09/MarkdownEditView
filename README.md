@@ -1,5 +1,7 @@
 # MarkdownEditView
-
+https://github.com/andyexeter/most-visible  
+https://github.com/frontend-trends/jQuery.getMostVisible  
+https://stackoverflow.com/questions/38360676/get-the-element-which-is-the-most-visible-on-the-screen  
 Qt Creator IDE markdown plugin, for both editing and previewing the file in html.
 
 __Features:__

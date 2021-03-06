@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="dark_scroll_bar.css">
     <script src="3rdparty/marked.js"></script>
     <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
-
     <script src="3rdparty/highlight/highlight.pack.js"></script>
+
     <link rel="stylesheet" href="3rdparty/highlight/styles/dark.css">
     <style type="text/css">
         body {
@@ -38,8 +38,9 @@
                 null);
         }
 
+
         var scrollToLine = function (lineNumber) {
-            const matches = document.querySelectorAll("*[dl~='" + lineNumber + "']");
+            const matches = document.querySelectorAll(`*[dl~='${lineNumber}']`);
             if (matches.length > 0) {
                 let elem = matches[0];
                 elem.scrollIntoView(true);
@@ -49,17 +50,26 @@
                     if (elem.getAttribute('fence') === 'true') {
                         lines = lines.slice(1, lines.length - 1);
                     }
-
                     let yScroll = elem.scrollHeight * ((lineNumber - parseFloat(lines[0])) / parseFloat(lines.length));
                     window.scrollBy(0, yScroll);
                 }
             }
         }
 
+        document.addEventListener('scroll', function (e) {
+            for (let element of document.querySelectorAll('*[dl]')) {
+                let clientRect = element.getBoundingClientRect();
+                if (clientRect.bottom >= 0) {
+                    console.log(element);
+                    break;
+                }
+            }
+        });
+
+        var mediator; //goes into global object window ...
         new QWebChannel(qt.webChannelTransport,
             function (channel) {
-                window.mediator = channel.objects.mediator;
-                var mediator = channel.objects.mediator;
+                mediator = channel.objects.mediator;
                 mediator.textChanged.connect(updateText);
                 mediator.firstLineNumberInEditorChanged.connect(scrollToLine);
                 mediator.pageLoaded();
