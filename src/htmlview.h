@@ -45,6 +45,7 @@ class Mediator : public QObject {
  private:
   mutable int firstLineNumberInEditorChangedEventCount = 0;
   const IMarkdownEditView *markdownEditView;
+  friend class HtmlView;
 };
 
 class HtmlView
@@ -56,11 +57,12 @@ class HtmlView
   HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_);
 
  private:
+  void handleEvent(const TextChangedEvent &event) override;
+  void handleEvent(const FirstLineNumberInEditorChangedEvent &event) override;
+
   Mediator mediator;
   const IMarkdownEditView *markdownEditView;
   const bool darkTheme;
-  void handleEvent(const TextChangedEvent &event) override;
-  void handleEvent(const FirstLineNumberInEditorChangedEvent &event) override;
 };
 
 }  // namespace Internal

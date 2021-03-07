@@ -67,11 +67,6 @@ void MarkdownTextEditorWidget::openFinishedSuccessfully() {
       QString{textDocument()->filePath().absolutePath().toString()}});
 }
 
-void MarkdownTextEditorWidget::handleEvent(
-    const FirstLineNumberInPreviewChangedEvent &event) {
-  qDebug() << "line in preview:" << event.lineNumber();
-}
-
 int MarkdownTextEditorWidget::getFirstNonEmptyLineNumer() const {
   const int start = firstVisibleBlockNumber() + 1;
   const int end = lastVisibleBlockNumber();
@@ -94,6 +89,28 @@ int MarkdownTextEditorWidget::getFirstNonEmptyLineNumer() const {
   return counter;
 }
 
+void MarkdownTextEditorWidget::wheelEvent(QWheelEvent *e) {
+  const static int WAIT_TIME =
+      300;  // experimental, long enough to ensure scrolling is fnished.
+
+  TextEditor::TextEditorWidget::wheelEvent(e);
+  firstLineNumberInPreviewChangedEventCount++;
+  QTimer::singleShot(WAIT_TIME, [this]() {
+    if (--firstLineNumberInPreviewChangedEventCount == 0) {
+      aeb::postEvent<>(
+          FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
+    }
+  });
+}
+
+void MarkdownTextEditorWidget::handleEvent(
+    const FirstLineNumberInPreviewChangedEvent &event) {
+  qDebug() << "line in preview:" << event.lineNumber();
+
+  // API does not provide a method for line at top most...
+  // gotoLine(event.lineNumber(), 0, true, false);
+}
+
 void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
   aeb::postEvent<>(TextChangedEvent{
       document()->toPlainText(),
@@ -101,13 +118,8 @@ void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
 }
 
 void MarkdownTextEditorWidget::verticalScrollbarValueChanged(int) {
-  firstLineNumberInPreviewChangedEventCount++;
-  QTimer::singleShot(300, [this]() {
-    if (--firstLineNumberInPreviewChangedEventCount == 0) {
-      aeb::postEvent<>(
-          FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
-    }
-  });
+  // since this causes echo from html (if bi-directional sync was possible), we
+  // process events in 'MarkdownTextEditorWidget::wheelEvent(QWheelEvent *e)'
 }
 
 bool MarkdownTextEditorWidget::eventFilter(QObject *obj, QEvent *event) {

@@ -24,6 +24,7 @@
     <script>
         'use strict';
         var placeholder = document.getElementById('placeholder');
+
         var updateText = function (text, path) {
             placeholder.innerHTML = marked(
                 text,
@@ -37,8 +38,7 @@
                 null);
         }
 
-
-        var scrollToLine = function (lineNumber) {
+        var scrollToLineInPreview = function (lineNumber) {
             const matches = document.querySelectorAll(`*[dl~='${lineNumber}']`);
             if (matches.length > 0) {
                 let elem = matches[0];
@@ -55,25 +55,40 @@
             }
         }
 
-        document.addEventListener('scroll', function (e) {
+        var firstVisibleElementLineNumber = function () {
             for (let elem of document.querySelectorAll('*[dl]')) {
                 let clientRect = elem.getBoundingClientRect();
                 if (clientRect.bottom >= 0) {
                     let dlAttr = elem.getAttribute('dl');
-                    let lineNumber = elem.tagName.toLowerCase() === 'code' ? dlAttr.split(' ')[0] : dlAttr;
-                    //TODO:emulate code & fence !
-                    mediator.firstLineNumberInPreviewChanged(lineNumber);
-                    break;
+                    if (elem.tagName.toLowerCase() === 'code') {
+                        let lineNumbers = elem.getAttribute('dl');
+                        let lines = lineNumbers.split(' ');
+                        let linesRaw = lines;
+                        if (elem.getAttribute('fence') === 'true') {
+                            lines = lines.slice(1, lines.length - 1);
+                        }
+                        if (clientRect.top > 0) {
+                            return lines[0];
+                        } else {
+                            let step = elem.scrollHeight / lines.length;
+                            let val = lines[lines.length - Math.round(clientRect.bottom / step)];
+                            return val ? val : linesRaw[linesRaw.length - 1];
+                        }
+                    } else {
+                        return dlAttr;
+                    }
                 }
             }
-        });
+        }
+
+        document.addEventListener('scroll', scrollToLineInEditor);
 
         var mediator; //goes into global object window ...
         new QWebChannel(qt.webChannelTransport,
             function (channel) {
                 mediator = channel.objects.mediator;
                 mediator.textChanged.connect(updateText);
-                mediator.firstLineNumberInEditorChanged.connect(scrollToLine);
+                mediator.firstLineNumberInEditorChanged.connect(scrollToLineInPreview);
                 mediator.pageLoaded();
             }
         );

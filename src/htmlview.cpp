@@ -52,7 +52,7 @@ void HtmlView::handleEvent(const TextChangedEvent &event) {
 
 void HtmlView::handleEvent(const FirstLineNumberInEditorChangedEvent &event) {
   emit mediator.firstLineNumberInEditorChanged(event.lineNumber());
-  qDebug() << "line in editor: " << event.lineNumber();
+  qDebug() << "line  in editor:" << event.lineNumber();
 }
 
 void Mediator::pageLoaded() const {
@@ -62,8 +62,10 @@ void Mediator::pageLoaded() const {
 }
 
 void Mediator::firstLineNumberInPreviewChanged(int lineNumber) const {
+  const static int WAIT_TIME =
+      300;  // experimental, long enough to ensure scrolling is finished.
   firstLineNumberInEditorChangedEventCount++;
-  QTimer::singleShot(300, [this, lineNumber]() {
+  QTimer::singleShot(WAIT_TIME, [this, lineNumber]() {
     if (--firstLineNumberInEditorChangedEventCount == 0) {
       aeb::postEvent(FirstLineNumberInPreviewChangedEvent(lineNumber));
     }
