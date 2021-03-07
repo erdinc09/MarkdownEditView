@@ -29,6 +29,7 @@
 #include <QLatin1Char>
 #include <QScrollBar>
 #include <QTextCursor>
+#include <QTimer>
 #include <string>
 
 #include "eb/eventbus.h"
@@ -66,6 +67,11 @@ void MarkdownTextEditorWidget::openFinishedSuccessfully() {
       QString{textDocument()->filePath().absolutePath().toString()}});
 }
 
+void MarkdownTextEditorWidget::handleEvent(
+    const FirstLineNumberInPreviewChangedEvent &event) {
+  qDebug() << "line in preview:" << event.lineNumber();
+}
+
 int MarkdownTextEditorWidget::getFirstNonEmptyLineNumer() const {
   const int start = firstVisibleBlockNumber() + 1;
   const int end = lastVisibleBlockNumber();
@@ -95,8 +101,13 @@ void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
 }
 
 void MarkdownTextEditorWidget::verticalScrollbarValueChanged(int) {
-  aeb::postEvent<>(
-      FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
+  firstLineNumberInPreviewChangedEventCount++;
+  QTimer::singleShot(300, [this]() {
+    if (--firstLineNumberInPreviewChangedEventCount == 0) {
+      aeb::postEvent<>(
+          FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
+    }
+  });
 }
 
 bool MarkdownTextEditorWidget::eventFilter(QObject *obj, QEvent *event) {

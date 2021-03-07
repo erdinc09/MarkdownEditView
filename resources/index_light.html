@@ -57,10 +57,12 @@
         }
 
         document.addEventListener('scroll', function (e) {
-            for (let element of document.querySelectorAll('*[dl]')) {
-                let clientRect = element.getBoundingClientRect();
+            for (let elem of document.querySelectorAll('*[dl]')) {
+                let clientRect = elem.getBoundingClientRect();
                 if (clientRect.bottom >= 0) {
-                    console.log(element);
+                    let dlAttr = elem.getAttribute('dl');
+                    let lineNumber = elem.tagName.toLowerCase() === 'code' ? dlAttr.split(' ')[0] : dlAttr;
+                    mediator.firstLineNumberInPreviewChanged(lineNumber);
                     break;
                 }
             }

@@ -35,12 +35,15 @@ class Mediator : public QObject {
       : markdownEditView{markdownEditView_} {}
 
   Q_INVOKABLE void pageLoaded() const;  // is called from JS
+  Q_INVOKABLE void firstLineNumberInPreviewChanged(
+      int lineNumber) const;  // is called from JS
 
  signals:
   void textChanged(const QString &text, const QString &path) const;
   void firstLineNumberInEditorChanged(const int lineNumber) const;
 
  private:
+  mutable int firstLineNumberInEditorChangedEventCount = 0;
   const IMarkdownEditView *markdownEditView;
 };
 

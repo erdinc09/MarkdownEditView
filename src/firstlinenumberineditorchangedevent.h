@@ -1,5 +1,6 @@
 #ifndef FIRSTLINECHANGEDEVENT_H
 #define FIRSTLINECHANGEDEVENT_H
+
 namespace MarkdownEditView {
 namespace Internal {
 class FirstLineNumberInEditorChangedEvent {

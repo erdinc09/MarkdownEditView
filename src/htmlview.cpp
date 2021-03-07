@@ -14,9 +14,14 @@
 
 #include "htmlview.h"
 
+#include <QDebug>
+#include <QTimer>
 #include <QWebChannel>
 
+#include "eb/eventbus.h"
+#include "firstlinenumberinpreviewchangedevent.h"
 #include "previewpage.h"
+
 namespace MarkdownEditView {
 namespace Internal {
 
@@ -47,12 +52,22 @@ void HtmlView::handleEvent(const TextChangedEvent &event) {
 
 void HtmlView::handleEvent(const FirstLineNumberInEditorChangedEvent &event) {
   emit mediator.firstLineNumberInEditorChanged(event.lineNumber());
+  qDebug() << "line in editor: " << event.lineNumber();
 }
 
 void Mediator::pageLoaded() const {
   emit textChanged(markdownEditView->getText(), markdownEditView->getPath());
   emit firstLineNumberInEditorChanged(
       markdownEditView->getFirstLineNumberInEditor());
+}
+
+void Mediator::firstLineNumberInPreviewChanged(int lineNumber) const {
+  firstLineNumberInEditorChangedEventCount++;
+  QTimer::singleShot(300, [this, lineNumber]() {
+    if (--firstLineNumberInEditorChangedEventCount == 0) {
+      aeb::postEvent(FirstLineNumberInPreviewChangedEvent(lineNumber));
+    }
+  });
 }
 
 }  // namespace Internal
