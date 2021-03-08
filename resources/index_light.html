@@ -1,44 +1,101 @@
+<!-- THIS FILE IS GENERATED, DO NOT EDIT! -->
 <!doctype html>
-<html lang="en" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
- <meta charset="utf-8">
- <head>
- <link rel="stylesheet" href="3rdparty/markdown_themes/markdown.css">
- <link rel="stylesheet" href="3rdparty/markdown_themes/github/github.css">
- <!--  <link rel="stylesheet" type="text/css" href="3rdparty/header_number.css">-->
- <script src="3rdparty/marked.js"></script>
- <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
+<html lang="en" data-color-mode="auto">
+<meta charset="utf-8">
 
- <script src="3rdparty/highlight/highlight.pack.js"></script>
- <link rel="stylesheet" href="3rdparty/highlight/styles/github.css">
- <style type="text/css">
+<head>
+    <link rel="stylesheet" href="3rdparty/markdown_themes/markdown.css">
+    <link rel="stylesheet" href="3rdparty/markdown_themes/github/github.css">
+    <link rel="stylesheet" href="light_scroll_bar.css">
+    <script src="3rdparty/marked.js"></script>
+    <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
+    <script src="3rdparty/highlight/highlight.pack.js"></script>
 
-  body {
-      overflow-x:hidden;
-  }
-  </style>
+    <link rel="stylesheet" href="3rdparty/highlight/styles/github.css">
+    <style type="text/css">
+        body {
+            overflow-x: hidden;
+        }
+    </style>
 
- </head>
- <body>
-  <div id="placeholder" class="markdown github"></div>
-  <script>
-    'use strict';
-    var placeholder = document.getElementById('placeholder');
-    var updateText = function(text,path) {
-        placeholder.innerHTML = marked(text,{baseUrl : 'file:////' + (!path.endsWith('/')? path + '/' : path)});
-        document.querySelectorAll('pre code').forEach(block => {hljs.highlightBlock(block);});
-    }
+</head>
 
-    new QWebChannel(qt.webChannelTransport,
-      function(channel) {
-         window.mediator = channel.objects.mediator;
-         var mediator = channel.objects.mediator;
-         mediator.textChanged.connect(updateText);
-         mediator.pageLoaded();
-      }
-    );
-  </script>
- </body>
+<body>
+    <div id="placeholder" class="markdown github"></div>
+    <script>
+        'use strict';
+        var placeholder = document.getElementById('placeholder');
+
+        var updateText = function (text, path) {
+            placeholder.innerHTML = marked(
+                text,
+                {
+                    baseUrl: 'file:////' + (!path.endsWith('/') ? path + '/' : path),
+                    highlight: function (code, language) {
+                        const validLanguage = hljs.getLanguage(language) ? language : 'plaintext';
+                        return hljs.highlight(validLanguage, code).value;
+                    }
+                },
+                null);
+        }
+
+        var scrollToLineInPreview = function (lineNumber) {
+            const matches = document.querySelectorAll(`*[dl~='${lineNumber}']`);
+            if (matches.length > 0) {
+                let elem = matches[0];
+                elem.scrollIntoView(true);
+                if (elem.tagName.toLowerCase() === 'code') {
+                    let lineNumbers = elem.getAttribute('dl');
+                    let lines = lineNumbers.split(' ');
+                    if (elem.getAttribute('fence') === 'true') {
+                        lines = lines.slice(1, lines.length - 1);
+                    }
+                    let yScroll = elem.scrollHeight * ((lineNumber - parseFloat(lines[0])) / parseFloat(lines.length));
+                    window.scrollBy(0, yScroll);
+                }
+            }
+        }
+
+        var scrollToLineInEditor = function () {
+            for (let elem of document.querySelectorAll('*[dl]')) {
+                let clientRect = elem.getBoundingClientRect();
+                if (clientRect.bottom >= 0) {
+                    let dlAttr = elem.getAttribute('dl');
+                    if (elem.tagName.toLowerCase() === 'code') {
+                        let lineNumbers = elem.getAttribute('dl');
+                        let lines = lineNumbers.split(' ');
+                        let linesRaw = lines;
+                        if (elem.getAttribute('fence') === 'true') {
+                            lines = lines.slice(1, lines.length - 1);
+                        }
+                        if (clientRect.top > 0) {
+                            mediator.firstLineNumberInPreviewChanged(lines[0]);
+                        } else {
+                            let step = elem.scrollHeight / lines.length;
+                            let val = lines[lines.length - Math.round(clientRect.bottom / step)];
+                            mediator.firstLineNumberInPreviewChanged(val ? val : linesRaw[linesRaw.length - 1]);
+                        }
+                    } else {
+                        mediator.firstLineNumberInPreviewChanged(dlAttr);
+                    }
+                    break;
+                }
+            }
+        }
+
+        document.addEventListener('scroll', scrollToLineInEditor);
+
+        var mediator; //goes into global object window ...
+        new QWebChannel(qt.webChannelTransport,
+            function (channel) {
+                mediator = channel.objects.mediator;
+                mediator.textChanged.connect(updateText);
+                mediator.firstLineNumberInEditorChanged.connect(scrollToLineInPreview);
+                mediator.pageLoaded();
+            }
+        );
+
+    </script>
+</body>
+
 </html>
-
-
-

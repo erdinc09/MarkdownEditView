@@ -23,6 +23,7 @@ class IMarkdownEditView {
   IMarkdownEditView(){};
   virtual const QString getText() const = 0;
   virtual const QString getPath() const = 0;
+  virtual int getFirstLineNumberInEditor() const = 0;
 };
 }  // namespace Internal
 }  // namespace MarkdownEditView

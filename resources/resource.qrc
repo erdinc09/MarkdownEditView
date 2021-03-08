@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>default.md</file>
         <file>index_light.html</file>
         <file>3rdparty/highlight/styles/a11y-dark.css</file>
         <file>3rdparty/highlight/styles/a11y-light.css</file>
@@ -130,5 +129,6 @@
         <file>index_dark.html</file>
         <file>index_template.html</file>
         <file>dark_scroll_bar.css</file>
+        <file>light_scroll_bar.css</file>
     </qresource>
 </RCC>

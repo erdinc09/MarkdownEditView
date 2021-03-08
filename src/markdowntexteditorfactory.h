@@ -32,6 +32,7 @@ class MarkdownTextEditorFactory : public TextEditor::TextEditorFactory,
   ~MarkdownTextEditorFactory();
   virtual const QString getText() const override;
   virtual const QString getPath() const override;
+  virtual int getFirstLineNumberInEditor() const override;
 
  public slots:
   void currentEditorChanged(Core::IEditor *editor) const;

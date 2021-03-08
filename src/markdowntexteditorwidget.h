@@ -21,31 +21,46 @@
 #include <QPointer>
 #include <QSharedPointer>
 #include <QString>
+#include <QWheelEvent>
 
+#include "eb/eventlistener.h"
+#include "firstlinenumberinpreviewchangedevent.h"
 #include "markdownhighlighter.h"
 
 namespace MarkdownEditView {
 namespace Internal {
 
-class MarkdownTextEditorWidget : public TextEditor::TextEditorWidget {
+class MarkdownTextEditorWidget
+    : public TextEditor::TextEditorWidget,
+      private aeb::EventListener<FirstLineNumberInPreviewChangedEvent> {
   Q_OBJECT
+
  public:
-  void openFinishedSuccessfully() override;
   MarkdownTextEditorWidget();
+
+  void openFinishedSuccessfully() override;
   void finalizeInitialization() override;
   bool eventFilter(QObject *obj, QEvent *event) override;
+  int getFirstNonEmptyLineNumer() const;
+
  private slots:
   void contentsChangedWithPosition(int position, int charsRemoved,
                                    int charsAdded);
+  void verticalScrollbarValueChanged(int value);
+
+ protected:
+  void wheelEvent(QWheelEvent *e) override;
 
  private:
   bool handleReturnEntered();
   bool openLinkAtCursorPosition();
   QString getMarkdownUrlAtPosition(const QString &text, int position);
   QMap<QString, QString> parseMarkdownUrlsFromText(const QString &text);
+  void handleEvent(const FirstLineNumberInPreviewChangedEvent &event) override;
   bool isValidUrl(const QString &urlString);
   void openUrl(const QString &urlString);
 
+  int firstLineNumberInPreviewChangedEventCount = 0;
   QSharedPointer<MarkdownHighlighter> highlighter;
 };
 

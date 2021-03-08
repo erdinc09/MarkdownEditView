@@ -1,5 +1,4 @@
 # MarkdownEditView
-
 Qt Creator IDE markdown plugin, for both editing and previewing the file in html.
 
 __Features:__
@@ -8,6 +7,7 @@ __Features:__
 * Html preview
 * Code highlighting in preview
 * Theme aware preview and editor
+* Editor to preview scroll synchronization 
 
 __Dark Theme Screen Shot:__
 ![](./doc/dark.png)
@@ -63,7 +63,7 @@ __Example for Linux:__
 * cd MarkdownEditView
 * mkdir build
 * cd build
-* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator-4.14.0;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator-4.14.1;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cd ..
 * cmake --build .
 
@@ -72,7 +72,7 @@ __Example for Mac:__
 * cd MarkdownEditView
 * mkdir build
 * cd build
-* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator-4.14;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator-4.14.1;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cd ..
 * cmake --build .
 
@@ -105,7 +105,7 @@ for the `Command line arguments` field in the run settings
 
 ## Credits
 
-* For markdown to html conversion, [marked js library](https://github.com/markedjs/marked) is used (1.2.7).
+* For markdown to html conversion, [marked js library fork](https://github.com/erdinc09/marked) is used (adapted).
 * For CSS in preview, [markdown-css](https://github.com/rhiokim/markdown-css) is used.
 * For code highlighting in preview [highlightjs](https://highlightjs.org/) is used (10.5).
 * For SyntaxHighligter in editor, [qmarkdowntextedit](https://github.com/pbek/qmarkdowntextedit) syntaxhighlighter is used (adapted).

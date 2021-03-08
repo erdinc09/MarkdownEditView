@@ -14,9 +14,14 @@
 
 #include "htmlview.h"
 
+#include <QDebug>
+#include <QTimer>
 #include <QWebChannel>
 
+#include "eb/eventbus.h"
+#include "firstlinenumberinpreviewchangedevent.h"
 #include "previewpage.h"
+
 namespace MarkdownEditView {
 namespace Internal {
 
@@ -41,10 +46,30 @@ HtmlView::HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_)
 
 void HtmlView::handleEvent(const TextChangedEvent &event) {
   emit mediator.textChanged(event.getText(), event.getPath());
+  emit mediator.firstLineNumberInEditorChanged(
+      markdownEditView->getFirstLineNumberInEditor());
+}
+
+void HtmlView::handleEvent(const FirstLineNumberInEditorChangedEvent &event) {
+  emit mediator.firstLineNumberInEditorChanged(event.lineNumber());
+  qDebug() << "line  in editor:" << event.lineNumber();
 }
 
 void Mediator::pageLoaded() const {
   emit textChanged(markdownEditView->getText(), markdownEditView->getPath());
+  emit firstLineNumberInEditorChanged(
+      markdownEditView->getFirstLineNumberInEditor());
+}
+
+void Mediator::firstLineNumberInPreviewChanged(int lineNumber) const {
+  const static int WAIT_TIME =
+      300;  // experimental, long enough to ensure scrolling is finished.
+  firstLineNumberInEditorChangedEventCount++;
+  QTimer::singleShot(WAIT_TIME, [this, lineNumber]() {
+    if (--firstLineNumberInEditorChangedEventCount == 0) {
+      aeb::postEvent(FirstLineNumberInPreviewChangedEvent(lineNumber));
+    }
+  });
 }
 
 }  // namespace Internal

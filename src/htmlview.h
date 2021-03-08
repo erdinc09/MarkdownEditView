@@ -18,6 +18,7 @@
 #include <QWebEngineView>
 
 #include "eb/eventlistener.h"
+#include "firstlinenumberineditorchangedevent.h"
 #include "imarkdowneditview.h"
 #include "textchangedevent.h"
 
@@ -34,25 +35,34 @@ class Mediator : public QObject {
       : markdownEditView{markdownEditView_} {}
 
   Q_INVOKABLE void pageLoaded() const;  // is called from JS
+  Q_INVOKABLE void firstLineNumberInPreviewChanged(
+      int lineNumber) const;  // is called from JS
 
  signals:
   void textChanged(const QString &text, const QString &path) const;
+  void firstLineNumberInEditorChanged(const int lineNumber) const;
 
  private:
+  mutable int firstLineNumberInEditorChangedEventCount = 0;
   const IMarkdownEditView *markdownEditView;
+  friend class HtmlView;
 };
 
-class HtmlView : public QWebEngineView,
-                 public aeb::EventListener<TextChangedEvent> {
+class HtmlView
+    : public QWebEngineView,
+      public aeb::EventListener<TextChangedEvent>,
+      public aeb::EventListener<FirstLineNumberInEditorChangedEvent> {
   Q_OBJECT
  public:
   HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_);
 
  private:
+  void handleEvent(const TextChangedEvent &event) override;
+  void handleEvent(const FirstLineNumberInEditorChangedEvent &event) override;
+
   Mediator mediator;
   const IMarkdownEditView *markdownEditView;
   const bool darkTheme;
-  void handleEvent(const TextChangedEvent &event) override;
 };
 
 }  // namespace Internal

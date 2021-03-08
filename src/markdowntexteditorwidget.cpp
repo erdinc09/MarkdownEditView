@@ -20,13 +20,22 @@
 #include "markdowntexteditorwidget.h"
 
 #include <texteditor/textdocument.h>
+#include <utils/textutils.h>
 
+#include <QChar>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QGuiApplication>
+#include <QLatin1Char>
+#include <QScrollBar>
+#include <QTextCursor>
+#include <QTimer>
+#include <string>
 
 #include "eb/eventbus.h"
+#include "firstlinenumberineditorchangedevent.h"
 #include "textchangedevent.h"
+
 namespace MarkdownEditView {
 namespace Internal {
 
@@ -50,15 +59,67 @@ void MarkdownTextEditorWidget::openFinishedSuccessfully() {
           &TextEditor::TextDocument::contentsChangedWithPosition, this,
           &MarkdownTextEditorWidget::contentsChangedWithPosition);
 
+  connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this,
+          SLOT(verticalScrollbarValueChanged(int)));
+
   aeb::postEvent<>(TextChangedEvent{
       document()->toPlainText(),
       QString{textDocument()->filePath().absolutePath().toString()}});
+}
+
+int MarkdownTextEditorWidget::getFirstNonEmptyLineNumer() const {
+  const int start = firstVisibleBlockNumber() + 1;
+  const int end = lastVisibleBlockNumber();
+  int counter = start;
+
+  QTextCursor cursor(document());
+  while (counter <= end) {
+    cursor.setPosition(Utils::Text::positionInText(document(), counter + 1, 0));
+    cursor.select(QTextCursor::SelectionType::LineUnderCursor);
+    std::string line =
+        cursor.selectedText()
+            .replace(QChar::ParagraphSeparator, QLatin1Char('\n'))
+            .toStdString();
+
+    if (!std::all_of(line.begin(), line.end(), isspace)) {
+      break;
+    };
+    ++counter;
+  }
+  return counter;
+}
+
+void MarkdownTextEditorWidget::wheelEvent(QWheelEvent *e) {
+  const static int WAIT_TIME =
+      300;  // experimental, long enough to ensure scrolling is fnished.
+
+  TextEditor::TextEditorWidget::wheelEvent(e);
+  firstLineNumberInPreviewChangedEventCount++;
+  QTimer::singleShot(WAIT_TIME, [this]() {
+    if (--firstLineNumberInPreviewChangedEventCount == 0) {
+      aeb::postEvent<>(
+          FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
+    }
+  });
+}
+
+void MarkdownTextEditorWidget::handleEvent(
+    const FirstLineNumberInPreviewChangedEvent &event) {
+  qDebug() << "line in preview:" << event.lineNumber();
+
+  // API does not provide a method for line at top most...
+  // gotoLine(event.lineNumber(), 0, true, false);
 }
 
 void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
   aeb::postEvent<>(TextChangedEvent{
       document()->toPlainText(),
       QString{textDocument()->filePath().absolutePath().toString()}});
+}
+
+void MarkdownTextEditorWidget::verticalScrollbarValueChanged(int) {
+  // since this causes echo from html (if bi-directional sync was possible), we
+  // process events in 'MarkdownTextEditorWidget::wheelEvent(QWheelEvent *e)'
 }
 
 bool MarkdownTextEditorWidget::eventFilter(QObject *obj, QEvent *event) {
@@ -127,8 +188,8 @@ bool MarkdownTextEditorWidget::handleReturnEntered() {
   if (inList) {
     // if the current line starts with a list character (possibly after
     // whitespaces) add the whitespaces at the next line too
-    // Valid listCharacters: '+ ', '-' , '* ', '+ [ ] ', '+ [x] ', '- [ ] ', '-
-    // [x] ', '* [ ] ', '* [x] '.
+    // Valid listCharacters: '+ ', '-' , '* ', '+ [ ] ', '+ [x] ', '- [ ] ',
+    // '- [x] ', '* [ ] ', '* [x] '.
     regex =
         QRegularExpression("^(\\s*)([+|\\-|\\*] \\[(x| )\\]|[+\\-\\*])(\\s+)");
     iterator = regex.globalMatch(currentLineText);
