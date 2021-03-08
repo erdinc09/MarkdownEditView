@@ -27,7 +27,8 @@ add_subdirectory(external/aeb)
 
 file(GLOB SRC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+    MarkdownEditView.json.in)
 
 include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/external/aeb"
