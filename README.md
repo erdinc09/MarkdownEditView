@@ -7,6 +7,7 @@ __Features:__
 * Html preview
 * Code highlighting in preview
 * Theme aware preview and editor
+* Editor to preview scroll synchronization 
 
 __Dark Theme Screen Shot:__
 ![](./doc/dark.png)
@@ -62,7 +63,7 @@ __Example for Linux:__
 * cd MarkdownEditView
 * mkdir build
 * cd build
-* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator-4.14.0;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator-4.14.1;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cd ..
 * cmake --build .
 
@@ -71,7 +72,7 @@ __Example for Mac:__
 * cd MarkdownEditView
 * mkdir build
 * cd build
-* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator-4.14;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator-4.14.1;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cd ..
 * cmake --build .
 

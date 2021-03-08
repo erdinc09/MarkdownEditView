@@ -55,7 +55,7 @@
             }
         }
 
-        var firstVisibleElementLineNumber = function () {
+        var scrollToLineInEditor = function () {
             for (let elem of document.querySelectorAll('*[dl]')) {
                 let clientRect = elem.getBoundingClientRect();
                 if (clientRect.bottom >= 0) {
@@ -68,15 +68,16 @@
                             lines = lines.slice(1, lines.length - 1);
                         }
                         if (clientRect.top > 0) {
-                            return lines[0];
+                            mediator.firstLineNumberInPreviewChanged(lines[0]);
                         } else {
                             let step = elem.scrollHeight / lines.length;
                             let val = lines[lines.length - Math.round(clientRect.bottom / step)];
-                            return val ? val : linesRaw[linesRaw.length - 1];
+                            mediator.firstLineNumberInPreviewChanged(val ? val : linesRaw[linesRaw.length - 1]);
                         }
                     } else {
-                        return dlAttr;
+                        mediator.firstLineNumberInPreviewChanged(dlAttr);
                     }
+                    break;
                 }
             }
         }

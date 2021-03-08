@@ -2010,8 +2010,8 @@
       return '<h' + level + '>' + text + '</h' + level + '>\n';
     };
 
-    _proto.hr = function hr() {
-      return this.options.xhtml ? '<hr/>\n' : '<hr>\n';
+    _proto.hr = function hr(dataLine) {
+      return this.options.xhtml ? "<hr dl=\"" + dataLine + "\"/>\n" : "<hr  dl=\"" + dataLine + "\">\n";
     };
 
     _proto.list = function list(body, ordered, start) {
@@ -2313,7 +2313,7 @@
 
           case 'hr':
             {
-              out += this.renderer.hr();
+              out += this.renderer.hr(token.dataLine);
               continue;
             }
 

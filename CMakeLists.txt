@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
+
+#You need this only if you change the build type in QtCreator while building in it.
+#list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/Projects/qt-creator-4.14.1/qtcreator_build")
+#list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/Qt/5.15.2/clang_64")
+
 include("external/cmake/HunterGate.cmake")
 huntergate(URL "https://github.com/cpp-pm/hunter/archive/v0.23.279.tar.gz" SHA1 "0a8ede485c3e9c1ceed8ccb989ab6c0aba1f4db7")
 
@@ -62,6 +67,7 @@ configure_file(
   @ONLY
   )
 
+# html file generator. This generated files enables the plugin adapt to qtcreator theme (dark & classic)
 add_executable(htmlgenerator
     ${CMAKE_CURRENT_SOURCE_DIR}/src/htmlgenerator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/htmlgenerator.h
