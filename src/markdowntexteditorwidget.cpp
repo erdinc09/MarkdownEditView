@@ -28,6 +28,7 @@
 #include <QGuiApplication>
 #include <QLatin1Char>
 #include <QScrollBar>
+#include <QString>
 #include <QTextCursor>
 #include <QTimer>
 #include <string>
@@ -89,26 +90,25 @@ int MarkdownTextEditorWidget::getFirstNonEmptyLineNumer() const {
   return counter;
 }
 
-void MarkdownTextEditorWidget::wheelEvent(QWheelEvent *e) {
-  const static int WAIT_TIME =
-      300;  // experimental, long enough to ensure scrolling is fnished.
-
-  TextEditor::TextEditorWidget::wheelEvent(e);
-  firstLineNumberInPreviewChangedEventCount++;
-  QTimer::singleShot(WAIT_TIME, [this]() {
-    if (--firstLineNumberInPreviewChangedEventCount == 0) {
-      aeb::postEvent<>(
-          FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
-    }
-  });
-}
-
 void MarkdownTextEditorWidget::handleEvent(
     const FirstLineNumberInPreviewChangedEvent &event) {
-  qDebug() << "line in preview:" << event.lineNumber();
+  if (event.lineNumber() != getFirstNonEmptyLineNumer()) {
+    qDebug() << "line in preview:" << event.lineNumber();
+    int scrollCount = 0;
+    for (int i = 1; i < event.lineNumber(); ++i) {
+      auto block = document()->findBlockByLineNumber(i);
+      if (block.isValid()) {
+        scrollCount += block.lineCount();
+      }
+    }
+    lastScrollValueSet = scrollCount;
+    qDebug() << QString("scrollCount: %1").arg(scrollCount);
+    verticalScrollBar()->setValue(scrollCount);
+  }
 
-  // API does not provide a method for line at top most...
-  // gotoLine(event.lineNumber(), 0, true, false);
+  //  qDebug() << "lastVisibleBlockNumber(): " << lastVisibleBlockNumber();
+  //  qDebug() << " document()->lastBlock().blockNumber(): "
+  //           << document()->lastBlock().blockNumber();
 }
 
 void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
@@ -117,9 +117,21 @@ void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
       QString{textDocument()->filePath().absolutePath().toString()}});
 }
 
-void MarkdownTextEditorWidget::verticalScrollbarValueChanged(int) {
-  // since this causes echo from html (if bi-directional sync was possible), we
-  // process events in 'MarkdownTextEditorWidget::wheelEvent(QWheelEvent *e)'
+void MarkdownTextEditorWidget::verticalScrollbarValueChanged(int value) {
+  const static int WAIT_TIME =
+      500;  // experimental, long enough to ensure scrolling is fnished.
+
+  firstLineNumberInPreviewChangedEventCount++;
+  QTimer::singleShot(WAIT_TIME, this, [this, value]() {
+    if (--firstLineNumberInPreviewChangedEventCount == 0) {
+      if (lastScrollValueSet != value) {
+        aeb::postEvent<>(
+            FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
+      } else {
+        qDebug("echo in editor");
+      }
+    }
+  });
 }
 
 bool MarkdownTextEditorWidget::eventFilter(QObject *obj, QEvent *event) {

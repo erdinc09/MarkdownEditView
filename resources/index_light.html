@@ -83,7 +83,9 @@
             }
         }
 
-        document.addEventListener('scroll', scrollToLineInEditor);
+        document.addEventListener('wheel', scrollToLineInEditor);
+        //listening to scroll events causes echo from markdown editor in cpp side!
+        //document.addEventListener('scroll', scrollToLineInEditor);
 
         var mediator; //goes into global object window ...
         new QWebChannel(qt.webChannelTransport,
