@@ -58,7 +58,6 @@ class MarkdownTextEditorWidget
   void openUrl(const QString &urlString);
 
   int firstLineNumberInPreviewChangedEventCount = 0;
-  int lastScrollValueSet = 0;
   QSharedPointer<MarkdownHighlighter> highlighter;
 };
 

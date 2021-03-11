@@ -27,8 +27,10 @@
 #include <QDesktopServices>
 #include <QGuiApplication>
 #include <QLatin1Char>
+#include <QLayout>
 #include <QScrollBar>
 #include <QString>
+#include <QTextBlock>
 #include <QTextCursor>
 #include <QTimer>
 #include <string>
@@ -93,22 +95,12 @@ int MarkdownTextEditorWidget::getFirstNonEmptyLineNumer() const {
 void MarkdownTextEditorWidget::handleEvent(
     const FirstLineNumberInPreviewChangedEvent &event) {
   if (event.lineNumber() != getFirstNonEmptyLineNumer()) {
-    qDebug() << "line in preview:" << event.lineNumber();
-    int scrollCount = 0;
-    for (int i = 1; i < event.lineNumber(); ++i) {
-      auto block = document()->findBlockByLineNumber(i);
-      if (block.isValid()) {
-        scrollCount += block.lineCount();
-      }
-    }
-    lastScrollValueSet = scrollCount;
-    qDebug() << QString("scrollCount: %1").arg(scrollCount);
-    verticalScrollBar()->setValue(scrollCount);
+    qDebug("line in preview: %d", event.lineNumber());
+    // https://stackoverflow.com/questions/40531203/pyqt4-qtextedit-start-in-nth-line
+    moveCursor(QTextCursor::End);
+    QTextCursor cursor(document()->findBlockByNumber(event.lineNumber() - 1));
+    setTextCursor(cursor);
   }
-
-  //  qDebug() << "lastVisibleBlockNumber(): " << lastVisibleBlockNumber();
-  //  qDebug() << " document()->lastBlock().blockNumber(): "
-  //           << document()->lastBlock().blockNumber();
 }
 
 void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
@@ -117,19 +109,13 @@ void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
       QString{textDocument()->filePath().absolutePath().toString()}});
 }
 
-void MarkdownTextEditorWidget::verticalScrollbarValueChanged(int value) {
-  const static int WAIT_TIME =
-      500;  // experimental, long enough to ensure scrolling is fnished.
-
+void MarkdownTextEditorWidget::verticalScrollbarValueChanged(int) {
+  const static int WAIT_TIME = 500;
   firstLineNumberInPreviewChangedEventCount++;
-  QTimer::singleShot(WAIT_TIME, this, [this, value]() {
+  QTimer::singleShot(WAIT_TIME, this, [this]() {
     if (--firstLineNumberInPreviewChangedEventCount == 0) {
-      if (lastScrollValueSet != value) {
-        aeb::postEvent<>(
-            FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
-      } else {
-        qDebug("echo in editor");
-      }
+      aeb::postEvent<>(
+          FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
     }
   });
 }
