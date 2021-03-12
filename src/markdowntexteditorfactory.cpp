@@ -42,9 +42,8 @@ MarkdownTextEditorFactory::MarkdownTextEditorFactory() {
   setEditorWidgetCreator([=]() { return new MarkdownTextEditorWidget{}; });
 
   auto editorManager = EditorManager::instance();
-  connect(editorManager, &EditorManager::currentEditorChanged, this,
-          &::MarkdownEditView::Internal::MarkdownTextEditorFactory::
-              currentEditorChanged);
+  connect(editorManager, SIGNAL(currentEditorChanged(Core::IEditor*)), this,
+          SLOT(currentEditorChanged(Core::IEditor*)));
 }
 
 void MarkdownTextEditorFactory::currentEditorChanged(

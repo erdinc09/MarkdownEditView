@@ -21,7 +21,6 @@
 #include <QPointer>
 #include <QSharedPointer>
 #include <QString>
-#include <QWheelEvent>
 
 #include "eb/eventlistener.h"
 #include "firstlinenumberinpreviewchangedevent.h"
@@ -46,10 +45,7 @@ class MarkdownTextEditorWidget
  private slots:
   void contentsChangedWithPosition(int position, int charsRemoved,
                                    int charsAdded);
-  void verticalScrollbarValueChanged(int value);
-
- protected:
-  void wheelEvent(QWheelEvent *e) override;
+  void verticalScrollbarActionTriggered(int value);
 
  private:
   bool handleReturnEntered();
@@ -60,7 +56,6 @@ class MarkdownTextEditorWidget
   bool isValidUrl(const QString &urlString);
   void openUrl(const QString &urlString);
 
-  int firstLineNumberInPreviewChangedEventCount = 0;
   QSharedPointer<MarkdownHighlighter> highlighter;
 };
 

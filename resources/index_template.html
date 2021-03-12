@@ -19,7 +19,7 @@
 
 </head>
 
-<body>
+<body oncontextmenu="return false;">
     <div id="placeholder" class="markdown {markdown_theme}"></div>
     <script>
         'use strict';
@@ -82,7 +82,21 @@
             }
         }
 
-        document.addEventListener('scroll', scrollToLineInEditor);
+        document.addEventListener('wheel', scrollToLineInEditor);
+        //listening to scroll events causes echo from markdown editor in cpp side!
+
+        document.addEventListener('keydown', function (e) {
+            if (e.which == 33        // page up 
+                || e.which == 34     // page dn 
+                || e.which == 32     // spacebar
+                || e.which == 38     // up 
+                || e.which == 40     // down 
+                || (e.ctrlKey && e.which == 36)     // ctrl + home 
+                || (e.ctrlKey && e.which == 35)     // ctrl + end 
+            ) {
+                setTimeout(scrollToLineInEditor, 0);
+            }
+        });
 
         var mediator; //goes into global object window ...
         new QWebChannel(qt.webChannelTransport,

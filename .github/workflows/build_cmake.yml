@@ -1,10 +1,10 @@
+#https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 name: Build plugin
 
-on: [push]
-#on:
-#  push:
-#    branches-ignore:
-#      - '**'
+on:
+  push:
+    branches:
+      - main
 env:
   PLUGIN_NAME: MarkdownEditView
   QT_VERSION: 5.15.2
