@@ -14,12 +14,14 @@
 #ifndef HTMLVIEW_H
 #define HTMLVIEW_H
 
-#include <QList>
+#include <QWebChannel>
 #include <QWebEngineView>
+#include <memory>
 
 #include "eb/eventlistener.h"
 #include "firstlinenumberineditorchangedevent.h"
 #include "imarkdowneditview.h"
+#include "previewpage.h"
 #include "textchangedevent.h"
 
 namespace MarkdownEditView {
@@ -43,7 +45,6 @@ class Mediator : public QObject {
   void firstLineNumberInEditorChanged(const int lineNumber) const;
 
  private:
-  mutable int firstLineNumberInEditorChangedEventCount = 0;
   const IMarkdownEditView *markdownEditView;
   friend class HtmlView;
 };
@@ -63,6 +64,8 @@ class HtmlView
   Mediator mediator;
   const IMarkdownEditView *markdownEditView;
   const bool darkTheme;
+  const std::shared_ptr<QWebChannel> channel;
+  const std::shared_ptr<PreviewPage> page;
 };
 
 }  // namespace Internal

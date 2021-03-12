@@ -62,8 +62,8 @@ void MarkdownTextEditorWidget::openFinishedSuccessfully() {
           &TextEditor::TextDocument::contentsChangedWithPosition, this,
           &MarkdownTextEditorWidget::contentsChangedWithPosition);
 
-  connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this,
-          SLOT(verticalScrollbarValueChanged(int)));
+  connect(verticalScrollBar(), SIGNAL(actionTriggered(int)), this,
+          SLOT(verticalScrollbarActionTriggered(int)));
 
   aeb::postEvent<>(TextChangedEvent{
       document()->toPlainText(),
@@ -96,7 +96,6 @@ void MarkdownTextEditorWidget::handleEvent(
     const FirstLineNumberInPreviewChangedEvent &event) {
   if (event.lineNumber() != getFirstNonEmptyLineNumer()) {
     qDebug("line in preview: %d", event.lineNumber());
-    // https://stackoverflow.com/questions/40531203/pyqt4-qtextedit-start-in-nth-line
     moveCursor(QTextCursor::End);
     QTextCursor cursor(document()->findBlockByNumber(event.lineNumber() - 1));
     setTextCursor(cursor);
@@ -109,14 +108,12 @@ void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
       QString{textDocument()->filePath().absolutePath().toString()}});
 }
 
-void MarkdownTextEditorWidget::verticalScrollbarValueChanged(int) {
-  const static int WAIT_TIME = 500;
-  firstLineNumberInPreviewChangedEventCount++;
-  QTimer::singleShot(WAIT_TIME, this, [this]() {
-    if (--firstLineNumberInPreviewChangedEventCount == 0) {
-      aeb::postEvent<>(
-          FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
-    }
+void MarkdownTextEditorWidget::verticalScrollbarActionTriggered(int) {
+  // by adding to the the event queue again, we ensure that value change is
+  // propagated and, the editor is updated
+  QTimer::singleShot(0, this, [this] {
+    aeb::postEvent<>(
+        FirstLineNumberInEditorChangedEvent{getFirstNonEmptyLineNumer()});
   });
 }
 

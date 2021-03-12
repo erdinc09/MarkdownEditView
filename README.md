@@ -7,7 +7,7 @@ __Features:__
 * Html preview
 * Code highlighting in preview
 * Theme aware preview and editor
-* Bidirectional vertical sroll synchronization between dditor and preview
+* Bidirectional vertical sroll synchronization between editor and preview
 
 __Dark Theme Screen Shot:__
 ![](./doc/dark.png)

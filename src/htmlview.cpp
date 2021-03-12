@@ -15,7 +15,6 @@
 #include "htmlview.h"
 
 #include <QDebug>
-#include <QTimer>
 #include <QWebChannel>
 
 #include "eb/eventbus.h"
@@ -28,13 +27,12 @@ namespace Internal {
 HtmlView::HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_)
     : mediator{markdownEditView_},
       markdownEditView{markdownEditView_},
-      darkTheme{darkTheme_} {
-  auto page = new PreviewPage(this);
-  setPage(page);
-
-  auto channel = new QWebChannel(this);
+      darkTheme{darkTheme_},
+      channel{std::make_shared<QWebChannel>(this)},
+      page{std::make_shared<PreviewPage>(this)} {
+  setPage(page.get());
   channel->registerObject(QStringLiteral("mediator"), &mediator);
-  page->setWebChannel(channel);
+  page->setWebChannel(channel.get());
 
   if (darkTheme) {
     setUrl(QUrl("qrc:/index_dark.html"));
@@ -62,14 +60,7 @@ void Mediator::pageLoaded() const {
 }
 
 void Mediator::firstLineNumberInPreviewChanged(int lineNumber) const {
-  const static int WAIT_TIME =
-      500;  // experimental, long enough to ensure scrolling is finished.
-  firstLineNumberInEditorChangedEventCount++;
-  QTimer::singleShot(WAIT_TIME, this, [this, lineNumber]() {
-    if (--firstLineNumberInEditorChangedEventCount == 0) {
-      aeb::postEvent(FirstLineNumberInPreviewChangedEvent(lineNumber));
-    }
-  });
+  aeb::postEvent(FirstLineNumberInPreviewChangedEvent(lineNumber));
 }
 
 }  // namespace Internal
