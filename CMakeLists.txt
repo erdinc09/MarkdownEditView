@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 
 #You need this only if you change the build type in QtCreator while building in it.
-#list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/Projects/qt-creator-4.14.2/qtcreator_build")
+#list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/git/qt-creator/qtcreator_build")
 #list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/Qt/5.15.2/clang_64")
 
 include("external/cmake/HunterGate.cmake")
