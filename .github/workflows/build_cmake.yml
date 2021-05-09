@@ -242,7 +242,7 @@ jobs:
         execute_process(
           COMMAND python
             -u
-            ${{ steps.qt_creator.outputs.qtc_dir }}/${{ scripts_folder }}/build_plugin.py
+            ${{ steps.qt_creator.outputs.qtc_dir }}/${scripts_folder}/build_plugin.py
             --name "$ENV{PLUGIN_NAME}-$ENV{QT_CREATOR_VERSION}-${{ matrix.config.artifact }}"
             --src .
             --build build
