@@ -29,17 +29,17 @@ jobs:
             os: ubuntu-latest,
             cc: "gcc", cxx: "g++"
           }
-        - {
-            name: "macOS Latest Clang", artifact: "macOS-x64",
-            os: macos-latest,
-            cc: "clang", cxx: "clang++"
-          }
-        - {
-            name: "Windows Latest MSVC", artifact: "Windows-x64",
-            os: windows-latest,
-            cc: "cl", cxx: "cl",
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
-          }
+#        - {
+#            name: "macOS Latest Clang", artifact: "macOS-x64",
+#            os: macos-latest,
+#            cc: "clang", cxx: "clang++"
+#          }
+#        - {
+#            name: "Windows Latest MSVC", artifact: "Windows-x64",
+#            os: windows-latest,
+#            cc: "cl", cxx: "cl",
+#            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+#          }
 
     steps:
     - uses: actions/checkout@v1
@@ -203,6 +203,10 @@ jobs:
           execute_process(COMMAND
             ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
         endforeach()
+        echo "github.workspace"
+        ls ${{ github.workspace }}
+        echo "WORKING_DIRECTORY"
+        ls WORKING_DIRECTORY
 
     - name: Build
       shell: cmake -P {0}
@@ -229,7 +233,7 @@ jobs:
         execute_process(
           COMMAND python
             -u
-            ${{ steps.qt_creator.outputs.qtc_dir }}/share/scripts/build_plugin.py
+            ${{ steps.qt_creator.outputs.qtc_dir }}/share/qtcreator/scripts/build_plugin.py
             --name "$ENV{PLUGIN_NAME}-$ENV{QT_CREATOR_VERSION}-${{ matrix.config.artifact }}"
             --src .
             --build build
