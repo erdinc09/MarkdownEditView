@@ -203,10 +203,8 @@ jobs:
           execute_process(COMMAND
             ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
         endforeach()
-        #echo "github.workspace"
-        ls ${{ github.workspace }}
-        #echo "WORKING_DIRECTORY"
-        #ls WORKING_DIRECTORY
+   - name: Log
+     run: ls ${{ github.workspace }}
 
     - name: Build
       shell: cmake -P {0}
