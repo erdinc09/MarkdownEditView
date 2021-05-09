@@ -29,17 +29,17 @@ jobs:
             os: ubuntu-latest,
             cc: "gcc", cxx: "g++"
           }
-#        - {
-#            name: "macOS Latest Clang", artifact: "macOS-x64",
-#            os: macos-latest,
-#            cc: "clang", cxx: "clang++"
-#          }
-#        - {
-#            name: "Windows Latest MSVC", artifact: "Windows-x64",
-#            os: windows-latest,
-#            cc: "cl", cxx: "cl",
-#            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
-#          }
+        - {
+            name: "macOS Latest Clang", artifact: "macOS-x64",
+            os: macos-latest,
+            cc: "clang", cxx: "clang++"
+          }
+        - {
+            name: "Windows Latest MSVC", artifact: "Windows-x64",
+            os: windows-latest,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
 
     steps:
     - uses: actions/checkout@v1
@@ -204,8 +204,6 @@ jobs:
             ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
         endforeach()
 
-    - name: Log
-      run: ls ${{ github.workspace }}
 
     - name: Build
       shell: cmake -P {0}
