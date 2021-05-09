@@ -205,7 +205,7 @@ jobs:
         endforeach()
 
     - name: Log
-      shell: bash
+      #shell: bash
       run: |
         ls ${{ github.workspace }}
         #ls ${{ github.workspace }}/qtcreator
