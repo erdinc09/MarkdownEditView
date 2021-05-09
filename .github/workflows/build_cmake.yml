@@ -205,7 +205,6 @@ jobs:
         endforeach()
 
     - name: Log
-      #shell: bash
       run: |
         ls ${{ github.workspace }}
         #ls ${{ github.workspace }}/qtcreator
@@ -232,10 +231,18 @@ jobs:
 
         set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
 
+        if ("${{ runner.os }}" STREQUAL "Windows")
+          set(scripts_folder "share/qtcreator/scripts")
+        elseif ("${{ runner.os }}" STREQUAL "Linux")
+          set(scripts_folder "share/qtcreator/scripts")
+        elseif ("${{ runner.os }}" STREQUAL "macOS")
+          set(scripts_folder "Qt\ Creator.app/Contents/Resources/scripts")
+        endif()
+
         execute_process(
           COMMAND python
             -u
-            ${{ steps.qt_creator.outputs.qtc_dir }}/share/qtcreator/scripts/build_plugin.py
+            ${{ steps.qt_creator.outputs.qtc_dir }}/{{scripts_folder}}/build_plugin.py
             --name "$ENV{PLUGIN_NAME}-$ENV{QT_CREATOR_VERSION}-${{ matrix.config.artifact }}"
             --src .
             --build build
