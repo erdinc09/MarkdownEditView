@@ -207,8 +207,8 @@ jobs:
     - name: Log
       shell: bash
       run: |
-        #ls ${{ github.workspace }}
-        ls ${{ github.workspace }}/qtcreator
+        ls ${{ github.workspace }}
+        #ls ${{ github.workspace }}/qtcreator
 
     - name: Build
       shell: cmake -P {0}
