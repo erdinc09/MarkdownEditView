@@ -24,22 +24,22 @@ jobs:
     strategy:
       matrix:
         config:
-#        - {
-#            name: "Ubuntu Latest GCC", artifact: "Linux-x64",
-#            os: ubuntu-latest,
-#            cc: "gcc", cxx: "g++"
-#          }
-#        - {
-#            name: "macOS Latest Clang", artifact: "macOS-x64",
-#            os: macos-latest,
-#            cc: "clang", cxx: "clang++"
-#          }
-        - {
-            name: "Windows Latest MSVC", artifact: "Windows-x64",
-            os: windows-latest,
-            cc: "cl", cxx: "cl",
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
-          }
+      #  - {
+      #      name: "Ubuntu Latest GCC", artifact: "Linux-x64",
+      #      os: ubuntu-latest,
+      #      cc: "gcc", cxx: "g++"
+      #    }
+       - {
+           name: "macOS Latest Clang", artifact: "macOS-x64",
+           os: macos-latest,
+           cc: "clang", cxx: "clang++"
+         }
+        # - {
+        #     name: "Windows Latest MSVC", artifact: "Windows-x64",
+        #     os: windows-latest,
+        #     cc: "cl", cxx: "cl",
+        #     environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+        #   }
 
     steps:
     - uses: actions/checkout@v1
