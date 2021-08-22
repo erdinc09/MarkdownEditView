@@ -78,7 +78,7 @@ then, get MarkdownEditView and build it:
 * cd MarkdownEditView
 * mkdir build
 * cd build
-* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/git/qt-creator/qtcreator_build;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cd ..
 * cmake --build .
 
@@ -100,7 +100,7 @@ then, get MarkdownEditView and build it:
 * cd MarkdownEditView
 * mkdir build
 * cd build
-* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/git/qt-creator/qtcreator_build;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cd ..
 * cmake --build .
 
