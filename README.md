@@ -20,8 +20,8 @@ __Classic Theme Screen Shot:__
 ## How To Install
 
 * For Linux, MacOs and Windows you can download the plugin from [releases](https://github.com/erdinc09/MarkdownEditView/releases).
-* Since QtCreator is not packaged with qtwebengine, you need to install following dependencies from qt installation to qtcreator directory. This process will be automatized later by the plugin.
-  * Qt5.15.2 must be installed with QtWebEngine dependency.
+* Since QtCreator is not packaged with qtwebengine, you need to install following dependencies from qt installation to qtcreator (qtcreator that MarkdownEditView will be installed!) directory. This process will be automatized later by the plugin.
+  * Qt5.15.2 must be installed with QtWebEngine dependency (we will copy the dependencies from here).
   * For __linux:__  
     * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebChannel.so*       to `<Ct Creator Ins Path>`/lib/Qt/lib  
     * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebEngine.so*        to `<Ct Creator Ins Path>`/lib/Qt/lib
@@ -49,17 +49,8 @@ Not: Actually for resource, libexec and translations folders only the related fi
 ## How to Build
 
 
-Create a build directory and run
-
-    cmake -DCMAKE_PREFIX_PATH="<path_to_qtcreator>;<path to Qt5.15.2<arrch>>" -DCMAKE_BUILD_TYPE=RelWithDebInfo <path_to_plugin_source>
-    cmake --build .
-
-where `<path_to_qtcreator>` is the relative or absolute path to a Qt Creator build directory, or to
-a combined binary and development package, and `<path_to_plugin_source>` is the relative or absolute
-path to this plugin directory and <path to Qt5.15.2<arrch>> is the is the relative or absolute
-path to Qt build including Qt5WebEngine.
-
-
+* Install Qt 5.15.2 with Qt5WebEngine.
+* Follow command below:
 
 __Example for Linux:__
 
