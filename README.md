@@ -48,6 +48,7 @@ Not: Actually for resource, libexec and translations folders only the related fi
 
 ## How to Build
 
+
 Create a build directory and run
 
     cmake -DCMAKE_PREFIX_PATH="<path_to_qtcreator>;<path to Qt5.15.2<arrch>>" -DCMAKE_BUILD_TYPE=RelWithDebInfo <path_to_plugin_source>
@@ -58,21 +59,48 @@ a combined binary and development package, and `<path_to_plugin_source>` is the 
 path to this plugin directory and <path to Qt5.15.2<arrch>> is the is the relative or absolute
 path to Qt build including Qt5WebEngine.
 
+
+
 __Example for Linux:__
+
+first, get qt-crator and build it:
+
+* git clone https://github.com/qt-creator/qt-creator.git
+* cd ./qt-creator
+* git checkout v4.15.2
+* mkdir qtcreator_build
+* cd qtcreator_build
+* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/home/erdinc09/Qt/5.15.2/clang_64" ..
+
+then, get MarkdownEditView and build it:
+
 * git clone --recursive -j8 https://github.com/erdinc09/MarkdownEditView.git
 * cd MarkdownEditView
 * mkdir build
 * cd build
-* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator-4.15.0;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/Projects/qt-creator;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cd ..
 * cmake --build .
 
 __Example for Mac:__
+
+first, get qt-crator and build it:
+
+* git clone https://github.com/qt-creator/qt-creator.git
+* cd ./qt-creator
+* git checkout v4.15.2
+* mkdir qtcreator_build
+* cd qtcreator_build
+* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Qt/5.15.2/clang_64" ..
+* cmake --build .
+
+then, get MarkdownEditView and build it:
+
 * git clone --recursive -j8 https://github.com/erdinc09/MarkdownEditView.git
 * cd MarkdownEditView
 * mkdir build
 * cd build
-* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator-4.15.0;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Projects/qt-creator;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cd ..
 * cmake --build .
 

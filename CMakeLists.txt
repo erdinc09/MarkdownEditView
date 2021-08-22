@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.18.3)
 
 
 #You need this only if you change the build type in QtCreator while building in it.
