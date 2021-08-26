@@ -58,19 +58,19 @@ first, get qt-crator and build it:
 
 * git clone https://github.com/qt-creator/qt-creator.git
 * cd ./qt-creator
-* git checkout v4.15.2
+* git checkout v5.0.0
 * mkdir qtcreator_build
-* cd qtcreator_build
-* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/home/erdinc09/Qt/5.15.2/clang_64" ..
+* cd ./qtcreator_build
+* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/home/erdinc09/Qt/5.15.2/gcc_64" ..
+* cmake --build .
 
 then, get MarkdownEditView and build it:
 
 * git clone --recursive -j8 https://github.com/erdinc09/MarkdownEditView.git
-* cd MarkdownEditView
+* cd ./MarkdownEditView
 * mkdir build
-* cd build
+* cd ./build
 * cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/git/qt-creator/qtcreator_build;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
-* cd ..
 * cmake --build .
 
 __Example for Mac:__
@@ -79,26 +79,25 @@ first, get qt-crator and build it:
 
 * git clone https://github.com/qt-creator/qt-creator.git
 * cd ./qt-creator
-* git checkout v4.15.2
+* git checkout v5.0.0
 * mkdir qtcreator_build
-* cd qtcreator_build
+* cd ./qtcreator_build
 * cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Qt/5.15.2/clang_64" ..
 * cmake --build .
 
 then, get MarkdownEditView and build it:
 
 * git clone --recursive -j8 https://github.com/erdinc09/MarkdownEditView.git
-* cd MarkdownEditView
+* cd ./MarkdownEditView
 * mkdir build
-* cd build
+* cd ./build
 * cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/git/qt-creator/qtcreator_build;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
-* cd ..
 * cmake --build .
 
 __Note that for directory delimeter is same! ";"__
 
 
-## How to Run
+## How to Run (For Development Of Plugin)
 
 Run a compatible Qt Creator with the additional command line argument
 
