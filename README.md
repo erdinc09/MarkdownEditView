@@ -58,7 +58,7 @@ first, get qt-crator and build it:
 
 * git clone https://github.com/qt-creator/qt-creator.git
 * cd ./qt-creator
-* git checkout v5.0.0
+* git checkout tags/v5.0.0
 * mkdir qtcreator_build
 * cd ./qtcreator_build
 * cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/home/erdinc09/Qt/5.15.2/gcc_64" ..
@@ -79,7 +79,7 @@ first, get qt-crator and build it:
 
 * git clone https://github.com/qt-creator/qt-creator.git
 * cd ./qt-creator
-* git checkout v5.0.0
+* git checkout tags/v5.0.0
 * mkdir qtcreator_build
 * cd ./qtcreator_build
 * cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Qt/5.15.2/clang_64" ..

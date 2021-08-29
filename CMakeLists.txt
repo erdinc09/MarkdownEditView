@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.18.3)
 
 
 #You need this only if you change the build type in QtCreator while building in it.
-#list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/git/qt-creator/qtcreator_build")
-#list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/Qt/5.15.2/clang_64")
+#list(APPEND CMAKE_PREFIX_PATH "/User/erdinc09/git/qt-creator/qtcreator_build")
+#list(APPEND CMAKE_PREFIX_PATH "/User/erdinc09/Qt/5.15.2/clang_64")
 
 include("external/cmake/HunterGate.cmake")
 huntergate(URL "https://github.com/cpp-pm/hunter/archive/v0.23.279.tar.gz" SHA1 "0a8ede485c3e9c1ceed8ccb989ab6c0aba1f4db7")
@@ -20,6 +20,10 @@ if (CMAKE_BUILD_TYPE MATCHES Release)
     add_definitions("-DQT_NO_DEBUG_OUTPUT")
 endif()
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    #to make QtWebEngine happy...
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=gold")
+endif()
 
 find_package(Qt5 COMPONENTS WebEngineWidgets WebChannel REQUIRED)
 find_package(QtCreator COMPONENTS Core REQUIRED)
