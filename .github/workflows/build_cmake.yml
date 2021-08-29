@@ -9,6 +9,7 @@ env:
   PLUGIN_NAME: MarkdownEditView
   QT_VERSION: 5.15.2
   QT_CREATOR_VERSION: 5.0.0
+  PLUGIN_VERSION: 1.5.0
   QT_CREATOR_SNAPSHOT: NO
   CMAKE_VERSION: 3.18.3
   NINJA_VERSION: 1.10.1
@@ -243,7 +244,7 @@ jobs:
           COMMAND python
             -u
             ${{ steps.qt_creator.outputs.qtc_dir }}/${scripts_folder}/build_plugin.py
-            --name "$ENV{PLUGIN_NAME}-$ENV{QT_CREATOR_VERSION}-${{ matrix.config.artifact }}"
+            --name "$ENV{PLUGIN_NAME}-$ENV{PLUGIN_VERSION}-${{ matrix.config.artifact }}"
             --src .
             --build build
             --qt-path "${{ steps.qt.outputs.qt_dir }}"
@@ -261,8 +262,8 @@ jobs:
     - uses: actions/upload-artifact@v2
       id: upload_artifact
       with:
-        path: ./${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
-        name: ${{ env.PLUGIN_NAME}}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
+        path: ./${{ env.PLUGIN_NAME }}-${{ env.PLUGIN_VERSION }}-${{ matrix.config.artifact }}.7z
+        name: ${{ env.PLUGIN_NAME}}-${{ env.PLUGIN_VERSION }}-${{ matrix.config.artifact }}.7z
 
   release:
     if: contains(github.ref, 'tags/v')
