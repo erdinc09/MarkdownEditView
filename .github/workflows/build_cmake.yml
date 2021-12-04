@@ -126,7 +126,7 @@ jobs:
         elseif ("${{ runner.os }}" STREQUAL "macOS")
           set(url_os "mac_x64")
           set(qt_package_arch_suffix "clang_64")
-          set(qt_dir_prefix "${qt_version}/clang_64")
+          set(qt_dir_prefix "${qt_version}/macos")
           set(qt_package_suffix "-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64")
         endif()
 
