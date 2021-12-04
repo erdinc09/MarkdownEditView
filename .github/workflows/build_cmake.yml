@@ -150,27 +150,27 @@ jobs:
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${archive} WORKING_DIRECTORY qt6)
         endfunction()
 
-
-        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621 --> qt_base_url
-        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.clang_64/
-        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.clang_64/6.2.1-0-202110220823qtbase-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64.7z
         # base packages
-        foreach(package qtbase qtdeclarative)
+        foreach(package qtbase) #qtdeclarative
           downloadAndExtract(
             "${qt_base_url}/qt.qt6.${qt_version_dotless}.${qt_package_arch_suffix}/${qt_package_version}${package}${qt_package_suffix}.7z"
             ${package}.7z
           )
         endforeach()
 
-        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.addons.qtwebchannel.clang_64/
-        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.addons.qtwebchannel.clang_64/6.2.1-0-202110220823qtwebchannel-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64.7z
         # addon packages
-        foreach(package qtwebchannel qtwebengine qtpositioning)
+        foreach(package qtwebchannel qtwebengine)
           downloadAndExtract(
             "${qt_base_url}/qt.qt6.${qt_version_dotless}.addons.${package}.${qt_package_arch_suffix}/${qt_package_version}${package}${qt_package_suffix}.7z"
             ${package}.7z
           )
         endforeach()
+
+        # qtpositioning package
+        downloadAndExtract(
+          "${qt_base_url}/qt.qt6.${qt_version_dotless}.addons.qtpositioning.${qt_package_arch_suffix}/${qt_package_version}qtlocation${qt_package_suffix}.7z"
+          ${package}.7z
+        )
 
         #qt5compat package
         downloadAndExtract(
