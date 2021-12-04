@@ -151,9 +151,9 @@ jobs:
         endfunction()
 
 
-# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621 --> qt_base_url
-# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.clang_64/
-# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.clang_64/6.2.1-0-202110220823qtbase-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64.7z
+        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621 --> qt_base_url
+        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.clang_64/
+        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.clang_64/6.2.1-0-202110220823qtbase-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64.7z
         # base packages
         foreach(package qtbase qtdeclarative)
           downloadAndExtract(
@@ -162,9 +162,8 @@ jobs:
           )
         endforeach()
 
-# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.addons.qtwebchannel.clang_64/
-# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.addons.qtwebchannel.clang_64/6.2.1-0-202110220823qtwebchannel-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64.7z
-
+        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.addons.qtwebchannel.clang_64/
+        # https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.addons.qtwebchannel.clang_64/6.2.1-0-202110220823qtwebchannel-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64.7z
         # addon packages
         foreach(package qtwebchannel qtwebengine qtpositioning)
           downloadAndExtract(
@@ -178,11 +177,6 @@ jobs:
             "${qt_base_url}/qt.qt6.${qt_version_dotless}.qt5compat.${qt_package_arch_suffix}/${qt_package_version}qt5compat${qt_package_suffix}.7z"
             ${package}.7z
           )
-
-#        downloadAndExtract(
-#            "${qt_base_url}/qt.qt5.${qt_version_dotless}.qtwebengine.${qt_package_arch_suffix}/${qt_package_version}qtwebengine${qt_package_suffix}.7z"
-#            ${package}.7z
-#          )
 
         # uic depends on libicu56.so
         if ("${{ runner.os }}" STREQUAL "Linux")
