@@ -77,7 +77,7 @@ configure_file(
   @ONLY
   )
 
-# html file generator. This generated files enables the plugin adapt to qtcreator theme (dark & classic)
+# html file generator. Generated html files, by this program, enables the plugin adapt to qtcreator theme (dark & classic)
 add_executable(htmlgenerator
     ${CMAKE_CURRENT_SOURCE_DIR}/src/htmlgenerator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/htmlgenerator.h

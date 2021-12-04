@@ -21,16 +21,15 @@ __Classic Theme Screen Shot:__
 
 * For Linux, MacOs and Windows you can download the plugin from [releases](https://github.com/erdinc09/MarkdownEditView/releases).
 * Since QtCreator is not packaged with qtwebengine, you need to install following dependencies from qt installation to qtcreator (qtcreator that MarkdownEditView will be installed!) directory. This process will be automatized later by the plugin.
-  * Qt5.15.2 must be installed with QtWebEngine dependency (we will copy the dependencies from here).
+  * Qt6.2.1 must be installed with Qt6WebEngine and Qt6WebChannel dependency (we will copy the dependencies from here).
   * For __linux:__  
-    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebChannel.so*       to `<Ct Creator Ins Path>`/lib/Qt/lib  
-    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebEngine.so*        to `<Ct Creator Ins Path>`/lib/Qt/lib
-    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebEngineCore.so*    to `<Ct Creator Ins Path>`/lib/Qt/lib
-    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/lib/libQt5WebEngineWidgets.so* to `<Ct Creator Ins Path>`/lib/Qt/lib
+    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/lib/libQt6WebChannel.so*       to `<Ct Creator Ins Path>`/lib/Qt/lib  
+    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/lib/libQt6WebEngineCore.so*    to `<Ct Creator Ins Path>`/lib/Qt/lib
+    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/lib/libQt6WebEngineWidgets.so* to `<Ct Creator Ins Path>`/lib/Qt/lib
     * check the symbolink links, when I checked they were all relative
-    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/libexec        to `<Ct Creator Ins Path>`/lib/Qt/
-    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/resources      to `<Ct Creator Ins Path>`/lib/Qt/
-    * copy  `<Qt Installation Path>`/5.15.2/gcc_64/translations   to `<Ct Creator Ins Path>`/lib/Qt/
+    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/libexec        to `<Ct Creator Ins Path>`/lib/Qt/
+    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/resources      to `<Ct Creator Ins Path>`/lib/Qt/
+    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/translations   to `<Ct Creator Ins Path>`/lib/Qt/
   
 Not: Actually for resource, libexec and translations folders only the related files should be copied. But just now, copy all files. I will update later.
 
@@ -48,10 +47,10 @@ Not: Actually for resource, libexec and translations folders only the related fi
 ## How to Build
 
 
-* Install Qt 5.15.2 with Qt5WebEngine.
+* Install Qt 6.2.1 with Qt6WebEngine and Qt6WebChannel (for to build qtcreator Qt6Positioning and Qt5 Compatibility also needed).
 * Follow command below:
 
-__Example for Linux:__
+__For Linux:__
 
 first, get qt-crator and build it:
 
@@ -69,10 +68,10 @@ then, get MarkdownEditView and build it:
 * cd ./MarkdownEditView
 * mkdir build
 * cd ./build
-* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/git/qt-creator/qtcreator_build;/home/erdinc09/Qt/5.15.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/git/qt-creator/qtcreator_build;/home/erdinc09/Qt/6.2.1/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cmake --build .
 
-__Example for Mac:__
+__For Mac:__
 
 first, get qt-crator and build it:
 
@@ -93,7 +92,7 @@ then, get MarkdownEditView and build it:
 * cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/git/qt-creator/qtcreator_build;/Users/erdinc09/Qt/6.2.1/macos" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cmake --build .
 
-__Note that for directory delimeter is same! ";"__
+__Note that directory delimeter is same for in all platforms! ";"__
 
 
 ## How to Run (For Development Of Plugin)
