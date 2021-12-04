@@ -7,12 +7,11 @@ on:
       - main
 env:
   PLUGIN_NAME: MarkdownEditView
-  QT_VERSION: 5.15.2
-  QT_CREATOR_VERSION: 5.0.0
-  PLUGIN_VERSION: 1.5.0
+  QT_VERSION: 6.2.1
+  QT_CREATOR_VERSION: 6.0.0
   QT_CREATOR_SNAPSHOT: NO
-  CMAKE_VERSION: 3.18.3
-  NINJA_VERSION: 1.10.1
+  CMAKE_VERSION: 3.21.1
+  NINJA_VERSION: 1.10.2
 
   #for windows only
   VS160COMNTOOLS: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/Tools/"
@@ -122,25 +121,25 @@ jobs:
           set(url_os "linux_x64")
           set(qt_package_arch_suffix "gcc_64")
           set(qt_dir_prefix "${qt_version}/gcc_64")
-          set(qt_package_suffix "-Linux-RHEL_7_6-GCC-Linux-RHEL_7_6-X86_64")
+          set(qt_package_suffix "-Linux-RHEL_8_2-GCC-Linux-RHEL_8_2-X86_64")
         elseif ("${{ runner.os }}" STREQUAL "macOS")
           set(url_os "mac_x64")
           set(qt_package_arch_suffix "clang_64")
           set(qt_dir_prefix "${qt_version}/clang_64")
-          set(qt_package_suffix "-MacOS-MacOS_10_13-Clang-MacOS-MacOS_10_13-X86_64")
+          set(qt_package_suffix "-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64")
         endif()
 
-        set(qt_base_url "https://download.qt.io/online/qtsdkrepository/${url_os}/desktop/qt5_${qt_version_dotless}")
+        set(qt_base_url "https://download.qt.io/online/qtsdkrepository/${url_os}/desktop/qt6_${qt_version_dotless}")
         file(DOWNLOAD "${qt_base_url}/Updates.xml" ./Updates.xml SHOW_PROGRESS)
 
         file(READ ./Updates.xml updates_xml)
-        string(REGEX MATCH "<Name>qt.qt5.*<Version>([0-9+-.]+)</Version>" updates_xml_output "${updates_xml}")
+        string(REGEX MATCH "<Name>qt.qt6.*<Version>([0-9+-.]+)</Version>" updates_xml_output "${updates_xml}")
         set(qt_package_version ${CMAKE_MATCH_1})
 
         file(MAKE_DIRECTORY qt5)
 
         # Save the path for other steps
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/qt5/${qt_dir_prefix}" qt_dir)
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/qt6/${qt_dir_prefix}" qt_dir)
         message("::set-output name=qt_dir::${qt_dir}")
 
         message("Downloading Qt to ${qt_dir}")
@@ -150,22 +149,44 @@ jobs:
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${archive} WORKING_DIRECTORY qt5)
         endfunction()
 
-        foreach(package qtbase qtdeclarative qtwebchannel qtlocation)
+
+# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621 --> qt_base_url
+# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.clang_64/
+# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.clang_64/6.2.1-0-202110220823qtbase-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64.7z
+        # base packages
+        foreach(package qtbase qtdeclarative)
           downloadAndExtract(
-            "${qt_base_url}/qt.qt5.${qt_version_dotless}.${qt_package_arch_suffix}/${qt_package_version}${package}${qt_package_suffix}.7z"
+            "${qt_base_url}/qt.qt6.${qt_version_dotless}.${qt_package_arch_suffix}/${qt_package_version}${package}${qt_package_suffix}.7z"
             ${package}.7z
           )
         endforeach()
 
-        downloadAndExtract(
-            "${qt_base_url}/qt.qt5.${qt_version_dotless}.qtwebengine.${qt_package_arch_suffix}/${qt_package_version}qtwebengine${qt_package_suffix}.7z"
+# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.addons.qtwebchannel.clang_64/
+# https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_621/qt.qt6.621.addons.qtwebchannel.clang_64/6.2.1-0-202110220823qtwebchannel-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64.7z
+
+        # addon packages
+        foreach(package qtwebchannel qtwebengine qtpositioning)
+          downloadAndExtract(
+            "${qt_base_url}/qt.qt6.${qt_version_dotless}.addons.${package}.${qt_package_arch_suffix}/${qt_package_version}${package}${qt_package_suffix}.7z"
             ${package}.7z
           )
+        endforeach()
+
+        #qt5compat package
+        downloadAndExtract(
+            "${qt_base_url}/qt.qt6.${qt_version_dotless}.qt5compat.${qt_package_arch_suffix}/${qt_package_version}qt5compat${qt_package_suffix}.7z"
+            ${package}.7z
+          )
+
+#        downloadAndExtract(
+#            "${qt_base_url}/qt.qt5.${qt_version_dotless}.qtwebengine.${qt_package_arch_suffix}/${qt_package_version}qtwebengine${qt_package_suffix}.7z"
+#            ${package}.7z
+#          )
 
         # uic depends on libicu56.so
         if ("${{ runner.os }}" STREQUAL "Linux")
           downloadAndExtract(
-            "${qt_base_url}/qt.qt5.${qt_version_dotless}.${qt_package_arch_suffix}/${qt_package_version}icu-linux-Rhel7.2-x64.7z"
+            "${qt_base_url}/qt.qt6.${qt_version_dotless}.${qt_package_arch_suffix}/${qt_package_version}icu-linux-Rhel7.2-x64.7z"
             icu.7z
           )
         endif()

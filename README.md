@@ -36,13 +36,12 @@ Not: Actually for resource, libexec and translations folders only the related fi
 
   * For __macos:__
     * This is easier than linux. All resource and configuratin files are kept together.
-    * copy  `<Qt Installation Path`>/5.15.2/clang_64/lib/QtWebChannel.framework           to  `<Qt Creator.app`>/Contents/Frameworks/
-    * copy  `<Qt Installation Path`>/5.15.2/clang_64/lib/QtWebEngine.framework            to  `<Qt Creator.app`>/Contents/Frameworks/
-    * copy  `<Qt Installation Path`>/5.15.2/clang_64/lib/QtWebEngineCore.framework        to  `<Qt Creator.app`>/Contents/Frameworks/
-    * copy  `<Qt Installation Path`>/5.15.2/clang_64/lib/QtWebEngineWidgets.framework     to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.1/macos/lib/QtWebChannel.framework           to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.1/macos/lib/QtWebEngineCore.framework        to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.1/macos/lib/QtWebEngineWidgets.framework     to  `<Qt Creator.app`>/Contents/Frameworks/
   * For __windows:__
     * Since I do not have Windows machine I cannot write the exact steps but the logic same.
-    * By the help of [official qtwebengine5 deployment notes](https://doc.qt.io/qt-5/qtwebengine-deploying.html) you can copy the related files.
+    * By the help of [official qtwebengine6 deployment notes](https:/   /doc.qt.io/qt-6/qtwebengine-deploying.html) you can copy the related files.
     * As soon as I have a windows machine I will write down exact steps.
 
 
@@ -58,10 +57,10 @@ first, get qt-crator and build it:
 
 * git clone https://github.com/qt-creator/qt-creator.git
 * cd ./qt-creator
-* git checkout tags/v5.0.0
+* git checkout v6.0.0
 * mkdir qtcreator_build
 * cd ./qtcreator_build
-* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/home/erdinc09/Qt/5.15.2/gcc_64" ..
+* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/home/erdinc09/Qt/6.2.1/gcc_64" ..
 * cmake --build .
 
 then, get MarkdownEditView and build it:
@@ -79,10 +78,10 @@ first, get qt-crator and build it:
 
 * git clone https://github.com/qt-creator/qt-creator.git
 * cd ./qt-creator
-* git checkout tags/v5.0.0
+* git checkout v6.0.0
 * mkdir qtcreator_build
 * cd ./qtcreator_build
-* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Qt/5.15.2/clang_64" ..
+* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Qt/6.2.1/macos;/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain" ..
 * cmake --build .
 
 then, get MarkdownEditView and build it:
@@ -91,7 +90,7 @@ then, get MarkdownEditView and build it:
 * cd ./MarkdownEditView
 * mkdir build
 * cd ./build
-* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/git/qt-creator/qtcreator_build;/Users/erdinc09/Qt/5.15.2/clang_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/git/qt-creator/qtcreator_build;/Users/erdinc09/Qt/6.2.1/macos" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cmake --build .
 
 __Note that for directory delimeter is same! ";"__
