@@ -14,6 +14,7 @@
 
 #include "previewpage.h"
 
+#include <QDebug>
 #include <QDesktopServices>
 namespace MarkdownEditView {
 namespace Internal {
@@ -24,10 +25,15 @@ bool PreviewPage::acceptNavigationRequest(const QUrl &url,
   Q_UNUSED(isMainFrame)
   Q_UNUSED(type)
 
-  // Only allow qrc:/...
-  if (url.scheme() == QString("qrc")) return true;
-  QDesktopServices::openUrl(url);
-  return false;
+  qDebug() << "url.scheme():" << url.scheme();
+  // Only allow qrc:/ or file:/
+  if (url.scheme() == QString("qrc") || url.scheme() == QString("file")) {
+    return true;
+  } else {
+    // open links in external browser
+    QDesktopServices::openUrl(url);
+    return false;
+  }
 }
 }  // namespace Internal
 }  // namespace MarkdownEditView

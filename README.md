@@ -16,7 +16,6 @@ __Classic Theme Screen Shot:__
 ![](./doc/light.png)
 
 
-
 ## How To Install
 
 * For Linux, MacOs and Windows you can download the plugin from [releases](https://github.com/erdinc09/MarkdownEditView/releases).
@@ -40,7 +39,7 @@ Not: Actually for resource, libexec and translations folders only the related fi
     * copy  `<Qt Installation Path`>/6.2.1/macos/lib/QtWebEngineWidgets.framework     to  `<Qt Creator.app`>/Contents/Frameworks/
   * For __windows:__
     * Since I do not have Windows machine I cannot write the exact steps but the logic same.
-    * By the help of [official qtwebengine6 deployment notes](https:/   /doc.qt.io/qt-6/qtwebengine-deploying.html) you can copy the related files.
+    * By the help of [official qtwebengine6 deployment notes](https://doc-snapshots.qt.io/qt6-dev/qtwebengine-deploying.html) you can copy the related files.
     * As soon as I have a windows machine I will write down exact steps.
 
 

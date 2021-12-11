@@ -16,6 +16,7 @@
 #define MARKDOWNTEXTEDITORFACTORY_H
 #include <texteditor/texteditor.h>
 
+#include <QDebug>
 #include <QList>
 
 #include "di/dependencyprovider.h"
@@ -36,7 +37,17 @@ class MarkdownTextEditorFactory : public TextEditor::TextEditorFactory,
 
  public slots:
   void currentEditorChanged(Core::IEditor *editor) const;
+
+ private:
+  void ensureMarkDownEditViewHomeFolderExists();
 };
+
+class MarkdownTextEditor : public TextEditor::BaseTextEditor {
+  Q_OBJECT
+
+  friend class MarkdownTextEditorFactory;
+};
+
 }  // namespace Internal
 }  // namespace MarkdownEditView
 

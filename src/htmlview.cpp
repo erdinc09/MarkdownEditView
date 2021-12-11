@@ -15,10 +15,13 @@
 #include "htmlview.h"
 
 #include <QDebug>
+#include <QDir>
+#include <QFile>
 #include <QWebChannel>
 
 #include "eb/eventbus.h"
 #include "firstlinenumberinpreviewchangedevent.h"
+#include "markdowneditviewconstants.h"
 #include "previewpage.h"
 
 namespace MarkdownEditView {
@@ -35,17 +38,28 @@ HtmlView::HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_)
   page->setWebChannel(channel.get());
 
   if (darkTheme) {
-    setUrl(QUrl("qrc:/index_dark.html"));
+    // page->setUrl(QUrl("qrc:/markdowneditview/index_dark.html"));
+    page->setUrl(QUrl("file:" + QDir::home().absolutePath() +
+                      QDir::separator() +
+                      Constants::MARKDOWNEDITVIEW_HOME_FOLDER +
+                      QDir::separator() + "index_dark.html"));
     page->setBackgroundColor(QColor{51, 52, 44});
   } else {
-    setUrl(QUrl("qrc:/index_light.html"));
+    // page->setUrl(QUrl("qrc:/index_light.html"));
+    page->setUrl(QUrl("file:" + QDir::home().absolutePath() +
+                      QDir::separator() +
+                      Constants::MARKDOWNEDITVIEW_HOME_FOLDER +
+                      QDir::separator() + "index_light.html"));
   }
 }
 
 void HtmlView::handleEvent(const TextChangedEvent &event) {
+  qDebug() << "handleEvent(const TextChangedEvent &event)" << event.getText();
   emit mediator.textChanged(event.getText(), event.getPath());
-  emit mediator.firstLineNumberInEditorChanged(
-      markdownEditView->getFirstLineNumberInEditor());
+  if (!event.getText().isEmpty()) {
+    emit mediator.firstLineNumberInEditorChanged(
+        markdownEditView->getFirstLineNumberInEditor());
+  }
 }
 
 void HtmlView::handleEvent(const FirstLineNumberInEditorChangedEvent &event) {
@@ -54,6 +68,7 @@ void HtmlView::handleEvent(const FirstLineNumberInEditorChangedEvent &event) {
 }
 
 void Mediator::pageLoaded() const {
+  qDebug() << "pageLoaded() ";
   emit textChanged(markdownEditView->getText(), markdownEditView->getPath());
   emit firstLineNumberInEditorChanged(
       markdownEditView->getFirstLineNumberInEditor());

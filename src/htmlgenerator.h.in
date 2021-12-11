@@ -2,6 +2,8 @@
 
 #include <QString>
 
-const QString INDEX_TEMPLATE_HTML = "@INDEX_TEMPLATE_HTML@";
-const QString INDEX_DARK_HTML = "@INDEX_DARK_HTML@";
-const QString INDEX_LIGHT_HTML = "@INDEX_LIGHT_HTML@";
+/*This file is auto-generated. DO NOT EDIT!*/
+
+inline const QString INDEX_TEMPLATE_HTML = "@INDEX_TEMPLATE_HTML@";
+inline const QString INDEX_DARK_HTML = "@INDEX_DARK_HTML@";
+inline const QString INDEX_LIGHT_HTML = "@INDEX_LIGHT_HTML@";

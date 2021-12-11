@@ -1,6 +1,6 @@
 <RCC>
-    <qresource prefix="/">
-        <file>index_light.html</file>
+    <qresource prefix="/markdowneditview">
+        <file>index_dark.html</file>
         <file>3rdparty/highlight/styles/a11y-dark.css</file>
         <file>3rdparty/highlight/styles/a11y-light.css</file>
         <file>3rdparty/highlight/styles/agate.css</file>
@@ -106,12 +106,6 @@
         <file>3rdparty/highlight/LICENSE</file>
         <file>3rdparty/highlight/README.md</file>
         <file>3rdparty/highlight/README.ru.md</file>
-        <file>3rdparty/github_markdown.css</file>
-        <file>3rdparty/header_number.css</file>
-        <file>3rdparty/MARKDOWN-LICENSE.txt</file>
-        <file>3rdparty/MARKED-LICENSE.txt</file>
-        <file>3rdparty/marked.js</file>
-        <file>3rdparty/github_markdown_dark.css</file>
         <file>3rdparty/markdown_themes/clearness/clearness.css</file>
         <file>3rdparty/markdown_themes/clearness-dark/clearness-dark.css</file>
         <file>3rdparty/markdown_themes/github/github.css</file>
@@ -126,9 +120,17 @@
         <file>3rdparty/markdown_themes/wood-ri/wood-ri.css</file>
         <file>3rdparty/markdown_themes/wood-ri/wood.jpg</file>
         <file>3rdparty/markdown_themes/markdown.css</file>
-        <file>index_dark.html</file>
-        <file>index_template.html</file>
+        <file>3rdparty/github_markdown.css</file>
+        <file>3rdparty/github_markdown_dark.css</file>
+        <file>3rdparty/header_number.css</file>
+        <file>3rdparty/MARKDOWN-LICENSE.txt</file>
+        <file>3rdparty/markdown.css</file>
+        <file>3rdparty/MARKED-LICENSE.txt</file>
+        <file>3rdparty/marked.js</file>
         <file>dark_scroll_bar.css</file>
+        <file>index_light.html</file>
+        <file>index_template.html</file>
         <file>light_scroll_bar.css</file>
+        <file>version.ini</file>
     </qresource>
 </RCC>

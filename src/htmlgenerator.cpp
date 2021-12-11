@@ -8,7 +8,7 @@
 int main() {
   QFile templateHtmlFile(INDEX_TEMPLATE_HTML);
   if (!templateHtmlFile.exists()) {
-    qDebug() << "NO FILE " << INDEX_TEMPLATE_HTML;
+    qCritical() << "File Not Found: " << INDEX_TEMPLATE_HTML;
     exit(-1);
   }
 
@@ -17,9 +17,11 @@ int main() {
     htmlTemplate = htmlTemplate + QString::fromUtf8(templateHtmlFile.readAll());
     templateHtmlFile.close();
   } else {
-    qDebug() << "Cannot Open File " << INDEX_TEMPLATE_HTML;
+    qCritical() << "Cannot Open File " << INDEX_TEMPLATE_HTML;
     exit(-1);
   }
+
+  qInfo() << "Generating html files";
 
   QString darkHtml = htmlTemplate;
   darkHtml.replace("{markdown_theme}", "node-dark");
@@ -44,4 +46,6 @@ int main() {
     stream << lightHtml;
     lightHtmlFile.close();
   }
+
+  qInfo() << "All html files are generated.";
 }

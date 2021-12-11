@@ -38,7 +38,6 @@
 #include "eb/eventbus.h"
 #include "firstlinenumberineditorchangedevent.h"
 #include "textchangedevent.h"
-
 namespace MarkdownEditView {
 namespace Internal {
 
@@ -53,6 +52,7 @@ void MarkdownTextEditorWidget::finalizeInitialization() {
   setLineSeparatorsAllowed(true);
   textDocument()->setSyntaxHighlighter(highlighter.data());
   setCodeFoldingSupported(false);
+  setReadOnly(false);
 }
 
 void MarkdownTextEditorWidget::openFinishedSuccessfully() {
@@ -65,6 +65,8 @@ void MarkdownTextEditorWidget::openFinishedSuccessfully() {
   connect(verticalScrollBar(), SIGNAL(actionTriggered(int)), this,
           SLOT(verticalScrollbarActionTriggered(int)));
 
+  qDebug() << "sending TextChangedEvent in openFinishedSuccessfully()"
+           << document()->toPlainText();
   aeb::postEvent<>(TextChangedEvent{
       document()->toPlainText(),
       QString{textDocument()->filePath().absolutePath().toString()}});
@@ -103,9 +105,16 @@ void MarkdownTextEditorWidget::handleEvent(
 }
 
 void MarkdownTextEditorWidget::contentsChangedWithPosition(int, int, int) {
-  aeb::postEvent<>(TextChangedEvent{
-      document()->toPlainText(),
-      QString{textDocument()->filePath().absolutePath().toString()}});
+  if (currentTextEditorWidget() ==
+      this) {  // BUG: in qtc 6.0.0, this event triggered after editor closed.
+               // Therefore we check if this editor is currentTextEditorWidget
+    qDebug() << "sending TextChangedEvent in contentsChangedWithPosition(int, "
+                "int, int)"
+             << document()->toPlainText();
+    aeb::postEvent<>(TextChangedEvent{
+        document()->toPlainText(),
+        QString{textDocument()->filePath().absolutePath().toString()}});
+  }
 }
 
 void MarkdownTextEditorWidget::verticalScrollbarActionTriggered(int) {
