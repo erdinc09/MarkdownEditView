@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.21.1)
 
 #You need this only if you change the build type in QtCreator while building in it.
 #list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/git/qt-creator/qtcreator_build")
-#list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/Qt/6.2.1/macos")
+#list(APPEND CMAKE_PREFIX_PATH "/Users/erdinc09/Qt/6.2.2/macos")
 
 include("external/cmake/HunterGate.cmake")
 huntergate(URL "https://github.com/cpp-pm/hunter/archive/v0.23.279.tar.gz" SHA1 "0a8ede485c3e9c1ceed8ccb989ab6c0aba1f4db7")

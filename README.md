@@ -19,24 +19,25 @@ __Classic Theme Screen Shot:__
 ## How To Install
 
 * For Linux, MacOs and Windows you can download the plugin from [releases](https://github.com/erdinc09/MarkdownEditView/releases).
-* Since QtCreator is not packaged with qtwebengine, you need to install following dependencies from qt installation to qtcreator (qtcreator that MarkdownEditView will be installed!) directory. This process will be automatized later by the plugin.
-  * Qt6.2.1 must be installed with Qt6WebEngine and Qt6WebChannel dependency (we will copy the dependencies from here).
+* Since QtCreator is not packaged with Qt6WebEngine,Qt6WebChannel and Qt6Positioning, you need to install following dependencies from qt installation to qtcreator (qtcreator that MarkdownEditView will be installed!) directory. This process will be automatized later by the plugin.
+  * Qt6.2.2 must be installed with Qt6WebEngine, Qt6WebChannel and Qt6Positioning dependency (we will copy the dependencies from here).
   * For __linux:__  
-    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/lib/libQt6WebChannel.so*       to `<Ct Creator Ins Path>`/lib/Qt/lib  
-    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/lib/libQt6WebEngineCore.so*    to `<Ct Creator Ins Path>`/lib/Qt/lib
-    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/lib/libQt6WebEngineWidgets.so* to `<Ct Creator Ins Path>`/lib/Qt/lib
-    * check the symbolink links, when I checked they were all relative
-    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/libexec        to `<Ct Creator Ins Path>`/lib/Qt/
-    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/resources      to `<Ct Creator Ins Path>`/lib/Qt/
-    * copy  `<Qt Installation Path>`/6.2.1/gcc_64/translations   to `<Ct Creator Ins Path>`/lib/Qt/
+    * copy  `<Qt Installation Path>`/6.2.2/gcc_64/lib/libQt6WebChannel.so*       to `<Ct Creator Ins Path>`/lib/Qt/lib  
+    * copy  `<Qt Installation Path>`/6.2.2/gcc_64/lib/libQt6WebEngineCore.so*    to `<Ct Creator Ins Path>`/lib/Qt/lib
+    * copy  `<Qt Installation Path>`/6.2.2/gcc_64/lib/libQt6WebEngineWidgets.so* to `<Ct Creator Ins Path>`/lib/Qt/lib
+    * copy  `<Qt Installation Path>`/6.2.2/gcc_64/lib/libQt6Positioning.so* to `<Ct Creator Ins Path>`/lib/Qt/lib
+    * copy  `<Qt Installation Path>`/6.2.2/gcc_64/libexec        to `<Ct Creator Ins Path>`/lib/Qt/
+    * copy  `<Qt Installation Path>`/6.2.2/gcc_64/resources      to `<Ct Creator Ins Path>`/lib/Qt/
+    * copy  `<Qt Installation Path>`/6.2.2/gcc_64/translations   to `<Ct Creator Ins Path>`/lib/Qt/
   
 Not: Actually for resource, libexec and translations folders only the related files should be copied. But just now, copy all files. I will update later.
 
   * For __macos:__
     * This is easier than linux. All resource and configuratin files are kept together.
-    * copy  `<Qt Installation Path`>/6.2.1/macos/lib/QtWebChannel.framework           to  `<Qt Creator.app`>/Contents/Frameworks/
-    * copy  `<Qt Installation Path`>/6.2.1/macos/lib/QtWebEngineCore.framework        to  `<Qt Creator.app`>/Contents/Frameworks/
-    * copy  `<Qt Installation Path`>/6.2.1/macos/lib/QtWebEngineWidgets.framework     to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.2/macos/lib/QtWebChannel.framework           to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.2/macos/lib/QtWebEngineCore.framework        to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.2/macos/lib/QtWebEngineWidgets.framework     to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.2/macos/lib/QtPositioning.framework          to  `<Qt Creator.app`>/Contents/Frameworks/
   * For __windows:__
     * Since I do not have Windows machine I cannot write the exact steps but the logic same.
     * By the help of [official qtwebengine6 deployment notes](https://doc-snapshots.qt.io/qt6-dev/qtwebengine-deploying.html) you can copy the related files.
@@ -46,7 +47,7 @@ Not: Actually for resource, libexec and translations folders only the related fi
 ## How to Build
 
 
-* Install Qt 6.2.1 with Qt6WebEngine and Qt6WebChannel (for to build qtcreator Qt6Positioning and Qt5 Compatibility also needed).
+* Install Qt 6.2.2 with Qt6WebEngine and Qt6WebChannel (for to build qtcreator Qt6Positioning and Qt5 Compatibility also needed).
 * Follow command below:
 
 __For Linux:__
@@ -55,10 +56,10 @@ first, get qt-crator and build it:
 
 * git clone https://github.com/qt-creator/qt-creator.git
 * cd ./qt-creator
-* git checkout v6.0.0
+* git checkout v6.0.1
 * mkdir qtcreator_build
 * cd ./qtcreator_build
-* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/home/erdinc09/Qt/6.2.1/gcc_64" ..
+* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/home/erdinc09/Qt/6.2.2/gcc_64" ..
 * cmake --build .
 
 then, get MarkdownEditView and build it:
@@ -67,7 +68,7 @@ then, get MarkdownEditView and build it:
 * cd ./MarkdownEditView
 * mkdir build
 * cd ./build
-* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/git/qt-creator/qtcreator_build;/home/erdinc09/Qt/6.2.1/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/home/erdinc09/git/qt-creator/qtcreator_build;/home/erdinc09/Qt/6.2.2/gcc_64" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cmake --build .
 
 __For Mac:__
@@ -76,10 +77,10 @@ first, get qt-crator and build it:
 
 * git clone https://github.com/qt-creator/qt-creator.git
 * cd ./qt-creator
-* git checkout v6.0.0
+* git checkout v6.0.1
 * mkdir qtcreator_build
 * cd ./qtcreator_build
-* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Qt/6.2.1/macos;/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain" ..
+* cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja "-DCMAKE_PREFIX_PATH=/Users/erdinc09/Qt/6.2.2/macos;/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain" ..
 * cmake --build .
 
 then, get MarkdownEditView and build it:
@@ -88,7 +89,7 @@ then, get MarkdownEditView and build it:
 * cd ./MarkdownEditView
 * mkdir build
 * cd ./build
-* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/git/qt-creator/qtcreator_build;/Users/erdinc09/Qt/6.2.1/macos" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
+* cmake "-DCMAKE_PREFIX_PATH=/Users/erdinc09/git/qt-creator/qtcreator_build;/Users/erdinc09/Qt/6.2.2/macos" -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja ..
 * cmake --build .
 
 __Note that directory delimeter is same for in all platforms! ";"__

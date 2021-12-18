@@ -1,7 +1,7 @@
 {
     \"Name\" : \"MarkdownEditView\",
-    \"Version\" : \"1.6.1\",
-    \"CompatVersion\" : \"6.0.0\",
+    \"Version\" : \"1.6.2\",
+    \"CompatVersion\" : \"6.0.1\",
     \"Vendor\" : \"erdinc09\",
     \"Copyright\" : \"(C) erdinc09\",
     \"License\" : \"GPL(V3)\",
