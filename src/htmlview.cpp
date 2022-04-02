@@ -39,17 +39,17 @@ HtmlView::HtmlView(IMarkdownEditView *markdownEditView_, bool darkTheme_)
 
   if (darkTheme) {
     // page->setUrl(QUrl("qrc:/markdowneditview/index_dark.html"));
-    page->setUrl(QUrl("file:" + QDir::home().absolutePath() +
-                      QDir::separator() +
-                      Constants::MARKDOWNEDITVIEW_HOME_FOLDER +
-                      QDir::separator() + "index_dark.html"));
+    page->setUrl(QUrl(QDir::cleanPath("file:" + QDir::home().absolutePath() +
+                                      QDir::separator() +
+                                      Constants::MARKDOWNEDITVIEW_HOME_FOLDER +
+                                      QDir::separator() + "index_dark.html")));
     page->setBackgroundColor(QColor{51, 52, 44});
   } else {
     // page->setUrl(QUrl("qrc:/index_light.html"));
-    page->setUrl(QUrl("file:" + QDir::home().absolutePath() +
-                      QDir::separator() +
-                      Constants::MARKDOWNEDITVIEW_HOME_FOLDER +
-                      QDir::separator() + "index_light.html"));
+    page->setUrl(QUrl(QDir::cleanPath("file:" + QDir::home().absolutePath() +
+                                      QDir::separator() +
+                                      Constants::MARKDOWNEDITVIEW_HOME_FOLDER +
+                                      QDir::separator() + "index_light.html")));
   }
 }
 
