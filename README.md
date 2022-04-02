@@ -34,15 +34,20 @@ Not: Actually for resource, libexec and translations folders only the related fi
 
   * For __macos:__
     * This is easier than linux. All resource and configuratin files are kept together.
-    * copy  `<Qt Installation Path`>/6.2.2/macos/lib/QtWebChannel.framework           to  `<Qt Creator.app`>/Contents/Frameworks/
-    * copy  `<Qt Installation Path`>/6.2.2/macos/lib/QtWebEngineCore.framework        to  `<Qt Creator.app`>/Contents/Frameworks/
-    * copy  `<Qt Installation Path`>/6.2.2/macos/lib/QtWebEngineWidgets.framework     to  `<Qt Creator.app`>/Contents/Frameworks/
-    * copy  `<Qt Installation Path`>/6.2.2/macos/lib/QtPositioning.framework          to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.3/macos/lib/QtWebChannel.framework           to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.3/macos/lib/QtWebEngineCore.framework        to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.3/macos/lib/QtWebEngineWidgets.framework     to  `<Qt Creator.app`>/Contents/Frameworks/
+    * copy  `<Qt Installation Path`>/6.2.3/macos/lib/QtPositioning.framework          to  `<Qt Creator.app`>/Contents/Frameworks/
   * For __windows:__
-    * Since I do not have Windows machine I cannot write the exact steps but the logic same.
-    * By the help of [official qtwebengine6 deployment notes](https://doc-snapshots.qt.io/qt6-dev/qtwebengine-deploying.html) you can copy the related files.
-    * As soon as I have a windows machine I will write down exact steps.
-
+    * copy `<Qt Installation Path`>\6.2.3\msvc2019_64\bin\Qt6WebChannel.dll                 to `<Ct Creator Ins Path>`\bin
+    * copy `<Qt Installation Path`>\6.2.3\msvc2019_64\bin\Qt6WebEngineCore.dll              to `<Ct Creator Ins Path>`\bin
+    * copy `<Qt Installation Path`>\6.2.3\msvc2019_64\bin\Qt6WebEngineWidgets.dll           to `<Ct Creator Ins Path>`\bin
+    * copy  `<Qt Installation Path>`\6.2.3\msvc2019_64\translations                         to `<Ct Creator Ins Path>`\bin
+    * copy  `<Qt Installation Path>`\6.2.3\msvc2019_64\resources                            to `<Ct Creator Ins Path>`\bin
+    * copy  `<Qt Installation Path>`\6.2.3\msvc2019_64\bin\QtWebEngineProcess.exe           to `<Ct Creator Ins Path>`\bin
+    * copy  `<Qt Installation Path>`\6.2.3\msvc2019_64\bin\qtwebengine_convert_dict.exe     to `<Ct Creator Ins Path>`\bin
+    
+Not: Actually for resource and translations folders only the related files should be copied. But just now, copy all files. I will update later.
 
 ## How to Build
 
